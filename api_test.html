@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #000; color: #0f0; }
+        button { padding: 10px; margin: 10px; cursor: pointer; }
+        #output { white-space: pre-wrap; border: 1px solid #0f0; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>API Tests</h1>
+    <button onclick="testTable()">Test Table (Crypto)</button>
+    <button onclick="testExplanation()">Test Explanation</button>
+    <div id="output"></div>
+
+    <script>
+        async function testTable() {
+            document.getElementById('output').textContent = 'Testing table request...\n';
+            try {
+                const response = await fetch('http://localhost:8000/api/chat/stream', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ messages: [{role: 'user', type: 'text', content: 'Crypto'}] })
+                });
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+                    buffer += decoder.decode(value, { stream: true });
+                }
+
+                document.getElementById('output').textContent += 'Raw response:\n' + buffer + '\n\n';
+                
+                const parsed = JSON.parse(buffer);
+                document.getElementById('output').textContent += 'Parsed type: ' + parsed.type + '\n';
+                document.getElementById('output').textContent += 'Content items: ' + parsed.content.length;
+            } catch (e) {
+                document.getElementById('output').textContent += 'ERROR: ' + e.message;
+            }
+        }
+
+        async function testExplanation() {
+            document.getElementById('output').textContent = 'Testing explanation request...\n';
+            try {
+                const response = await fetch('http://localhost:8000/api/chat/stream', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ messages: [{role: 'user', type: 'text', content: 'giải thích affiliate marketing là gì'}] })
+                });
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+                    buffer += decoder.decode(value, { stream: true });
+                }
+
+                document.getElementById('output').textContent += 'Raw response:\n' + buffer + '\n\n';
+                
+                const parsed = JSON.parse(buffer);
+                document.getElementById('output').textContent += 'Parsed type: ' + parsed.type + '\n';
+                document.getElementById('output').textContent += 'Content preview: ' + parsed.content.substring(0, 100) + '...';
+            } catch (e) {
+                document.getElementById('output').textContent += 'ERROR: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>
