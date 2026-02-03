@@ -32,6 +32,7 @@ const generateDailyData = (startDate, endDate, baseMetrics) => {
 export const mockCampaigns = [
     {
         id: 'camp_001',
+        accountId: 'acc_001',
         name: 'Forex Exness - General',
         program: 'Exness',
         keywords: ['forex vietnam', 'forex trading', 'exness review'],
@@ -45,6 +46,7 @@ export const mockCampaigns = [
     },
     {
         id: 'camp_002',
+        accountId: 'acc_001',
         name: 'Crypto Binance - Brand',
         program: 'Binance',
         keywords: ['binance vietnam', 'crypto exchange', 'mua bitcoin'],
@@ -58,6 +60,7 @@ export const mockCampaigns = [
     },
     {
         id: 'camp_003',
+        accountId: 'acc_002',
         name: 'Beauty Sephora - High Intent',
         program: 'Sephora',
         keywords: ['sephora vietnam', 'mỹ phẩm chính hãng', 'beauty products'],
@@ -71,6 +74,7 @@ export const mockCampaigns = [
     },
     {
         id: 'camp_004',
+        accountId: 'acc_002',
         name: 'Gaming Razer - Accessories',
         program: 'Razer',
         keywords: ['razer vietnam', 'gaming gear', 'chuột gaming'],
@@ -84,6 +88,7 @@ export const mockCampaigns = [
     },
     {
         id: 'camp_005',
+        accountId: 'acc_003',
         name: 'Forex XM Trading - Broad',
         program: 'XM',
         keywords: ['xm trading', 'forex broker vietnam', 'trade forex'],

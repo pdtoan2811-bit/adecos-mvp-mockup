@@ -11,7 +11,10 @@ export const useChatContext = () => {
 };
 
 export const ChatProvider = ({ children }) => {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(() => {
+        const saved = sessionStorage.getItem('chatHistory');
+        return saved ? JSON.parse(saved) : [];
+    });
 
     // Don't load messages on mount - UI starts clean
     // But we keep history in sessionStorage for context

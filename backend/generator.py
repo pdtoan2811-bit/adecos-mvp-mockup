@@ -19,8 +19,12 @@ Be concise but comprehensive in your answers."""
 
 PROMPT_TEMPLATE = """
 Research Niche: {niche}
+Context from previous conversation (if any):
+{context}
 
 Generate 5-10 high-quality affiliate programs (native or network) relevant to this niche in Vietnam (or global programs popular in Vietnam).
+If the niche is vague (e.g. "more", "others"), use the Context to determine the actual topic.
+
 For each program, provide:
 - brand: Name of the brand.
 - program_url: Direct link to affiliate page.
@@ -36,7 +40,8 @@ Return ONLY the JSON array.
 
 async def generate_research_stream(niche: str):
     """Generate affiliate program research for a niche."""
-    prompt = PROMPT_TEMPLATE.format(niche=niche)
+    """Generate affiliate program research for a niche."""
+    prompt = PROMPT_TEMPLATE.format(niche=niche, context="")
     
     try:
         response = await model.generate_content_async(prompt, stream=True)
@@ -75,6 +80,7 @@ async def generate_research_stream(niche: str):
             yield f'{{"type": "table", "content": [{{"error": "Invalid JSON from AI"}}]}}'
             
     except Exception as e:
+        print(f"Error in research generation: {e}")
         yield f'{{"type": "table", "content": [{{"error": "Generation failed: {str(e)}"}}]}}'
 
 
@@ -149,9 +155,8 @@ async def generate_chat_stream(messages: list):
     
     # Route based on intent
     if intent in ['research', 'followup']:
-        # Generate affiliate program table
         try:
-            prompt = PROMPT_TEMPLATE.format(niche=user_query)
+            prompt = PROMPT_TEMPLATE.format(niche=user_query, context=conversation_history)
             
             response = await model.generate_content_async(prompt, stream=True)
             buffer = ""
@@ -212,4 +217,5 @@ Provide a helpful explanation in Vietnamese.
             yield json.dumps({"type": "text", "content": buffer})
                 
         except Exception as e:
+            print(f"Error in chat generation: {e}")
             yield json.dumps({"type": "text", "content": f"Xin lỗi, có lỗi xảy ra: {str(e)}"})

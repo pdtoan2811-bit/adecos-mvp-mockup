@@ -30,6 +30,7 @@ const Sidebar = () => {
         { path: '/', label: 'Chat Research', icon: '▣' },
         { path: '/projects', label: 'Dự án đã lưu', icon: '◫', badge: savedCount },
         { path: '/dashboard', label: 'Analytics', icon: '▭' },
+        { path: '/settings', label: 'Settings', icon: '⚙' },
     ];
 
     return (

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -11,12 +11,50 @@ const DashboardPage = () => {
     const [selectedPrograms, setSelectedPrograms] = useState([]);
     const [selectedKeywords, setSelectedKeywords] = useState([]);
 
+    const [selectedAccounts, setSelectedAccounts] = useState([]);
+    const [accounts, setAccounts] = useState([]);
+
+    // Search states for filters
+    const [programSearch, setProgramSearch] = useState('');
+    const [keywordSearch, setKeywordSearch] = useState('');
+    const [accountSearch, setAccountSearch] = useState('');
+
     const programs = getPrograms();
     const keywords = getKeywords();
 
+    // Load accounts and map mock data to them
+    useEffect(() => {
+        const savedAccounts = JSON.parse(localStorage.getItem('adsAccounts') || '[]');
+
+        if (savedAccounts.length === 0) {
+            // Default demo accounts if none exist
+            const defaults = [
+                { id: 'acc_001', name: 'Tài khoản Chính (Demo)', platform: 'Google Ads' },
+                { id: 'acc_002', name: 'Tài khoản Phụ (Demo)', platform: 'Google Ads' }
+            ];
+            setAccounts(defaults);
+            setSelectedAccounts(defaults.map(a => a.id));
+        } else {
+            setAccounts(savedAccounts);
+            setSelectedAccounts(savedAccounts.map(a => a.id));
+        }
+    }, []);
+
     // Filter campaigns based on selections
     const filteredCampaigns = useMemo(() => {
-        let campaigns = mockCampaigns;
+        let campaigns = [...mockCampaigns];
+
+        // DYNAMIC MAPPING: Assign mock campaigns to available accounts for demo purposes
+        if (accounts.length > 0) {
+            campaigns = campaigns.map((camp, index) => {
+                const assignedAccount = accounts[index % accounts.length];
+                return { ...camp, accountId: assignedAccount.id };
+            });
+        }
+
+        if (selectedAccounts.length > 0) {
+            campaigns = campaigns.filter(c => selectedAccounts.includes(c.accountId));
+        }
 
         if (selectedPrograms.length > 0) {
             campaigns = campaigns.filter(c => selectedPrograms.includes(c.program));
@@ -29,7 +67,7 @@ const DashboardPage = () => {
         }
 
         return campaigns;
-    }, [selectedPrograms, selectedKeywords]);
+    }, [selectedPrograms, selectedKeywords, selectedAccounts, accounts]);
 
     // Format dates for API
     const formatDate = (date) => {
@@ -37,12 +75,23 @@ const DashboardPage = () => {
         return date.toISOString().split('T')[0];
     };
 
-    // Aggregate data
+    // Aggregate data for CURRENT period
     const chartData = useMemo(() => {
         return aggregateData(filteredCampaigns, groupBy, formatDate(startDate), formatDate(endDate));
     }, [filteredCampaigns, groupBy, startDate, endDate]);
 
-    // Calculate totals
+    // Calculate PREVIOUS period
+    const prevPeriodData = useMemo(() => {
+        if (!startDate || !endDate) return null;
+
+        const duration = endDate.getTime() - startDate.getTime();
+        const prevEnd = new Date(startDate.getTime() - 86400000); // 1 day before start
+        const prevStart = new Date(prevEnd.getTime() - duration);
+
+        return aggregateData(filteredCampaigns, 'day', formatDate(prevStart), formatDate(prevEnd));
+    }, [filteredCampaigns, startDate, endDate]);
+
+    // Calculate totals for current period
     const totals = useMemo(() => {
         return chartData.reduce((acc, day) => ({
             clicks: acc.clicks + day.clicks,
@@ -52,8 +101,47 @@ const DashboardPage = () => {
         }), { clicks: 0, cost: 0, conversions: 0, revenue: 0 });
     }, [chartData]);
 
+    // Calculate totals for previous period
+    const prevTotals = useMemo(() => {
+        if (!prevPeriodData) return null;
+        return prevPeriodData.reduce((acc, day) => ({
+            clicks: acc.clicks + day.clicks,
+            cost: acc.cost + day.cost,
+        }), { clicks: 0, cost: 0 });
+    }, [prevPeriodData]);
+
+    // Metrics calculation
     const avgCPC = totals.clicks > 0 ? totals.cost / totals.clicks : 0;
-    const roi = totals.cost > 0 ? ((totals.revenue - totals.cost) / totals.cost) * 100 : 0;
+
+    // Comparison calculation for CPC
+    let cpComparison = 0;
+    let cpcTrend = 'neutral';
+
+    if (prevTotals && prevTotals.clicks > 0) {
+        const prevCPC = prevTotals.cost / prevTotals.clicks;
+        if (prevCPC > 0) {
+            cpComparison = ((avgCPC - prevCPC) / prevCPC) * 100;
+            // For CPC, negative is GOOD (green), positive is BAD (red)
+            cpcTrend = cpComparison < 0 ? 'good' : 'bad';
+        }
+    }
+
+    // Quick date handlers
+    const setLast30Days = () => {
+        const end = new Date();
+        const start = new Date();
+        start.setDate(end.getDate() - 30);
+        setStartDate(start);
+        setEndDate(end);
+    };
+
+    const setLast90Days = () => {
+        const end = new Date();
+        const start = new Date();
+        start.setDate(end.getDate() - 90);
+        setStartDate(start);
+        setEndDate(end);
+    };
 
     // Custom tooltip
     const CustomTooltip = ({ active, payload }) => {
@@ -98,6 +186,12 @@ const DashboardPage = () => {
         );
     };
 
+    const toggleAccount = (accountId) => {
+        setSelectedAccounts(prev =>
+            prev.includes(accountId) ? prev.filter(id => id !== accountId) : [...prev, accountId]
+        );
+    };
+
     return (
         <div className="flex-1 p-8 overflow-auto bg-black">
             <div className="max-w-[1800px] mx-auto">
@@ -109,12 +203,19 @@ const DashboardPage = () => {
 
                 {/* Filters */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-                    {/* Date Range with Calendar */}
-                    <div className="border border-white/10 p-4 rounded-sm">
+                    {/* Date Range with Calendar & Group By */}
+                    <div className="border border-white/10 p-4 rounded-sm flex flex-col h-[350px]">
                         <label className="text-xs text-luxury-gray uppercase tracking-wider mb-3 block">
                             Thời gian
                         </label>
-                        <div className="space-y-3">
+
+                        {/* Quick Filters */}
+                        <div className="flex gap-2 mb-3">
+                            <button onClick={setLast30Days} className="flex-1 px-2 py-1 text-[10px] border border-white/20 text-white hover:bg-white hover:text-black transition-colors rounded-sm uppercase">Last 30D</button>
+                            <button onClick={setLast90Days} className="flex-1 px-2 py-1 text-[10px] border border-white/20 text-white hover:bg-white hover:text-black transition-colors rounded-sm uppercase">Last 90D</button>
+                        </div>
+
+                        <div className="space-y-3 mb-4">
                             <div>
                                 <label className="text-xs text-luxury-gray mb-1 block">Từ ngày</label>
                                 <DatePicker
@@ -141,66 +242,117 @@ const DashboardPage = () => {
                                 />
                             </div>
                         </div>
-                    </div>
 
-                    {/* Group By */}
-                    <div className="border border-white/10 p-4 rounded-sm">
-                        <label className="text-xs text-luxury-gray uppercase tracking-wider mb-3 block">
-                            Nhóm theo
-                        </label>
-                        <div className="flex gap-2">
-                            {['day', 'week', 'month'].map(group => (
-                                <button
-                                    key={group}
-                                    onClick={() => setGroupBy(group)}
-                                    className={`flex-1 py-2 text-xs uppercase tracking-wider transition-all rounded-sm ${groupBy === group
+                        {/* Group By (Merged) */}
+                        <div className="mt-auto pt-4 border-t border-white/10">
+                            <label className="text-xs text-luxury-gray uppercase tracking-wider mb-2 block">
+                                Nhóm theo
+                            </label>
+                            <div className="flex gap-2">
+                                {['day', 'week', 'month'].map(group => (
+                                    <button
+                                        key={group}
+                                        onClick={() => setGroupBy(group)}
+                                        className={`flex-1 py-1 text-[10px] uppercase tracking-wider transition-all rounded-sm ${groupBy === group
                                             ? 'bg-white text-black'
                                             : 'border border-white/20 text-luxury-gray hover:text-white hover:border-white/40'
-                                        }`}
-                                >
-                                    {group === 'day' ? 'Ngày' : group === 'week' ? 'Tuần' : 'Tháng'}
-                                </button>
-                            ))}
+                                            }`}
+                                    >
+                                        {group === 'day' ? 'Ngày' : group === 'week' ? 'Tuần' : 'Tháng'}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Account Filter (NEW) */}
+                    <div className="border border-white/10 p-4 rounded-sm flex flex-col h-[350px]">
+                        <label className="text-xs text-luxury-gray uppercase tracking-wider mb-3 block flex-shrink-0">
+                            Tài khoản
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Tìm kiếm..."
+                            value={accountSearch}
+                            onChange={(e) => setAccountSearch(e.target.value)}
+                            className="w-full bg-white/5 border border-white/10 text-white text-xs px-2 py-1 mb-3 rounded-sm focus:outline-none focus:border-white/30"
+                        />
+                        <div className="space-y-2 overflow-y-auto flex-1 pr-2">
+                            {accounts.length === 0 && <p className="text-xs text-luxury-gray italic">Chưa kết nối tài khoản nào.</p>}
+                            {accounts
+                                .filter(acc => acc.name.toLowerCase().includes(accountSearch.toLowerCase()))
+                                .map(acc => (
+                                    <label key={acc.id} className="flex items-center gap-2 text-sm text-white cursor-pointer hover:text-luxury-white transition-colors">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedAccounts.includes(acc.id)}
+                                            onChange={() => toggleAccount(acc.id)}
+                                            className="w-4 h-4 rounded border-white/20 bg-transparent flex-shrink-0"
+                                        />
+                                        <div className="flex flex-col overflow-hidden">
+                                            <span className="text-xs truncate font-medium" title={acc.name}>{acc.name}</span>
+                                            <span className="text-[10px] text-luxury-gray truncate">{acc.platform}</span>
+                                        </div>
+                                    </label>
+                                ))}
                         </div>
                     </div>
 
                     {/* Program Filter */}
-                    <div className="border border-white/10 p-4 rounded-sm">
-                        <label className="text-xs text-luxury-gray uppercase tracking-wider mb-3 block">
+                    <div className="border border-white/10 p-4 rounded-sm flex flex-col h-[260px]">
+                        <label className="text-xs text-luxury-gray uppercase tracking-wider mb-3 block flex-shrink-0">
                             Chương trình
                         </label>
-                        <div className="space-y-2">
-                            {programs.map(program => (
-                                <label key={program} className="flex items-center gap-2 text-sm text-white cursor-pointer hover:text-luxury-white transition-colors">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedPrograms.includes(program)}
-                                        onChange={() => toggleProgram(program)}
-                                        className="w-4 h-4 rounded border-white/20 bg-transparent"
-                                    />
-                                    <span className="text-xs">{program}</span>
-                                </label>
-                            ))}
+                        <input
+                            type="text"
+                            placeholder="Tìm kiếm..."
+                            value={programSearch}
+                            onChange={(e) => setProgramSearch(e.target.value)}
+                            className="w-full bg-white/5 border border-white/10 text-white text-xs px-2 py-1 mb-3 rounded-sm focus:outline-none focus:border-white/30"
+                        />
+                        <div className="space-y-2 overflow-y-auto flex-1 pr-2">
+                            {programs
+                                .filter(p => p.toLowerCase().includes(programSearch.toLowerCase()))
+                                .map(program => (
+                                    <label key={program} className="flex items-center gap-2 text-sm text-white cursor-pointer hover:text-luxury-white transition-colors">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedPrograms.includes(program)}
+                                            onChange={() => toggleProgram(program)}
+                                            className="w-4 h-4 rounded border-white/20 bg-transparent flex-shrink-0"
+                                        />
+                                        <span className="text-xs truncate" title={program}>{program}</span>
+                                    </label>
+                                ))}
                         </div>
                     </div>
 
                     {/* Keyword Filter */}
-                    <div className="border border-white/10 p-4 rounded-sm max-h-[220px] overflow-y-auto">
-                        <label className="text-xs text-luxury-gray uppercase tracking-wider mb-3 block sticky top-0 bg-black">
+                    <div className="border border-white/10 p-4 rounded-sm flex flex-col h-[260px]">
+                        <label className="text-xs text-luxury-gray uppercase tracking-wider mb-3 block flex-shrink-0">
                             Từ khóa
                         </label>
-                        <div className="space-y-2">
-                            {keywords.map(keyword => (
-                                <label key={keyword} className="flex items-center gap-2 text-sm text-white cursor-pointer hover:text-luxury-white transition-colors">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedKeywords.includes(keyword)}
-                                        onChange={() => toggleKeyword(keyword)}
-                                        className="w-4 h-4 rounded border-white/20 bg-transparent flex-shrink-0"
-                                    />
-                                    <span className="text-xs">{keyword}</span>
-                                </label>
-                            ))}
+                        <input
+                            type="text"
+                            placeholder="Tìm kiếm..."
+                            value={keywordSearch}
+                            onChange={(e) => setKeywordSearch(e.target.value)}
+                            className="w-full bg-white/5 border border-white/10 text-white text-xs px-2 py-1 mb-3 rounded-sm focus:outline-none focus:border-white/30"
+                        />
+                        <div className="space-y-2 overflow-y-auto flex-1 pr-2">
+                            {keywords
+                                .filter(k => k.toLowerCase().includes(keywordSearch.toLowerCase()))
+                                .map(keyword => (
+                                    <label key={keyword} className="flex items-center gap-2 text-sm text-white cursor-pointer hover:text-luxury-white transition-colors">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedKeywords.includes(keyword)}
+                                            onChange={() => toggleKeyword(keyword)}
+                                            className="w-4 h-4 rounded border-white/20 bg-transparent flex-shrink-0"
+                                        />
+                                        <span className="text-xs truncate" title={keyword}>{keyword}</span>
+                                    </label>
+                                ))}
                         </div>
                     </div>
                 </div>
@@ -214,18 +366,29 @@ const DashboardPage = () => {
                     <div className="border border-white/10 p-6 rounded-sm hover:border-white/20 transition-colors">
                         <div className="text-xs text-luxury-gray uppercase tracking-wider mb-2">Chi phí</div>
                         <div className="text-3xl font-serif text-white">{totals.cost.toLocaleString()} ₫</div>
-                        <div className="text-xs text-luxury-gray mt-1">CPC: {Math.round(avgCPC).toLocaleString()} ₫</div>
                     </div>
                     <div className="border border-white/10 p-6 rounded-sm hover:border-white/20 transition-colors">
                         <div className="text-xs text-luxury-gray uppercase tracking-wider mb-2">Chuyển đổi</div>
                         <div className="text-3xl font-serif text-white">{totals.conversions}</div>
                     </div>
+
+                    {/* CPC Card with Comparison */}
                     <div className="border border-white/10 p-6 rounded-sm hover:border-white/20 transition-colors">
-                        <div className="text-xs text-luxury-gray uppercase tracking-wider mb-2">ROI</div>
-                        <div className={`text-3xl font-serif ${roi >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                            {roi.toFixed(1)}%
+                        <div className="text-xs text-luxury-gray uppercase tracking-wider mb-2">CPC Trung bình</div>
+                        <div className="text-3xl font-serif text-white">
+                            {Math.round(avgCPC).toLocaleString()} ₫
                         </div>
-                        <div className="text-xs text-luxury-gray mt-1">Doanh thu: {totals.revenue.toLocaleString()} ₫</div>
+
+                        {prevTotals ? (
+                            <div className="flex items-center gap-2 mt-2">
+                                <span className={`text-xs font-medium ${cpcTrend === 'good' ? 'text-green-400' : 'text-red-400'}`}>
+                                    {cpComparison > 0 ? '▲' : '▼'} {Math.abs(cpComparison).toFixed(1)}%
+                                </span>
+                                <span className="text-[10px] text-luxury-gray">so với kỳ trước</span>
+                            </div>
+                        ) : (
+                            <div className="text-[10px] text-luxury-gray mt-2">Chưa có dữ liệu kỳ trước</div>
+                        )}
                     </div>
                 </div>
 
