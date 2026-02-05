@@ -113,13 +113,13 @@ const ExperimentsPage = () => {
     };
 
     return (
-        <div className="flex flex-col h-full bg-black text-white">
+        <div className="flex flex-col h-full bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-300">
             {/* Header */}
-            <div className="px-8 py-6 border-b border-white/10 flex-shrink-0">
+            <div className="px-8 py-6 border-b border-[var(--border-color)] flex-shrink-0">
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h1 className="text-2xl font-serif tracking-tight">Experiments</h1>
-                        <p className="text-xs text-luxury-gray uppercase tracking-widest mt-1">
+                        <h1 className="text-2xl font-serif tracking-tight text-[var(--text-primary)]">Experiments</h1>
+                        <p className="text-xs text-[var(--text-secondary)] uppercase tracking-widest mt-1">
                             Manage your AI-generated workflows and track progress
                         </p>
                     </div>
@@ -131,10 +131,9 @@ const ExperimentsPage = () => {
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search experiments..."
-                            className="w-64 bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white
-                                       placeholder-white/30 focus:outline-none focus:border-white/30"
+                            className="w-64 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-lg px-4 py-2 text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:border-[var(--text-primary)]"
                         />
-                        <svg className="w-4 h-4 text-white/30 absolute right-3 top-1/2 -translate-y-1/2"
+                        <svg className="w-4 h-4 text-[var(--text-secondary)] absolute right-3 top-1/2 -translate-y-1/2"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -142,10 +141,10 @@ const ExperimentsPage = () => {
                     </div>
 
                     {/* View Toggle */}
-                    <div className="flex bg-white/5 rounded-lg p-1 ml-4 border border-white/10">
+                    <div className="flex bg-[var(--bg-surface)] rounded-lg p-1 ml-4 border border-[var(--border-color)]">
                         <button
                             onClick={() => setViewMode('grid')}
-                            className={`p-1.5 rounded transition-colors ${viewMode === 'grid' ? 'bg-white/20 text-white' : 'text-luxury-gray hover:text-white'}`}
+                            className={`p-1.5 rounded transition-colors ${viewMode === 'grid' ? 'bg-[var(--bg-hover)] text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
                             title="Grid View"
                         >
                             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -154,7 +153,7 @@ const ExperimentsPage = () => {
                         </button>
                         <button
                             onClick={() => setViewMode('list')}
-                            className={`p-1.5 rounded transition-colors ${viewMode === 'list' ? 'bg-white/20 text-white' : 'text-luxury-gray hover:text-white'}`}
+                            className={`p-1.5 rounded transition-colors ${viewMode === 'list' ? 'bg-[var(--bg-hover)] text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
                             title="List View"
                         >
                             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -172,15 +171,15 @@ const ExperimentsPage = () => {
                             onClick={() => setFilterStatus(status)}
                             className={`px-4 py-2 text-sm rounded-lg transition-colors flex items-center gap-2
                                        ${filterStatus === status
-                                    ? 'bg-white/10 text-white'
-                                    : 'text-luxury-gray hover:text-white hover:bg-white/5'}`}
+                                    ? 'bg-[var(--bg-hover)] text-[var(--text-primary)]'
+                                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)]'}`}
                         >
                             <span className="capitalize">
                                 {status === 'all' ? 'All' :
                                     status === 'running' ? 'Đang chạy' :
                                         status === 'paused' ? 'Tạm dừng' : 'Hoàn thành'}
                             </span>
-                            <span className={`px-1.5 py-0.5 text-xs rounded-full ${filterStatus === status ? 'bg-white/20' : 'bg-white/5'
+                            <span className={`px-1.5 py-0.5 text-xs rounded-full ${filterStatus === status ? 'bg-[var(--bg-surface)]' : 'bg-[var(--bg-primary)] border border-[var(--border-color)]'
                                 }`}>
                                 {statusCounts[status]}
                             </span>
@@ -193,21 +192,21 @@ const ExperimentsPage = () => {
             <div className="flex-1 overflow-y-auto p-8">
                 {filteredExperiments.length === 0 ? (
                     <div className="text-center py-16">
-                        <div className="w-20 h-20 rounded-full bg-white/5 mx-auto mb-4 flex items-center justify-center">
-                            <svg className="w-10 h-10 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="w-20 h-20 rounded-full bg-[var(--bg-surface)] mx-auto mb-4 flex items-center justify-center">
+                            <svg className="w-10 h-10 text-[var(--text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
                                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
                         </div>
-                        <h3 className="text-lg font-serif text-white mb-2">No experiments yet</h3>
-                        <p className="text-sm text-luxury-gray max-w-md mx-auto">
+                        <h3 className="text-lg font-serif text-[var(--text-primary)] mb-2">No experiments yet</h3>
+                        <p className="text-sm text-[var(--text-secondary)] max-w-md mx-auto">
                             Experiments are created when you approve AI-generated workflows from the chat.
                             Go to the AI Agent to get started!
                         </p>
                         <a
                             href="/"
-                            className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-white/10 hover:bg-white/20 
-                                       rounded-lg transition-colors text-sm"
+                            className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-[var(--bg-surface)] hover:bg-[var(--bg-hover)] 
+                                       rounded-lg transition-colors text-sm text-[var(--text-primary)] border border-[var(--border-color)]"
                         >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -238,7 +237,7 @@ const ExperimentsPage = () => {
                         ) : (
                             <div className="flex flex-col gap-2">
                                 {/* List Header */}
-                                <div className="grid grid-cols-12 gap-4 px-4 py-2 text-xs text-luxury-gray uppercase tracking-wider font-semibold">
+                                <div className="grid grid-cols-12 gap-4 px-4 py-2 text-xs text-[var(--text-secondary)] uppercase tracking-wider font-semibold">
                                     <div className="col-span-4">Experiment</div>
                                     <div className="col-span-2">Status</div>
                                     <div className="col-span-2">Target Accuracy</div>

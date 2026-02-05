@@ -60,10 +60,10 @@ const SmartTaskCard = ({ task, onUpdate, onToggle, isExpanded, onExpand }) => {
 
     return (
         <div className={`border rounded-lg transition-all duration-300 ${completed
-                ? 'border-white/5 bg-black/20 opacity-60'
-                : isExpanded
-                    ? 'border-white/20 bg-black/40'
-                    : 'border-white/10 bg-black/20 hover:border-white/20'
+            ? 'border-[var(--border-color)] bg-[var(--bg-card)] opacity-60'
+            : isExpanded
+                ? 'border-[var(--border-hover)] bg-[var(--bg-card)]'
+                : 'border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--border-hover)]'
             }`}>
             {/* Compact Header */}
             <div
@@ -79,7 +79,7 @@ const SmartTaskCard = ({ task, onUpdate, onToggle, isExpanded, onExpand }) => {
                     className={`w-5 h-5 rounded border-2 flex-shrink-0 transition-all
                                flex items-center justify-center ${completed
                             ? 'bg-green-500 border-green-500'
-                            : 'border-white/30 hover:border-white/50'
+                            : 'border-[var(--border-hover)] hover:border-[var(--text-secondary)]'
                         }`}
                 >
                     {completed && (
@@ -90,7 +90,7 @@ const SmartTaskCard = ({ task, onUpdate, onToggle, isExpanded, onExpand }) => {
                 </button>
 
                 {/* Task Text */}
-                <span className={`flex-1 text-sm ${completed ? 'line-through text-white/40' : 'text-white'}`}>
+                <span className={`flex-1 text-sm ${completed ? 'line-through text-[var(--text-secondary)]' : 'text-[var(--text-primary)]'}`}>
                     {text}
                 </span>
 
@@ -100,8 +100,8 @@ const SmartTaskCard = ({ task, onUpdate, onToggle, isExpanded, onExpand }) => {
                         <div
                             key={key}
                             className={`w-1.5 h-1.5 rounded-full ${smart[key] && smart[key].trim()
-                                    ? 'bg-green-400'
-                                    : 'bg-white/20'
+                                ? 'bg-green-500'
+                                : 'bg-[var(--border-color)]'
                                 }`}
                             title={`${smartLabels[key].label}: ${smart[key] || 'Not set'}`}
                         />
@@ -115,7 +115,7 @@ const SmartTaskCard = ({ task, onUpdate, onToggle, isExpanded, onExpand }) => {
 
                 {/* Expand Arrow */}
                 <svg
-                    className={`w-4 h-4 text-white/40 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    className={`w-4 h-4 text-[var(--text-secondary)] transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                     fill="none" viewBox="0 0 24 24" stroke="currentColor"
                 >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -124,17 +124,17 @@ const SmartTaskCard = ({ task, onUpdate, onToggle, isExpanded, onExpand }) => {
 
             {/* Expanded SMART Detail */}
             {isExpanded && (
-                <div className="border-t border-white/10 p-3 space-y-2">
+                <div className="border-t border-[var(--border-color)] p-3 space-y-2">
                     {/* SMART Progress Bar */}
                     <div className="flex items-center gap-2 mb-3">
-                        <span className="text-[10px] uppercase text-luxury-gray">SMART</span>
-                        <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
+                        <span className="text-[10px] uppercase text-[var(--text-secondary)]">SMART</span>
+                        <div className="flex-1 h-1 bg-[var(--bg-surface)] rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-gradient-to-r from-blue-500 to-green-400 transition-all"
+                                className="h-full bg-gradient-to-r from-blue-500 to-green-500 transition-all"
                                 style={{ width: `${smartCompleteness}%` }}
                             />
                         </div>
-                        <span className="text-[10px] text-luxury-gray">{smartCompleteness}%</span>
+                        <span className="text-[10px] text-[var(--text-secondary)]">{smartCompleteness}%</span>
                     </div>
 
                     {/* SMART Fields */}
@@ -145,8 +145,8 @@ const SmartTaskCard = ({ task, onUpdate, onToggle, isExpanded, onExpand }) => {
                                 className="flex items-start gap-2 group"
                             >
                                 <div className={`w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${smart[key] && smart[key].trim()
-                                        ? 'bg-green-500/20 text-green-400'
-                                        : 'bg-white/10 text-white/40'
+                                    ? 'bg-green-500/20 text-green-500'
+                                    : 'bg-[var(--bg-surface)] text-[var(--text-secondary)]'
                                     }`}>
                                     {config.letter}
                                 </div>
@@ -163,21 +163,21 @@ const SmartTaskCard = ({ task, onUpdate, onToggle, isExpanded, onExpand }) => {
                                             if (e.key === 'Escape') setIsEditing(null);
                                         }}
                                         placeholder={config.placeholder}
-                                        className="flex-1 bg-white/5 border border-white/20 rounded px-2 py-1 text-xs text-white
-                                                   placeholder-white/30 focus:outline-none focus:border-white/40"
+                                        className="flex-1 bg-[var(--bg-surface)] border border-[var(--border-hover)] rounded px-2 py-1 text-xs text-[var(--text-primary)]
+                                                   placeholder-[var(--text-secondary)] placeholder:opacity-50 focus:outline-none focus:border-blue-500"
                                     />
                                 ) : (
                                     <div
-                                        className="flex-1 text-xs cursor-pointer group-hover:bg-white/5 rounded px-2 py-1 -mx-2"
+                                        className="flex-1 text-xs cursor-pointer group-hover:bg-[var(--bg-hover)] rounded px-2 py-1 -mx-2"
                                         onClick={() => {
                                             setEditValue(smart[key] || '');
                                             setIsEditing(key);
                                         }}
                                     >
                                         {smart[key] ? (
-                                            <span className="text-white/80">{smart[key]}</span>
+                                            <span className="text-[var(--text-primary)]">{smart[key]}</span>
                                         ) : (
-                                            <span className="text-white/30 italic">{config.placeholder}</span>
+                                            <span className="text-[var(--text-secondary)] italic opacity-50">{config.placeholder}</span>
                                         )}
                                     </div>
                                 )}
@@ -187,19 +187,19 @@ const SmartTaskCard = ({ task, onUpdate, onToggle, isExpanded, onExpand }) => {
 
                     {/* Trade-offs Section */}
                     {smart.tradeoffs && smart.tradeoffs.length > 0 && (
-                        <div className="mt-3 pt-3 border-t border-white/5">
-                            <div className="text-[10px] uppercase text-luxury-gray mb-2">Trade-offs</div>
+                        <div className="mt-3 pt-3 border-t border-[var(--border-color)]">
+                            <div className="text-[10px] uppercase text-[var(--text-secondary)] mb-2">Trade-offs</div>
                             <div className="space-y-1.5">
                                 {smart.tradeoffs.map((tradeoff, idx) => (
                                     <div key={idx} className="flex items-center gap-2 text-xs">
-                                        <span className="text-white/60">{tradeoff.option1}</span>
-                                        <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden relative">
+                                        <span className="text-[var(--text-secondary)]">{tradeoff.option1}</span>
+                                        <div className="flex-1 h-1.5 bg-[var(--bg-surface)] rounded-full overflow-hidden relative">
                                             <div
                                                 className="absolute inset-0 bg-gradient-to-r from-blue-500/50 to-transparent"
                                                 style={{ width: `${tradeoff.balance || 50}%` }}
                                             />
                                         </div>
-                                        <span className="text-white/60">{tradeoff.option2}</span>
+                                        <span className="text-[var(--text-secondary)]">{tradeoff.option2}</span>
                                     </div>
                                 ))}
                             </div>
@@ -207,9 +207,9 @@ const SmartTaskCard = ({ task, onUpdate, onToggle, isExpanded, onExpand }) => {
                     )}
 
                     {/* Quick Actions */}
-                    <div className="flex gap-2 mt-3 pt-2 border-t border-white/5">
+                    <div className="flex gap-2 mt-3 pt-2 border-t border-[var(--border-color)]">
                         <button
-                            className="px-2 py-1 text-[10px] bg-white/5 hover:bg-white/10 rounded transition-colors text-white/60"
+                            className="px-2 py-1 text-[10px] bg-[var(--bg-surface)] hover:bg-[var(--bg-hover)] border border-[var(--border-color)] rounded transition-colors text-[var(--text-secondary)]"
                             onClick={() => {
                                 // Mock: Add AI suggestion
                                 const suggestions = {
@@ -225,7 +225,7 @@ const SmartTaskCard = ({ task, onUpdate, onToggle, isExpanded, onExpand }) => {
                             ✨ AI Fill
                         </button>
                         <button
-                            className="px-2 py-1 text-[10px] bg-white/5 hover:bg-white/10 rounded transition-colors text-white/60"
+                            className="px-2 py-1 text-[10px] bg-[var(--bg-surface)] hover:bg-[var(--bg-hover)] border border-[var(--border-color)] rounded transition-colors text-[var(--text-secondary)]"
                             onClick={() => onUpdate(id, {
                                 ...task,
                                 smart: {

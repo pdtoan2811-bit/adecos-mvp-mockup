@@ -59,26 +59,26 @@ const CommentThread = ({
     return (
         <div
             ref={panelRef}
-            className="absolute right-0 top-0 w-80 bg-black/95 border border-white/20 rounded-lg shadow-2xl 
+            className="absolute right-0 top-0 w-80 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg shadow-2xl 
                        transform transition-all duration-300 ease-out z-50 backdrop-blur-xl
                        animate-slide-in-right"
             style={{ animation: 'slideInRight 0.3s ease-out forwards' }}
         >
             {/* Header */}
-            <div className="px-4 py-3 border-b border-white/10 flex justify-between items-center">
+            <div className="px-4 py-3 border-b border-[var(--border-color)] flex justify-between items-center">
                 <div className="flex-1 min-w-0">
-                    <div className="text-xs text-luxury-gray uppercase tracking-wider mb-1">
+                    <div className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-1">
                         Comments on
                     </div>
-                    <div className="text-sm text-white truncate font-medium">
+                    <div className="text-sm text-[var(--text-primary)] truncate font-medium">
                         {itemTitle}
                     </div>
                 </div>
                 <button
                     onClick={onClose}
-                    className="p-1.5 hover:bg-white/10 rounded-full transition-colors ml-2"
+                    className="p-1.5 hover:bg-[var(--bg-hover)] rounded-full transition-colors ml-2"
                 >
-                    <svg className="w-4 h-4 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 text-[var(--text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
@@ -87,7 +87,7 @@ const CommentThread = ({
             {/* Comments List */}
             <div className="max-h-64 overflow-y-auto p-4 space-y-4">
                 {comments.length === 0 ? (
-                    <div className="text-center text-luxury-gray text-sm py-4 italic">
+                    <div className="text-center text-[var(--text-secondary)] text-sm py-4 italic">
                         No comments yet. Be the first to add one!
                     </div>
                 ) : (
@@ -99,19 +99,19 @@ const CommentThread = ({
                             <div className="flex items-center gap-2 mb-1">
                                 <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold
                                     ${comment.author === 'ai'
-                                        ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white'
-                                        : 'bg-white/20 text-white'}`}
+                                        ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
+                                        : 'bg-[var(--bg-surface)] text-[var(--text-primary)] border border-[var(--border-color)]'}`}
                                 >
                                     {comment.author === 'ai' ? 'AI' : 'You'}
                                 </div>
-                                <span className={`text-xs ${comment.author === 'ai' ? 'text-blue-400' : 'text-luxury-gray'}`}>
+                                <span className={`text-xs ${comment.author === 'ai' ? 'text-blue-500' : 'text-[var(--text-secondary)]'}`}>
                                     {comment.author === 'ai' ? 'Adecos AI' : 'You'}
                                 </span>
-                                <span className="text-xs text-white/30">
+                                <span className="text-xs text-[var(--text-secondary)] opacity-50">
                                     {formatTime(comment.timestamp)}
                                 </span>
                             </div>
-                            <p className="text-sm text-white/90 leading-relaxed">
+                            <p className="text-sm text-[var(--text-primary)] leading-relaxed">
                                 {comment.content}
                             </p>
                         </div>
@@ -120,7 +120,7 @@ const CommentThread = ({
             </div>
 
             {/* Input Area */}
-            <form onSubmit={handleSubmit} className="p-4 border-t border-white/10">
+            <form onSubmit={handleSubmit} className="p-4 border-t border-[var(--border-color)]">
                 <div className="flex gap-2">
                     <input
                         ref={inputRef}
@@ -128,16 +128,16 @@ const CommentThread = ({
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                         placeholder="Add a comment..."
-                        className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white
-                                   placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors"
+                        className="flex-1 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-lg px-3 py-2 text-sm text-[var(--text-primary)]
+                                   placeholder-[var(--text-secondary)] placeholder:opacity-50 focus:outline-none focus:border-[var(--border-hover)] transition-colors"
                     />
                     <button
                         type="submit"
                         disabled={!newComment.trim()}
-                        className="px-3 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors
+                        className="px-3 py-2 bg-[var(--bg-surface)] hover:bg-[var(--bg-hover)] border border-[var(--border-color)] rounded-lg transition-colors
                                    disabled:opacity-30 disabled:cursor-not-allowed"
                     >
-                        <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-4 h-4 text-[var(--text-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                                 d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                         </svg>
@@ -149,7 +149,7 @@ const CommentThread = ({
             <div className="px-4 pb-4 flex justify-end gap-2">
                 <button
                     onClick={onResolve}
-                    className="px-3 py-1.5 text-xs text-green-400 hover:bg-green-500/10 rounded-lg 
+                    className="px-3 py-1.5 text-xs text-green-500 hover:bg-green-500/10 rounded-lg 
                                transition-colors uppercase tracking-wider font-medium"
                 >
                     ✓ Resolve

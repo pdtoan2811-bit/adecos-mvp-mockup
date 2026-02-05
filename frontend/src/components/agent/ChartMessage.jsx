@@ -81,12 +81,12 @@ const ChartMessage = ({ content, onContextUpdate }) => {
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
-                <div className="bg-black/90 border border-white/20 backdrop-blur-md p-4 rounded-sm shadow-xl">
-                    <p className="text-white text-sm font-mono mb-2">{label || payload[0].name}</p>
+                <div className="bg-[var(--bg-overlay)] border border-[var(--border-color)] backdrop-blur-md p-4 rounded-sm shadow-xl">
+                    <p className="text-[var(--text-primary)] text-sm font-mono mb-2">{label || payload[0].name}</p>
                     <div className="space-y-1 text-xs">
                         {payload.map((entry, index) => (
                             <div key={index} className="flex justify-between gap-4 items-center">
-                                <span className="text-luxury-gray">{entry.name}:</span>
+                                <span className="text-[var(--text-secondary)]">{entry.name}:</span>
                                 <span
                                     className="font-mono font-bold"
                                     style={{ color: entry.color || entry.payload.fill }}
@@ -121,8 +121,8 @@ const ChartMessage = ({ content, onContextUpdate }) => {
         };
 
         const axisStyle = {
-            stroke: "rgba(255,255,255,0.2)",
-            style: { fontSize: '11px', fill: 'rgba(255,255,255,0.5)' }
+            stroke: "var(--border-color)",
+            style: { fontSize: '11px', fill: 'var(--text-secondary)' }
         };
 
         switch (currentChartType) {
@@ -132,7 +132,7 @@ const ChartMessage = ({ content, onContextUpdate }) => {
                     <PieChart>
                         <Tooltip content={<CustomTooltip />} />
                         <Legend
-                            wrapperStyle={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}
+                            wrapperStyle={{ color: 'var(--text-secondary)', fontSize: '12px' }}
                             layout="vertical"
                             verticalAlign="middle"
                             align="right"
@@ -147,7 +147,7 @@ const ChartMessage = ({ content, onContextUpdate }) => {
                             dataKey="value"
                         >
                             {pieData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.color} stroke="rgba(0,0,0,0.5)" />
+                                <Cell key={`cell-${index}`} fill={entry.color} stroke="var(--bg-primary)" />
                             ))}
                         </Pie>
                     </PieChart>
@@ -156,14 +156,14 @@ const ChartMessage = ({ content, onContextUpdate }) => {
             case 'line':
                 return (
                     <LineChart {...commonProps}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                        <XAxis dataKey={xAxis} {...axisStyle} />
-                        <YAxis {...axisStyle} tickFormatter={formatYAxis} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
+                        <XAxis dataKey={xAxis} {...axisStyle} tick={{ fill: 'var(--text-secondary)' }} />
+                        <YAxis {...axisStyle} tickFormatter={formatYAxis} tick={{ fill: 'var(--text-secondary)' }} />
                         <Tooltip content={<CustomTooltip />} />
                         <Legend
                             wrapperStyle={{
                                 paddingTop: '20px',
-                                color: 'rgba(255,255,255,0.6)'
+                                color: 'var(--text-secondary)'
                             }}
                         />
                         {series.map((s, idx) => (
@@ -184,14 +184,14 @@ const ChartMessage = ({ content, onContextUpdate }) => {
             default:
                 return (
                     <BarChart {...commonProps}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                        <XAxis dataKey={xAxis} {...axisStyle} />
-                        <YAxis {...axisStyle} tickFormatter={formatYAxis} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
+                        <XAxis dataKey={xAxis} {...axisStyle} tick={{ fill: 'var(--text-secondary)' }} />
+                        <YAxis {...axisStyle} tickFormatter={formatYAxis} tick={{ fill: 'var(--text-secondary)' }} />
                         <Tooltip content={<CustomTooltip />} />
                         <Legend
                             wrapperStyle={{
                                 paddingTop: '20px',
-                                color: 'rgba(255,255,255,0.6)'
+                                color: 'var(--text-secondary)'
                             }}
                         />
                         {series.map((s, idx) => (
@@ -212,7 +212,7 @@ const ChartMessage = ({ content, onContextUpdate }) => {
     if (!data || data.length === 0) {
         return (
             <div className="w-full my-6 px-4 md:px-6">
-                <div className="border border-white/10 p-6 rounded-sm text-center text-luxury-gray">
+                <div className="border border-[var(--border-color)] p-6 rounded-sm text-center text-[var(--text-secondary)]">
                     Không có dữ liệu để hiển thị
                 </div>
             </div>
@@ -221,11 +221,11 @@ const ChartMessage = ({ content, onContextUpdate }) => {
 
     return (
         <div className="w-full my-6 px-4 md:px-6 fade-in-up">
-            <div className="border border-white/10 p-6 rounded-sm bg-black/20">
+            <div className="border border-[var(--border-color)] p-6 rounded-sm bg-[var(--bg-surface)]">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                     <div className="flex flex-col gap-1">
                         {title && (
-                            <h3 className="text-sm font-serif text-white uppercase tracking-wider">
+                            <h3 className="text-sm font-serif text-[var(--text-primary)] uppercase tracking-wider">
                                 {title}
                             </h3>
                         )}
@@ -237,14 +237,14 @@ const ChartMessage = ({ content, onContextUpdate }) => {
                                 endDate={dateRange.endDate}
                                 onChange={(update) => handleDateChange(update)}
                                 dateFormat="dd/MM/yyyy"
-                                className="bg-transparent text-xs text-luxury-gray border-none p-0 focus:ring-0 cursor-pointer w-48 font-mono hover:text-white transition-colors"
+                                className="bg-transparent text-xs text-[var(--text-secondary)] border-none p-0 focus:ring-0 cursor-pointer w-48 font-mono hover:text-[var(--text-primary)] transition-colors"
                                 placeholderText="Select date range"
                             />
                         </div>
                     </div>
 
                     {/* Chart Type Toggle */}
-                    <div className="flex bg-white/5 rounded-sm p-0.5">
+                    <div className="flex bg-[var(--bg-surface)] rounded-sm p-0.5 border border-[var(--border-color)]">
                         {['pie', 'line', 'bar'].map((type) => (
                             <button
                                 key={type}
@@ -252,8 +252,8 @@ const ChartMessage = ({ content, onContextUpdate }) => {
                                 className={`
                                     px-3 py-1 text-[10px] uppercase font-bold tracking-wide rounded-xs transition-all
                                     ${currentChartType === type
-                                        ? 'bg-white/20 text-white shadow-sm'
-                                        : 'text-luxury-gray hover:text-white hover:bg-white/10'}
+                                        ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm'
+                                        : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'}
                                 `}
                             >
                                 {type.toUpperCase()}
@@ -270,7 +270,7 @@ const ChartMessage = ({ content, onContextUpdate }) => {
                     .custom-datepicker-wrapper .react-datepicker-wrapper input {
                         background: transparent;
                         border: none;
-                        color: rgba(255,255,255,0.6);
+                        color: var(--text-secondary);
                         font-family: monospace;
                         font-size: 0.75rem;
                         cursor: pointer;
@@ -278,29 +278,29 @@ const ChartMessage = ({ content, onContextUpdate }) => {
                     .custom-datepicker-wrapper .react-datepicker-wrapper input:focus {
                         outline: none;
                         box-shadow: none;
-                        color: white;
+                        color: var(--text-primary);
                     }
                     .react-datepicker {
-                        background-color: #1a1a1a !important;
-                        border-color: rgba(255,255,255,0.1) !important;
+                        background-color: var(--bg-primary) !important;
+                        border-color: var(--border-color) !important;
                         font-family: inherit !important;
                     }
                     .react-datepicker__header {
-                        background-color: #262626 !important;
-                        border-bottom-color: rgba(255,255,255,0.1) !important;
+                        background-color: var(--bg-surface) !important;
+                        border-bottom-color: var(--border-color) !important;
                     }
                     .react-datepicker__current-month, .react-datepicker__day-name {
-                        color: white !important;
+                        color: var(--text-primary) !important;
                     }
                     .react-datepicker__day {
-                        color: rgba(255,255,255,0.8) !important;
+                        color: var(--text-secondary) !important;
                     }
                     .react-datepicker__day:hover {
-                        background-color: rgba(255,255,255,0.1) !important;
+                        background-color: var(--bg-hover) !important;
                     }
                     .react-datepicker__day--selected, .react-datepicker__day--in-range {
-                        background-color: #3b82f6 !important;
-                        color: white !important;
+                        background-color: var(--text-primary) !important;
+                        color: var(--bg-primary) !important;
                     }
                 `}</style>
             </div>

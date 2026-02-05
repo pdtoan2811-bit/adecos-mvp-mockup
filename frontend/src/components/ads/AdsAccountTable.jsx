@@ -75,28 +75,28 @@ const AdsAccountTable = ({ accounts, selectedIds, onSelectionChange }) => {
             <div className="flex justify-end mb-2 relative">
                 <button
                     onClick={() => setShowColumnSelector(!showColumnSelector)}
-                    className="flex items-center gap-2 text-xs font-medium text-gray-400 hover:text-white px-3 py-1.5 border border-white/10 rounded bg-white/5 transition-colors"
+                    className="flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-3 py-1.5 border border-[var(--border-color)] rounded bg-[var(--bg-surface)] transition-colors"
                 >
                     <span>👁️</span> Tùy chỉnh cột
                 </button>
 
                 {showColumnSelector && (
-                    <div className="absolute right-0 top-full mt-2 w-64 bg-[#111] border border-white/20 rounded shadow-2xl z-50 p-4">
-                        <div className="text-sm font-bold text-white mb-3">Hiển thị cột</div>
+                    <div className="absolute right-0 top-full mt-2 w-64 bg-[var(--bg-card)] border border-[var(--border-color)] rounded shadow-2xl z-50 p-4">
+                        <div className="text-sm font-bold text-[var(--text-primary)] mb-3">Hiển thị cột</div>
                         <div className="space-y-2 max-h-60 overflow-y-auto custom-scrollbar">
                             {ALL_COLUMNS.filter(c => !c.alwaysVisible).map(col => (
-                                <label key={col.key} className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer hover:text-white">
+                                <label key={col.key} className="flex items-center gap-2 text-sm text-[var(--text-secondary)] cursor-pointer hover:text-[var(--text-primary)]">
                                     <input
                                         type="checkbox"
                                         checked={visibleColumns.includes(col.key)}
                                         onChange={() => toggleColumn(col.key)}
-                                        className="rounded bg-white/10 border-white/20"
+                                        className="rounded bg-[var(--bg-surface)] border-[var(--border-color)]"
                                     />
                                     {col.label}
                                 </label>
                             ))}
                         </div>
-                        <div className="pt-3 mt-3 border-t border-white/10 flex justify-end">
+                        <div className="pt-3 mt-3 border-t border-[var(--border-color)] flex justify-end">
                             <button
                                 onClick={() => setShowColumnSelector(false)}
                                 className="text-xs text-blue-400 hover:text-blue-300"
@@ -108,51 +108,51 @@ const AdsAccountTable = ({ accounts, selectedIds, onSelectionChange }) => {
                 )}
             </div>
 
-            <div className="overflow-x-auto rounded-md border border-white/10">
-                <table className="w-full text-left text-sm text-gray-400 whitespace-nowrap relative">
-                    <thead className="bg-white/5 text-gray-200 font-mono text-xs uppercase sticky top-0 z-10">
+            <div className="overflow-x-auto rounded-md border border-[var(--border-color)]">
+                <table className="w-full text-left text-sm text-[var(--text-secondary)] whitespace-nowrap relative">
+                    <thead className="bg-[var(--bg-surface)] text-[var(--text-secondary)] font-mono text-xs uppercase sticky top-0 z-10">
                         <tr>
-                            <th className="p-4 w-4 bg-[#111]">
+                            <th className="p-4 w-4 bg-[var(--bg-primary)]">
                                 <input
                                     type="checkbox"
-                                    className="rounded bg-white/10 border-white/20"
+                                    className="rounded bg-[var(--bg-surface)] border-[var(--border-color)]"
                                     checked={accounts.length > 0 && selectedIds.length === accounts.length}
                                     onChange={handleSelectAll}
                                 />
                             </th>
-                            {checkVisible('stt') && <th className="p-4 bg-[#111]">STT</th>}
-                            {checkVisible('id') && <th className="p-4 bg-[#111]">ID</th>}
-                            {checkVisible('name') && <th className="p-4 bg-[#111]">Tên ID</th>}
-                            {checkVisible('budgetRemaining') && <th className="p-4 text-right bg-[#111]">Ngân sách còn lại</th>}
-                            {checkVisible('status') && <th className="p-4 bg-[#111]">Status tài khoản</th>}
-                            {checkVisible('email') && <th className="p-4 bg-[#111]">Email</th>}
-                            {checkVisible('source') && <th className="p-4 bg-[#111]">Nguồn</th>}
-                            {checkVisible('sourceAccount') && <th className="p-4 bg-[#111]">TK nguồn</th>}
-                            {checkVisible('dateAdded') && <th className="p-4 bg-[#111]">Thời gian</th>}
-                            {checkVisible('digitalStaff') && <th className="p-4 bg-[#111]">Nhân sự Digital</th>}
-                            {checkVisible('budgetLoaded') && <th className="p-4 text-right bg-[#111]">Ngân sách đã nạp</th>}
-                            {checkVisible('budgetLoadedAPI') && <th className="p-4 text-right bg-[#111]">Ngân sách đã nạp (API)</th>}
-                            {checkVisible('budgetSpent') && <th className="p-4 text-right bg-[#111]">Ngân sách đã tiêu</th>}
-                            {checkVisible('notes') && <th className="p-4 bg-[#111]">Ghi chú</th>}
-                            {checkVisible('actions') && <th className="p-4 sticky right-0 bg-[#111] shadow-[-10px_0_20px_rgba(0,0,0,0.5)] z-20">Chức năng</th>}
+                            {checkVisible('stt') && <th className="p-4 bg-[var(--bg-primary)]">STT</th>}
+                            {checkVisible('id') && <th className="p-4 bg-[var(--bg-primary)]">ID</th>}
+                            {checkVisible('name') && <th className="p-4 bg-[var(--bg-primary)]">Tên ID</th>}
+                            {checkVisible('budgetRemaining') && <th className="p-4 text-right bg-[var(--bg-primary)]">Ngân sách còn lại</th>}
+                            {checkVisible('status') && <th className="p-4 bg-[var(--bg-primary)]">Status tài khoản</th>}
+                            {checkVisible('email') && <th className="p-4 bg-[var(--bg-primary)]">Email</th>}
+                            {checkVisible('source') && <th className="p-4 bg-[var(--bg-primary)]">Nguồn</th>}
+                            {checkVisible('sourceAccount') && <th className="p-4 bg-[var(--bg-primary)]">TK nguồn</th>}
+                            {checkVisible('dateAdded') && <th className="p-4 bg-[var(--bg-primary)]">Thời gian</th>}
+                            {checkVisible('digitalStaff') && <th className="p-4 bg-[var(--bg-primary)]">Nhân sự Digital</th>}
+                            {checkVisible('budgetLoaded') && <th className="p-4 text-right bg-[var(--bg-primary)]">Ngân sách đã nạp</th>}
+                            {checkVisible('budgetLoadedAPI') && <th className="p-4 text-right bg-[var(--bg-primary)]">Ngân sách đã nạp (API)</th>}
+                            {checkVisible('budgetSpent') && <th className="p-4 text-right bg-[var(--bg-primary)]">Ngân sách đã tiêu</th>}
+                            {checkVisible('notes') && <th className="p-4 bg-[var(--bg-primary)]">Ghi chú</th>}
+                            {checkVisible('actions') && <th className="p-4 sticky right-0 bg-[var(--bg-primary)] shadow-[-10px_0_20px_var(--shadow-color)] z-20">Chức năng</th>}
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-[var(--border-color)]">
                         {accounts.map((acc, index) => {
                             const lowBudget = isLowBudget(acc.budgetRemaining, acc.budgetLoaded);
                             return (
-                                <tr key={acc.id} className="hover:bg-white/5 transition-colors">
+                                <tr key={acc.id} className="hover:bg-[var(--bg-hover)] transition-colors">
                                     <td className="p-4">
                                         <input
                                             type="checkbox"
-                                            className="rounded bg-white/10 border-white/20"
+                                            className="rounded bg-[var(--bg-surface)] border-[var(--border-color)]"
                                             checked={selectedIds.includes(acc.id)}
                                             onChange={() => handleSelectOne(acc.id)}
                                         />
                                     </td>
                                     {checkVisible('stt') && <td className="p-4 text-xs font-mono opacity-50">{index + 1}</td>}
                                     {checkVisible('id') && <td className="p-4 font-mono text-xs text-indigo-300">{acc.id}</td>}
-                                    {checkVisible('name') && <td className="p-4 font-medium text-white">{acc.name}</td>}
+                                    {checkVisible('name') && <td className="p-4 font-medium text-[var(--text-primary)]">{acc.name}</td>}
                                     {checkVisible('budgetRemaining') && (
                                         <td className={`p-4 text-right font-mono font-bold ${lowBudget ? 'text-red-500' : 'text-emerald-400'}`}>
                                             {formatCurrency(acc.budgetRemaining)}
@@ -161,7 +161,7 @@ const AdsAccountTable = ({ accounts, selectedIds, onSelectionChange }) => {
                                     )}
                                     {checkVisible('status') && (
                                         <td className="p-4">
-                                            <span className={`px-2 py-1 rounded-full text-xs font-medium border border-white/5 ${getStatusColor(acc.status)}`}>
+                                            <span className={`px-2 py-1 rounded-full text-xs font-medium border border-[var(--border-color)] ${getStatusColor(acc.status)}`}>
                                                 {acc.status}
                                             </span>
                                         </td>
@@ -171,9 +171,9 @@ const AdsAccountTable = ({ accounts, selectedIds, onSelectionChange }) => {
                                     {checkVisible('sourceAccount') && <td className="p-4 text-xs">{acc.sourceAccount}</td>}
                                     {checkVisible('dateAdded') && <td className="p-4 font-mono text-xs opacity-70">{acc.dateAdded}</td>}
                                     {checkVisible('digitalStaff') && <td className="p-4">{acc.digitalStaff}</td>}
-                                    {checkVisible('budgetLoaded') && <td className="p-4 text-right font-mono text-white">{formatCurrency(acc.budgetLoaded)}</td>}
-                                    {checkVisible('budgetLoadedAPI') && <td className="p-4 text-right font-mono text-gray-400">{formatCurrency(acc.budgetLoadedAPI)}</td>}
-                                    {checkVisible('budgetSpent') && <td className="p-4 text-right font-mono text-gray-300">{formatCurrency(acc.budgetSpent)}</td>}
+                                    {checkVisible('budgetLoaded') && <td className="p-4 text-right font-mono text-[var(--text-primary)]">{formatCurrency(acc.budgetLoaded)}</td>}
+                                    {checkVisible('budgetLoadedAPI') && <td className="p-4 text-right font-mono text-[var(--text-secondary)]">{formatCurrency(acc.budgetLoadedAPI)}</td>}
+                                    {checkVisible('budgetSpent') && <td className="p-4 text-right font-mono text-[var(--text-secondary)]">{formatCurrency(acc.budgetSpent)}</td>}
 
                                     {checkVisible('notes') && (
                                         <td className="p-4 text-xs italic opacity-70 max-w-[150px] truncate" title={acc.notes}>
@@ -181,9 +181,9 @@ const AdsAccountTable = ({ accounts, selectedIds, onSelectionChange }) => {
                                         </td>
                                     )}
                                     {checkVisible('actions') && (
-                                        <td className="p-4 sticky right-0 bg-[#111] shadow-[-10px_0_20px_rgba(0,0,0,0.5)] flex gap-2">
-                                            <button className="p-1 hover:text-white text-gray-500 transition-colors" title="Edit">✏️</button>
-                                            <button className="p-1 hover:text-red-400 text-gray-500 transition-colors" title="Delete">🗑️</button>
+                                        <td className="p-4 sticky right-0 bg-[var(--bg-primary)] shadow-[-10px_0_20px_var(--shadow-color)] flex gap-2">
+                                            <button className="p-1 hover:text-[var(--text-primary)] text-[var(--text-secondary)] transition-colors" title="Edit">✏️</button>
+                                            <button className="p-1 hover:text-red-400 text-[var(--text-secondary)] transition-colors" title="Delete">🗑️</button>
                                         </td>
                                     )}
                                 </tr>

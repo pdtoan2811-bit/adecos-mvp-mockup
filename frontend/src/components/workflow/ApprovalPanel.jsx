@@ -79,10 +79,10 @@ const ApprovalPanel = ({
                     <span className={`px-3 py-1 text-xs rounded-full uppercase tracking-wider font-bold ${config.badge}`}>
                         {config.text}
                     </span>
-                    <div className="text-sm text-white/80">
-                        <span className="text-white font-medium">{todoCount}</span> action items
+                    <div className="text-sm text-[var(--text-secondary)]">
+                        <span className="text-[var(--text-primary)] font-medium">{todoCount}</span> action items
                         {completedCount > 0 && (
-                            <span className="text-green-400 ml-2">
+                            <span className="text-green-500 ml-2">
                                 ({completedCount} completed)
                             </span>
                         )}
@@ -95,14 +95,14 @@ const ApprovalPanel = ({
                         <>
                             <button
                                 onClick={onDismiss}
-                                className="px-4 py-2 text-sm text-white/50 hover:text-white/80 transition-colors"
+                                className="px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
                             >
                                 Dismiss
                             </button>
                             <button
                                 onClick={onRequestRevision}
-                                className="px-4 py-2 text-sm border border-white/20 text-white/80 rounded-lg
-                                           hover:bg-white/10 transition-colors flex items-center gap-2"
+                                className="px-4 py-2 text-sm border border-[var(--border-color)] text-[var(--text-primary)] rounded-lg
+                                           hover:bg-[var(--bg-hover)] transition-colors flex items-center gap-2"
                             >
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -139,8 +139,8 @@ const ApprovalPanel = ({
                     {status === 'approved' && (
                         <a
                             href="/experiments"
-                            className="px-4 py-2 text-sm bg-white/10 text-white rounded-lg
-                                       hover:bg-white/20 transition-colors flex items-center gap-2"
+                            className="px-4 py-2 text-sm bg-[var(--bg-surface)] text-[var(--text-primary)] border border-[var(--border-color)] rounded-lg
+                                       hover:bg-[var(--bg-hover)] transition-colors flex items-center gap-2"
                         >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}

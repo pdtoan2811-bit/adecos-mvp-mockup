@@ -148,28 +148,29 @@ const DashboardPage = () => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
             return (
-                <div className="bg-black/90 border border-white/20 backdrop-blur-md p-4 rounded-sm">
-                    <p className="text-white text-sm font-mono mb-2">{data.date}</p>
+                <div className="bg-[var(--bg-overlay)] border border-[var(--border-color)] backdrop-blur-md p-4 rounded-sm">
+                    <p className="text-[var(--text-primary)] text-sm font-mono mb-2">{data.date}</p>
                     <div className="space-y-1 text-xs">
                         <div className="flex justify-between gap-4">
-                            <span className="text-luxury-gray">Clicks:</span>
-                            <span className="text-white font-mono">{data.clicks?.toLocaleString()}</span>
+                            <span className="text-[var(--text-secondary)]">Clicks:</span>
+                            <span className="text-[var(--text-primary)] font-mono">{data.clicks?.toLocaleString()}</span>
                         </div>
                         <div className="flex justify-between gap-4">
-                            <span className="text-luxury-gray">Chi phí:</span>
-                            <span className="text-white font-mono">{data.cost?.toLocaleString()} ₫</span>
+                            <span className="text-[var(--text-secondary)]">Chi phí:</span>
+                            <span className="text-[var(--text-primary)] font-mono">{data.cost?.toLocaleString()} ₫</span>
                         </div>
                         <div className="flex justify-between gap-4">
-                            <span className="text-luxury-gray">Chuyển đổi:</span>
-                            <span className="text-white font-mono">{data.conversions}</span>
+                            <span className="text-[var(--text-secondary)]">Chuyển đổi:</span>
+                            <span className="text-[var(--text-primary)] font-mono">{data.conversions}</span>
                         </div>
                         <div className="flex justify-between gap-4">
-                            <span className="text-luxury-gray">Doanh thu:</span>
+                            <span className="text-[var(--text-secondary)]">Doanh thu:</span>
                             <span className="text-green-400 font-mono">{data.revenue?.toLocaleString()} ₫</span>
                         </div>
                     </div>
                 </div>
             );
+
         }
         return null;
     };
@@ -193,31 +194,31 @@ const DashboardPage = () => {
     };
 
     return (
-        <div className="flex-1 p-8 overflow-auto bg-black">
+        <div className="flex-1 p-8 overflow-auto bg-[var(--bg-primary)] transition-colors duration-300">
             <div className="max-w-[1800px] mx-auto">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-serif text-white mb-2">Google Ads Dashboard</h1>
-                    <p className="text-luxury-gray text-sm">Phân tích hiệu suất chiến dịch</p>
+                    <h1 className="text-3xl font-serif text-[var(--text-primary)] mb-2">Google Ads Dashboard</h1>
+                    <p className="text-[var(--text-secondary)] text-sm">Phân tích hiệu suất chiến dịch</p>
                 </div>
 
                 {/* Filters */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                     {/* Date Range with Calendar & Group By */}
-                    <div className="border border-white/10 p-4 rounded-sm flex flex-col h-[350px]">
-                        <label className="text-xs text-luxury-gray uppercase tracking-wider mb-3 block">
+                    <div className="border border-[var(--border-color)] p-4 rounded-sm flex flex-col h-[350px]">
+                        <label className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-3 block">
                             Thời gian
                         </label>
 
                         {/* Quick Filters */}
                         <div className="flex gap-2 mb-3">
-                            <button onClick={setLast30Days} className="flex-1 px-2 py-1 text-[10px] border border-white/20 text-white hover:bg-white hover:text-black transition-colors rounded-sm uppercase">Last 30D</button>
-                            <button onClick={setLast90Days} className="flex-1 px-2 py-1 text-[10px] border border-white/20 text-white hover:bg-white hover:text-black transition-colors rounded-sm uppercase">Last 90D</button>
+                            <button onClick={setLast30Days} className="flex-1 px-2 py-1 text-[10px] border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors rounded-sm uppercase">Last 30D</button>
+                            <button onClick={setLast90Days} className="flex-1 px-2 py-1 text-[10px] border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors rounded-sm uppercase">Last 90D</button>
                         </div>
 
                         <div className="space-y-3 mb-4">
                             <div>
-                                <label className="text-xs text-luxury-gray mb-1 block">Từ ngày</label>
+                                <label className="text-xs text-[var(--text-secondary)] mb-1 block">Từ ngày</label>
                                 <DatePicker
                                     selected={startDate}
                                     onChange={(date) => setStartDate(date)}
@@ -225,11 +226,11 @@ const DashboardPage = () => {
                                     startDate={startDate}
                                     endDate={endDate}
                                     dateFormat="dd/MM/yyyy"
-                                    className="w-full bg-transparent border border-white/20 text-white text-sm px-3 py-2 rounded-sm focus:outline-none focus:border-white/40"
+                                    className="w-full bg-transparent border border-[var(--border-color)] text-[var(--text-primary)] text-sm px-3 py-2 rounded-sm focus:outline-none focus:border-[var(--text-primary)]"
                                 />
                             </div>
                             <div>
-                                <label className="text-xs text-luxury-gray mb-1 block">Đến ngày</label>
+                                <label className="text-xs text-[var(--text-secondary)] mb-1 block">Đến ngày</label>
                                 <DatePicker
                                     selected={endDate}
                                     onChange={(date) => setEndDate(date)}
@@ -238,14 +239,14 @@ const DashboardPage = () => {
                                     endDate={endDate}
                                     minDate={startDate}
                                     dateFormat="dd/MM/yyyy"
-                                    className="w-full bg-transparent border border-white/20 text-white text-sm px-3 py-2 rounded-sm focus:outline-none focus:border-white/40"
+                                    className="w-full bg-transparent border border-[var(--border-color)] text-[var(--text-primary)] text-sm px-3 py-2 rounded-sm focus:outline-none focus:border-[var(--text-primary)]"
                                 />
                             </div>
                         </div>
 
                         {/* Group By (Merged) */}
-                        <div className="mt-auto pt-4 border-t border-white/10">
-                            <label className="text-xs text-luxury-gray uppercase tracking-wider mb-2 block">
+                        <div className="mt-auto pt-4 border-t border-[var(--border-color)]">
+                            <label className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-2 block">
                                 Nhóm theo
                             </label>
                             <div className="flex gap-2">
@@ -254,8 +255,8 @@ const DashboardPage = () => {
                                         key={group}
                                         onClick={() => setGroupBy(group)}
                                         className={`flex-1 py-1 text-[10px] uppercase tracking-wider transition-all rounded-sm ${groupBy === group
-                                            ? 'bg-white text-black'
-                                            : 'border border-white/20 text-luxury-gray hover:text-white hover:border-white/40'
+                                            ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
+                                            : 'border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-primary)]'
                                             }`}
                                     >
                                         {group === 'day' ? 'Ngày' : group === 'week' ? 'Tuần' : 'Tháng'}
@@ -266,8 +267,8 @@ const DashboardPage = () => {
                     </div>
 
                     {/* Account Filter (NEW) */}
-                    <div className="border border-white/10 p-4 rounded-sm flex flex-col h-[350px]">
-                        <label className="text-xs text-luxury-gray uppercase tracking-wider mb-3 block flex-shrink-0">
+                    <div className="border border-[var(--border-color)] p-4 rounded-sm flex flex-col h-[350px]">
+                        <label className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-3 block flex-shrink-0">
                             Tài khoản
                         </label>
                         <input
@@ -275,23 +276,23 @@ const DashboardPage = () => {
                             placeholder="Tìm kiếm..."
                             value={accountSearch}
                             onChange={(e) => setAccountSearch(e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 text-white text-xs px-2 py-1 mb-3 rounded-sm focus:outline-none focus:border-white/30"
+                            className="w-full bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-primary)] text-xs px-2 py-1 mb-3 rounded-sm focus:outline-none focus:border-[var(--text-primary)]"
                         />
                         <div className="space-y-2 overflow-y-auto flex-1 pr-2">
-                            {accounts.length === 0 && <p className="text-xs text-luxury-gray italic">Chưa kết nối tài khoản nào.</p>}
+                            {accounts.length === 0 && <p className="text-xs text-[var(--text-secondary)] italic">Chưa kết nối tài khoản nào.</p>}
                             {accounts
                                 .filter(acc => acc.name.toLowerCase().includes(accountSearch.toLowerCase()))
                                 .map(acc => (
-                                    <label key={acc.id} className="flex items-center gap-2 text-sm text-white cursor-pointer hover:text-luxury-white transition-colors">
+                                    <label key={acc.id} className="flex items-center gap-2 text-sm text-[var(--text-primary)] cursor-pointer hover:text-[var(--text-secondary)] transition-colors">
                                         <input
                                             type="checkbox"
                                             checked={selectedAccounts.includes(acc.id)}
                                             onChange={() => toggleAccount(acc.id)}
-                                            className="w-4 h-4 rounded border-white/20 bg-transparent flex-shrink-0"
+                                            className="w-4 h-4 rounded border-[var(--border-color)] bg-transparent flex-shrink-0"
                                         />
                                         <div className="flex flex-col overflow-hidden">
                                             <span className="text-xs truncate font-medium" title={acc.name}>{acc.name}</span>
-                                            <span className="text-[10px] text-luxury-gray truncate">{acc.platform}</span>
+                                            <span className="text-[10px] text-[var(--text-secondary)] truncate">{acc.platform}</span>
                                         </div>
                                     </label>
                                 ))}
@@ -299,8 +300,8 @@ const DashboardPage = () => {
                     </div>
 
                     {/* Program Filter */}
-                    <div className="border border-white/10 p-4 rounded-sm flex flex-col h-[260px]">
-                        <label className="text-xs text-luxury-gray uppercase tracking-wider mb-3 block flex-shrink-0">
+                    <div className="border border-[var(--border-color)] p-4 rounded-sm flex flex-col h-[260px]">
+                        <label className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-3 block flex-shrink-0">
                             Chương trình
                         </label>
                         <input
@@ -308,18 +309,18 @@ const DashboardPage = () => {
                             placeholder="Tìm kiếm..."
                             value={programSearch}
                             onChange={(e) => setProgramSearch(e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 text-white text-xs px-2 py-1 mb-3 rounded-sm focus:outline-none focus:border-white/30"
+                            className="w-full bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-primary)] text-xs px-2 py-1 mb-3 rounded-sm focus:outline-none focus:border-[var(--text-primary)]"
                         />
                         <div className="space-y-2 overflow-y-auto flex-1 pr-2">
                             {programs
                                 .filter(p => p.toLowerCase().includes(programSearch.toLowerCase()))
                                 .map(program => (
-                                    <label key={program} className="flex items-center gap-2 text-sm text-white cursor-pointer hover:text-luxury-white transition-colors">
+                                    <label key={program} className="flex items-center gap-2 text-sm text-[var(--text-primary)] cursor-pointer hover:text-[var(--text-secondary)] transition-colors">
                                         <input
                                             type="checkbox"
                                             checked={selectedPrograms.includes(program)}
                                             onChange={() => toggleProgram(program)}
-                                            className="w-4 h-4 rounded border-white/20 bg-transparent flex-shrink-0"
+                                            className="w-4 h-4 rounded border-[var(--border-color)] bg-transparent flex-shrink-0"
                                         />
                                         <span className="text-xs truncate" title={program}>{program}</span>
                                     </label>
@@ -328,8 +329,8 @@ const DashboardPage = () => {
                     </div>
 
                     {/* Keyword Filter */}
-                    <div className="border border-white/10 p-4 rounded-sm flex flex-col h-[260px]">
-                        <label className="text-xs text-luxury-gray uppercase tracking-wider mb-3 block flex-shrink-0">
+                    <div className="border border-[var(--border-color)] p-4 rounded-sm flex flex-col h-[260px]">
+                        <label className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-3 block flex-shrink-0">
                             Từ khóa
                         </label>
                         <input
@@ -337,18 +338,18 @@ const DashboardPage = () => {
                             placeholder="Tìm kiếm..."
                             value={keywordSearch}
                             onChange={(e) => setKeywordSearch(e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 text-white text-xs px-2 py-1 mb-3 rounded-sm focus:outline-none focus:border-white/30"
+                            className="w-full bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-primary)] text-xs px-2 py-1 mb-3 rounded-sm focus:outline-none focus:border-[var(--text-primary)]"
                         />
                         <div className="space-y-2 overflow-y-auto flex-1 pr-2">
                             {keywords
                                 .filter(k => k.toLowerCase().includes(keywordSearch.toLowerCase()))
                                 .map(keyword => (
-                                    <label key={keyword} className="flex items-center gap-2 text-sm text-white cursor-pointer hover:text-luxury-white transition-colors">
+                                    <label key={keyword} className="flex items-center gap-2 text-sm text-[var(--text-primary)] cursor-pointer hover:text-[var(--text-secondary)] transition-colors">
                                         <input
                                             type="checkbox"
                                             checked={selectedKeywords.includes(keyword)}
                                             onChange={() => toggleKeyword(keyword)}
-                                            className="w-4 h-4 rounded border-white/20 bg-transparent flex-shrink-0"
+                                            className="w-4 h-4 rounded border-[var(--border-color)] bg-transparent flex-shrink-0"
                                         />
                                         <span className="text-xs truncate" title={keyword}>{keyword}</span>
                                     </label>
@@ -359,23 +360,23 @@ const DashboardPage = () => {
 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div className="border border-white/10 p-6 rounded-sm hover:border-white/20 transition-colors">
-                        <div className="text-xs text-luxury-gray uppercase tracking-wider mb-2">Tổng clicks</div>
-                        <div className="text-3xl font-serif text-white">{totals.clicks.toLocaleString()}</div>
+                    <div className="border border-[var(--border-color)] p-6 rounded-sm hover:border-[var(--border-hover)] transition-colors">
+                        <div className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-2">Tổng clicks</div>
+                        <div className="text-3xl font-serif text-[var(--text-primary)]">{totals.clicks.toLocaleString()}</div>
                     </div>
-                    <div className="border border-white/10 p-6 rounded-sm hover:border-white/20 transition-colors">
-                        <div className="text-xs text-luxury-gray uppercase tracking-wider mb-2">Chi phí</div>
-                        <div className="text-3xl font-serif text-white">{totals.cost.toLocaleString()} ₫</div>
+                    <div className="border border-[var(--border-color)] p-6 rounded-sm hover:border-[var(--border-hover)] transition-colors">
+                        <div className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-2">Chi phí</div>
+                        <div className="text-3xl font-serif text-[var(--text-primary)]">{totals.cost.toLocaleString()} ₫</div>
                     </div>
-                    <div className="border border-white/10 p-6 rounded-sm hover:border-white/20 transition-colors">
-                        <div className="text-xs text-luxury-gray uppercase tracking-wider mb-2">Chuyển đổi</div>
-                        <div className="text-3xl font-serif text-white">{totals.conversions}</div>
+                    <div className="border border-[var(--border-color)] p-6 rounded-sm hover:border-[var(--border-hover)] transition-colors">
+                        <div className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-2">Chuyển đổi</div>
+                        <div className="text-3xl font-serif text-[var(--text-primary)]">{totals.conversions}</div>
                     </div>
 
                     {/* CPC Card with Comparison */}
-                    <div className="border border-white/10 p-6 rounded-sm hover:border-white/20 transition-colors">
-                        <div className="text-xs text-luxury-gray uppercase tracking-wider mb-2">CPC Trung bình</div>
-                        <div className="text-3xl font-serif text-white">
+                    <div className="border border-[var(--border-color)] p-6 rounded-sm hover:border-[var(--border-hover)] transition-colors">
+                        <div className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-2">CPC Trung bình</div>
+                        <div className="text-3xl font-serif text-[var(--text-primary)]">
                             {Math.round(avgCPC).toLocaleString()} ₫
                         </div>
 
@@ -384,10 +385,10 @@ const DashboardPage = () => {
                                 <span className={`text-xs font-medium ${cpcTrend === 'good' ? 'text-green-400' : 'text-red-400'}`}>
                                     {cpComparison > 0 ? '▲' : '▼'} {Math.abs(cpComparison).toFixed(1)}%
                                 </span>
-                                <span className="text-[10px] text-luxury-gray">so với kỳ trước</span>
+                                <span className="text-[10px] text-[var(--text-secondary)]">so với kỳ trước</span>
                             </div>
                         ) : (
-                            <div className="text-[10px] text-luxury-gray mt-2">Chưa có dữ liệu kỳ trước</div>
+                            <div className="text-[10px] text-[var(--text-secondary)] mt-2">Chưa có dữ liệu kỳ trước</div>
                         )}
                     </div>
                 </div>
@@ -395,8 +396,8 @@ const DashboardPage = () => {
                 {/* Charts */}
                 <div className="space-y-8">
                     {/* Cost & Revenue Chart */}
-                    <div className="border border-white/10 p-6 rounded-sm">
-                        <h3 className="text-sm font-serif text-white mb-4 uppercase tracking-wider">Chi phí & Doanh thu</h3>
+                    <div className="border border-[var(--border-color)] p-6 rounded-sm">
+                        <h3 className="text-sm font-serif text-[var(--text-primary)] mb-4 uppercase tracking-wider">Chi phí & Doanh thu</h3>
                         <ResponsiveContainer width="100%" height={300}>
                             <AreaChart data={chartData}>
                                 <defs>
@@ -409,15 +410,17 @@ const DashboardPage = () => {
                                         <stop offset="95%" stopColor="rgba(74, 222, 128, 0.3)" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                                 <XAxis
                                     dataKey="date"
-                                    stroke="rgba(255,255,255,0.2)"
-                                    style={{ fontSize: '11px', fill: 'rgba(255,255,255,0.5)' }}
+                                    stroke="var(--border-color)"
+                                    tick={{ fill: 'var(--text-secondary)', fontSize: 11 }}
+                                    tickLine={{ stroke: 'var(--border-color)' }}
                                 />
                                 <YAxis
-                                    stroke="rgba(255,255,255,0.2)"
-                                    style={{ fontSize: '11px', fill: 'rgba(255,255,255,0.5)' }}
+                                    stroke="var(--border-color)"
+                                    tick={{ fill: 'var(--text-secondary)', fontSize: 11 }}
+                                    tickLine={{ stroke: 'var(--border-color)' }}
                                 />
                                 <Tooltip content={<CustomTooltip />} />
                                 <Area type="monotone" dataKey="cost" stroke="rgb(239, 68, 68)" fillOpacity={1} fill="url(#colorCost)" />
@@ -427,49 +430,53 @@ const DashboardPage = () => {
                     </div>
 
                     {/* Clicks Chart */}
-                    <div className="border border-white/10 p-6 rounded-sm">
-                        <h3 className="text-sm font-serif text-white mb-4 uppercase tracking-wider">Lượng truy cập</h3>
+                    <div className="border border-[var(--border-color)] p-6 rounded-sm">
+                        <h3 className="text-sm font-serif text-[var(--text-primary)] mb-4 uppercase tracking-wider">Lượng truy cập</h3>
                         <ResponsiveContainer width="100%" height={250}>
                             <LineChart data={chartData}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                                 <XAxis
                                     dataKey="date"
-                                    stroke="rgba(255,255,255,0.2)"
-                                    style={{ fontSize: '11px', fill: 'rgba(255,255,255,0.5)' }}
+                                    stroke="var(--border-color)"
+                                    tick={{ fill: 'var(--text-secondary)', fontSize: 11 }}
+                                    tickLine={{ stroke: 'var(--border-color)' }}
                                 />
                                 <YAxis
-                                    stroke="rgba(255,255,255,0.2)"
-                                    style={{ fontSize: '11px', fill: 'rgba(255,255,255,0.5)' }}
+                                    stroke="var(--border-color)"
+                                    tick={{ fill: 'var(--text-secondary)', fontSize: 11 }}
+                                    tickLine={{ stroke: 'var(--border-color)' }}
                                 />
                                 <Tooltip content={<CustomTooltip />} />
                                 <Line
                                     type="monotone"
                                     dataKey="clicks"
-                                    stroke="rgba(255,255,255,0.8)"
+                                    stroke="var(--text-primary)"
                                     strokeWidth={2}
-                                    dot={{ fill: 'white', r: 3 }}
+                                    dot={{ fill: 'var(--text-primary)', r: 3 }}
                                 />
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
 
                     {/* Conversions Chart */}
-                    <div className="border border-white/10 p-6 rounded-sm">
-                        <h3 className="text-sm font-serif text-white mb-4 uppercase tracking-wider">Chuyển đổi</h3>
+                    <div className="border border-[var(--border-color)] p-6 rounded-sm">
+                        <h3 className="text-sm font-serif text-[var(--text-primary)] mb-4 uppercase tracking-wider">Chuyển đổi</h3>
                         <ResponsiveContainer width="100%" height={250}>
                             <BarChart data={chartData}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                                 <XAxis
                                     dataKey="date"
-                                    stroke="rgba(255,255,255,0.2)"
-                                    style={{ fontSize: '11px', fill: 'rgba(255,255,255,0.5)' }}
+                                    stroke="var(--border-color)"
+                                    tick={{ fill: 'var(--text-secondary)', fontSize: 11 }}
+                                    tickLine={{ stroke: 'var(--border-color)' }}
                                 />
                                 <YAxis
-                                    stroke="rgba(255,255,255,0.2)"
-                                    style={{ fontSize: '11px', fill: 'rgba(255,255,255,0.5)' }}
+                                    stroke="var(--border-color)"
+                                    tick={{ fill: 'var(--text-secondary)', fontSize: 11 }}
+                                    tickLine={{ stroke: 'var(--border-color)' }}
                                 />
                                 <Tooltip content={<CustomTooltip />} />
-                                <Bar dataKey="conversions" fill="rgba(255,255,255,0.8)" />
+                                <Bar dataKey="conversions" fill="var(--text-primary)" />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
@@ -479,32 +486,33 @@ const DashboardPage = () => {
             {/* DatePicker Custom Styles */}
             <style>{`
                 .react-datepicker {
-                    background-color: #000;
-                    border: 1px solid rgba(255,255,255,0.1);
+                    background-color: var(--bg-primary);
+                    border: 1px solid var(--border-color);
                     font-family: var(--font-sans);
+                    color: var(--text-primary);
                 }
                 .react-datepicker__header {
-                    background-color: rgba(255,255,255,0.05);
-                    border-bottom: 1px solid rgba(255,255,255,0.1);
+                    background-color: var(--bg-surface);
+                    border-bottom: 1px solid var(--border-color);
                 }
                 .react-datepicker__current-month,
                 .react-datepicker__day-name {
-                    color: rgba(255,255,255,0.8);
+                    color: var(--text-primary);
                 }
                 .react-datepicker__day {
-                    color: rgba(255,255,255,0.6);
+                    color: var(--text-secondary);
                 }
                 .react-datepicker__day:hover {
-                    background-color: rgba(255,255,255,0.1);
-                    color: white;
+                    background-color: var(--bg-hover);
+                    color: var(--text-primary);
                 }
                 .react-datepicker__day--selected,
                 .react-datepicker__day--in-range {
-                    background-color: white;
-                    color: black;
+                    background-color: var(--text-primary);
+                    color: var(--bg-primary);
                 }
                 .react-datepicker__day--keyboard-selected {
-                    background-color: rgba(255,255,255,0.2);
+                    background-color: var(--bg-hover);
                 }
             `}</style>
         </div>

@@ -105,18 +105,18 @@ const CompactWorkflowMessage = ({ content, context, onSaveExperiment }) => {
 
     if (workflowStatus === 'dismissed') {
         return (
-            <div className="p-4 border border-white/10 rounded-lg text-center text-luxury-gray text-sm">
+            <div className="p-4 border border-[var(--border-color)] rounded-lg text-center text-[var(--text-secondary)] text-sm">
                 Workflow dismissed
             </div>
         );
     }
 
     return (
-        <div className="w-full border border-white/10 rounded-xl bg-black/30 overflow-hidden">
+        <div className="w-full border border-[var(--border-color)] rounded-xl bg-[var(--bg-card)] overflow-hidden">
             {/* Header - Single Line */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/20">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border-color)] bg-[var(--bg-surface)]">
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-blue-600 
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 
                                     flex items-center justify-center">
                         <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -124,14 +124,14 @@ const CompactWorkflowMessage = ({ content, context, onSaveExperiment }) => {
                         </svg>
                     </div>
                     <div>
-                        <h3 className="text-sm font-medium text-white">{title}</h3>
-                        <span className="text-[10px] text-luxury-gray">{items.length} tasks • SMART framework</span>
+                        <h3 className="text-sm font-medium text-[var(--text-primary)]">{title}</h3>
+                        <span className="text-[10px] text-[var(--text-secondary)]">{items.length} tasks • SMART framework</span>
                     </div>
                 </div>
 
                 <span className={`px-2 py-1 text-[10px] font-medium uppercase rounded ${workflowStatus === 'approved'
-                        ? 'bg-green-500/20 text-green-400'
-                        : 'bg-white/10 text-white/60'
+                    ? 'bg-green-500/20 text-green-500'
+                    : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] border border-[var(--border-color)]'
                     }`}>
                     {workflowStatus}
                 </span>
@@ -140,13 +140,13 @@ const CompactWorkflowMessage = ({ content, context, onSaveExperiment }) => {
             {/* Main Content - 2 Columns */}
             <div className="flex" style={{ maxHeight: '400px' }}>
                 {/* Left: Data Insights (40%) */}
-                <div className="w-2/5 border-r border-white/10 p-4 overflow-y-auto">
+                <div className="w-2/5 border-r border-[var(--border-color)] p-4 overflow-y-auto">
                     {/* Mini Chart Preview */}
                     {chartSection && (
                         <div className="mb-4">
-                            <div className="text-[10px] uppercase text-luxury-gray mb-2">Performance</div>
-                            <div className="h-20 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg 
-                                            flex items-center justify-center border border-white/5">
+                            <div className="text-[10px] uppercase text-[var(--text-secondary)] mb-2">Performance</div>
+                            <div className="h-20 bg-gradient-to-r from-blue-500/10 to-blue-500/5 rounded-lg 
+                                            flex items-center justify-center border border-[var(--border-color)]">
                                 <div className="flex items-end gap-1 h-12">
                                     {[40, 65, 45, 80, 55, 70, 90].map((h, i) => (
                                         <div
@@ -162,21 +162,21 @@ const CompactWorkflowMessage = ({ content, context, onSaveExperiment }) => {
 
                     {/* Key Metrics */}
                     <div className="grid grid-cols-2 gap-2 mb-4">
-                        <div className="p-2 bg-white/5 rounded-lg">
-                            <div className="text-lg font-serif text-white">2.8x</div>
-                            <div className="text-[10px] text-luxury-gray">ROAS</div>
+                        <div className="p-2 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-lg">
+                            <div className="text-lg font-serif text-[var(--text-primary)]">2.8x</div>
+                            <div className="text-[10px] text-[var(--text-secondary)]">ROAS</div>
                         </div>
-                        <div className="p-2 bg-white/5 rounded-lg">
-                            <div className="text-lg font-serif text-green-400">+15%</div>
-                            <div className="text-[10px] text-luxury-gray">vs Last Week</div>
+                        <div className="p-2 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-lg">
+                            <div className="text-lg font-serif text-green-500">+15%</div>
+                            <div className="text-[10px] text-[var(--text-secondary)]">vs Last Week</div>
                         </div>
                     </div>
 
                     {/* AI Insight */}
                     {insightSection && (
                         <div className="p-3 border-l-2 border-blue-500 bg-blue-500/5 rounded-r-lg">
-                            <div className="text-[10px] text-blue-400 mb-1">💡 AI Insight</div>
-                            <p className="text-xs text-white/80 line-clamp-3">
+                            <div className="text-[10px] text-blue-500 mb-1">💡 AI Insight</div>
+                            <p className="text-xs text-[var(--text-primary)] line-clamp-3">
                                 {typeof insightSection.content === 'string'
                                     ? insightSection.content
                                     : insightSection.content.text || 'Optimization opportunities identified.'}
@@ -186,8 +186,8 @@ const CompactWorkflowMessage = ({ content, context, onSaveExperiment }) => {
 
                     {!insightSection && (
                         <div className="p-3 border-l-2 border-blue-500 bg-blue-500/5 rounded-r-lg">
-                            <div className="text-[10px] text-blue-400 mb-1">💡 AI Insight</div>
-                            <p className="text-xs text-white/80">
+                            <div className="text-[10px] text-blue-500 mb-1">💡 AI Insight</div>
+                            <p className="text-xs text-[var(--text-primary)]">
                                 Campaign "Summer Sale" performing 40% above average.
                                 Recommend increasing budget allocation.
                             </p>
@@ -198,12 +198,12 @@ const CompactWorkflowMessage = ({ content, context, onSaveExperiment }) => {
                 {/* Right: Action Items (60%) */}
                 <div className="w-3/5 p-4 overflow-y-auto">
                     <div className="flex items-center justify-between mb-3">
-                        <span className="text-[10px] uppercase text-luxury-gray">Action Items</span>
+                        <span className="text-[10px] uppercase text-[var(--text-secondary)]">Action Items</span>
                         <button
                             onClick={handleRevise}
                             disabled={isRevising}
-                            className="px-2 py-1 text-[10px] bg-white/5 hover:bg-white/10 rounded 
-                                       transition-colors text-white/60 disabled:opacity-50"
+                            className="px-2 py-1 text-[10px] bg-[var(--bg-surface)] hover:bg-[var(--bg-hover)] border border-[var(--border-color)] rounded 
+                                       transition-colors text-[var(--text-secondary)] disabled:opacity-50"
                         >
                             {isRevising ? '⏳ Revising...' : '✨ AI Fill All'}
                         </button>
@@ -225,32 +225,32 @@ const CompactWorkflowMessage = ({ content, context, onSaveExperiment }) => {
             </div>
 
             {/* Footer - Approval Bar */}
-            <div className="flex items-center justify-between px-4 py-3 border-t border-white/10 bg-black/40">
+            <div className="flex items-center justify-between px-4 py-3 border-t border-[var(--border-color)] bg-[var(--bg-surface)]">
                 <div className="flex items-center gap-4">
                     {/* Progress */}
                     <div className="flex items-center gap-2">
-                        <div className="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                        <div className="w-20 h-1.5 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all"
+                                className="h-full bg-gradient-to-r from-green-500 to-emerald-500 transition-all"
                                 style={{ width: `${progress}%` }}
                             />
                         </div>
-                        <span className="text-[10px] text-luxury-gray">{completedCount}/{items.length}</span>
+                        <span className="text-[10px] text-[var(--text-secondary)]">{completedCount}/{items.length}</span>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-2">
                     <button
                         onClick={() => setWorkflowStatus('dismissed')}
-                        className="px-3 py-1.5 text-xs text-white/50 hover:text-white/80 transition-colors"
+                        className="px-3 py-1.5 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
                     >
                         Dismiss
                     </button>
                     <button
                         onClick={handleRevise}
                         disabled={isRevising}
-                        className="px-3 py-1.5 text-xs border border-white/20 text-white/80 rounded-lg
-                                   hover:bg-white/10 transition-colors disabled:opacity-50"
+                        className="px-3 py-1.5 text-xs border border-[var(--border-color)] text-[var(--text-primary)] rounded-lg
+                                   hover:bg-[var(--bg-hover)] transition-colors disabled:opacity-50"
                     >
                         Request Revision
                     </button>

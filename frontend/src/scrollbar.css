@@ -5,26 +5,26 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.02);
+    background: var(--bg-surface);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--border-color);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: var(--border-hover);
 }
 
 /* Firefox */
 * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.15) rgba(255, 255, 255, 0.02);
+    scrollbar-color: var(--border-color) var(--bg-surface);
 }
 
 /* Global Selection */
 ::selection {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
+    background: var(--text-primary);
+    color: var(--bg-primary);
 }

@@ -19,19 +19,19 @@ const CompositeMessage = ({ content, context }) => {
     // Markdown components for narrative sections
     const markdownComponents = {
         p: ({ node, ...props }) => (
-            <p className="mb-4 text-luxury-white/90 text-lg leading-relaxed font-light tracking-wide" {...props} />
+            <p className="mb-4 text-[var(--text-primary)] text-lg leading-relaxed font-light tracking-wide" {...props} />
         ),
         strong: ({ node, ...props }) => (
-            <strong className="text-luxury-white font-medium" {...props} />
+            <strong className="text-[var(--text-primary)] font-medium" {...props} />
         ),
         em: ({ node, ...props }) => (
-            <em className="text-luxury-white/80 italic" {...props} />
+            <em className="text-[var(--text-secondary)] italic" {...props} />
         ),
         ul: ({ node, ...props }) => (
             <ul className="list-none space-y-2 mb-4 ml-0" {...props} />
         ),
         li: ({ node, children, ...props }) => (
-            <li className="text-luxury-white/85 text-base leading-relaxed pl-6 relative before:content-['▸'] before:absolute before:left-0 before:text-white/40 before:font-light" {...props}>
+            <li className="text-[var(--text-primary)] text-base leading-relaxed pl-6 relative before:content-['▸'] before:absolute before:left-0 before:text-[var(--text-secondary)] before:opacity-50 before:font-light" {...props}>
                 {children}
             </li>
         ),
@@ -75,17 +75,48 @@ const CompositeMessage = ({ content, context }) => {
                             {Object.entries(section.content?.metrics || {}).map(([key, value]) => (
                                 <div
                                     key={key}
-                                    className="border border-white/10 p-4 rounded-sm hover:border-white/20 transition-colors"
+                                    className="border border-[var(--border-color)] p-4 rounded-sm hover:border-[var(--border-hover)] transition-colors"
                                 >
-                                    <div className="text-xs text-luxury-gray uppercase tracking-wider mb-1">
+                                    <div className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-1">
                                         {formatMetricName(key)}
                                     </div>
-                                    <div className="text-2xl font-serif text-white">
+                                    <div className="text-2xl font-serif text-[var(--text-primary)]">
                                         {formatMetricValue(key, value)}
                                     </div>
                                 </div>
                             ))}
                         </div>
+                    </div>
+                );
+
+            case 'highlight_box':
+                return (
+                    <div key={index} className="w-full my-4 px-4 md:px-6 fade-in-up">
+                        <div className="border border-[var(--border-color)] bg-[var(--bg-card)] p-6 rounded-lg backdrop-blur-sm">
+                            <h3 className="text-xl font-serif text-[var(--text-primary)] mb-2">{section.content.title}</h3>
+                            <p className="text-[var(--text-secondary)]">{section.content.description}</p>
+                        </div>
+                    </div>
+                );
+
+            case 'list':
+                return (
+                    <div key={index} className="w-full my-4 px-4 md:px-6 fade-in-up">
+                        <ul className="space-y-2">
+                            {section.content.items.map((item, i) => (
+                                <li key={i} className="flex items-start text-[var(--text-primary)]">
+                                    <div className="mr-3 mt-1">
+                                        <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+                                    </div>
+                                    <ReactMarkdown
+                                        remarkPlugins={[remarkGfm]}
+                                        components={markdownComponents}
+                                    >
+                                        {item}
+                                    </ReactMarkdown>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 );
 
@@ -138,8 +169,8 @@ const CompositeMessage = ({ content, context }) => {
                         {context.followupSuggestions.map((suggestion, idx) => (
                             <button
                                 key={idx}
-                                className="px-4 py-2 text-sm border border-white/10 bg-white/5 text-luxury-gray 
-                                           rounded-full hover:bg-white hover:text-black hover:border-white 
+                                className="px-4 py-2 text-sm border border-[var(--border-color)] bg-[var(--bg-surface)] text-[var(--text-secondary)] 
+                                           rounded-full hover:bg-[var(--bg-primary)] hover:text-[var(--text-primary)] hover:border-[var(--text-primary)] 
                                            transition-all duration-300 cursor-pointer"
                                 onClick={() => {
                                     // Trigger search with suggestion

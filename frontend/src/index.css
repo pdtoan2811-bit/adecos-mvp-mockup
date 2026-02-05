@@ -5,11 +5,58 @@
 @theme {
   --font-serif: "Playfair Display", serif;
   --font-sans: "Inter", sans-serif;
+}
 
-  --color-luxury-black: #0a0a0a;
-  --color-luxury-charcoal: #171717;
-  --color-luxury-white: #fafafa;
-  --color-luxury-gray: #a3a3a3;
+:root {
+  /* Dark Mode (Default) */
+  --bg-primary: #0a0a0a;
+  /* luxury-black */
+  --bg-secondary: #171717;
+  /* luxury-charcoal */
+  --bg-surface: rgba(255, 255, 255, 0.05);
+  /* Cards/Inputs */
+  --bg-hover: rgba(255, 255, 255, 0.1);
+  --bg-overlay: rgba(0, 0, 0, 0.8);
+
+  --text-primary: #fafafa;
+  /* luxury-white */
+  --text-secondary: #a3a3a3;
+  /* luxury-gray */
+  --text-inverse: #0a0a0a;
+
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.2);
+
+  --accent-primary: #ffffff;
+
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --bg-card: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme="light"] {
+  /* Light Mode */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f4f6;
+  /* gray-100 */
+  --bg-surface: #ffffff;
+  --bg-hover: #f3f4f6;
+  --bg-overlay: rgba(255, 255, 255, 0.9);
+
+  --text-primary: #111827;
+  /* gray-900 */
+  --text-secondary: #6b7280;
+  /* gray-500 */
+  --text-inverse: #ffffff;
+
+  --border-color: #e5e7eb;
+  /* gray-200 */
+  --border-hover: #d1d5db;
+  /* gray-300 */
+
+  --accent-primary: #111827;
+
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --bg-card: #f9fafb;
 }
 
 html,
@@ -29,10 +76,15 @@ body {
 body {
   font-family: var(--font-sans);
   /* Use Sans for readability of data */
-  background-color: var(--color-luxury-black);
-  color: var(--color-luxury-white);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+[data-theme="light"] body {
+  font-weight: 500;
 }
 
 h1,
@@ -45,7 +97,12 @@ h6,
   font-family: var(--font-serif);
 }
 
-::selection {
-  background-color: white;
-  color: black;
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6,
+[data-theme="light"] .font-serif {
+  font-weight: 700;
 }

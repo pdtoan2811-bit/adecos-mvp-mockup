@@ -45,32 +45,32 @@ const CampaignSelectionTable = ({ campaigns, onSelect }) => {
     };
 
     return (
-        <div className="w-full bg-black/20 border border-white/10 rounded-xl overflow-hidden mt-4">
-            <div className="px-6 py-4 border-b border-white/10 bg-white/5 flex justify-between items-center">
-                <h3 className="text-sm font-medium text-white">Select a Campaign to Analyze</h3>
-                <span className="text-xs text-luxury-gray">{campaigns.length} Active Campaigns</span>
+        <div className="w-full bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl overflow-hidden mt-4">
+            <div className="px-6 py-4 border-b border-[var(--border-color)] bg-[var(--bg-surface)] flex justify-between items-center">
+                <h3 className="text-sm font-medium text-[var(--text-primary)]">Select a Campaign to Analyze</h3>
+                <span className="text-xs text-[var(--text-secondary)]">{campaigns.length} Active Campaigns</span>
             </div>
 
             <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                     <thead>
-                        <tr className="border-b border-white/10 text-xs text-luxury-gray uppercase tracking-wider">
+                        <tr className="border-b border-[var(--border-color)] text-xs text-[var(--text-secondary)] uppercase tracking-wider">
                             <th className="px-6 py-4 font-normal">Campaign</th>
                             <th className="px-6 py-4 font-normal text-center">Status</th>
                             <th
-                                className="px-6 py-4 font-normal cursor-pointer hover:text-white transition-colors"
+                                className="px-6 py-4 font-normal cursor-pointer hover:text-[var(--text-primary)] transition-colors"
                                 onClick={() => requestSort('cpc')}
                             >
                                 CPC {getSortIndicator('cpc')}
                             </th>
                             <th
-                                className="px-6 py-4 font-normal cursor-pointer hover:text-white transition-colors"
+                                className="px-6 py-4 font-normal cursor-pointer hover:text-[var(--text-primary)] transition-colors"
                                 onClick={() => requestSort('cost_30d')}
                             >
                                 Cost (30d) {getSortIndicator('cost_30d')}
                             </th>
                             <th
-                                className="px-6 py-4 font-normal cursor-pointer hover:text-white transition-colors text-right"
+                                className="px-6 py-4 font-normal cursor-pointer hover:text-[var(--text-primary)] transition-colors text-right"
                                 onClick={() => requestSort('roas_30d')}
                             >
                                 ROAS {getSortIndicator('roas_30d')}
@@ -78,19 +78,19 @@ const CampaignSelectionTable = ({ campaigns, onSelect }) => {
                             <th className="px-6 py-4 font-normal"></th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-[var(--border-color)]">
                         {sortedCampaigns.map((campaign) => (
                             <tr
                                 key={campaign.id}
-                                className="hover:bg-white/5 transition-colors group cursor-pointer"
+                                className="hover:bg-[var(--bg-hover)] transition-colors group cursor-pointer"
                                 onClick={() => onSelect(campaign)}
                             >
                                 <td className="px-6 py-4">
-                                    <div className="font-medium text-white group-hover:text-blue-400 transition-colors">
+                                    <div className="font-medium text-[var(--text-primary)] group-hover:text-blue-500 transition-colors">
                                         {campaign.name}
                                     </div>
-                                    <div className="text-xs text-luxury-gray mt-1 flex items-center gap-2">
-                                        <span className="px-1.5 py-0.5 rounded bg-white/10 text-white/60">
+                                    <div className="text-xs text-[var(--text-secondary)] mt-1 flex items-center gap-2">
+                                        <span className="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] text-[var(--text-secondary)] border border-[var(--border-color)]">
                                             {campaign.affiliate_program}
                                         </span>
                                         <span>ID: {campaign.id}</span>
@@ -102,15 +102,15 @@ const CampaignSelectionTable = ({ campaigns, onSelect }) => {
                                         : 'bg-yellow-500'
                                         }`} title={campaign.status} />
                                 </td>
-                                <td className="px-6 py-4 text-sm text-white/80 font-mono">
+                                <td className="px-6 py-4 text-sm text-[var(--text-secondary)] font-mono">
                                     {formatCurrency(campaign.cpc)}
                                 </td>
-                                <td className="px-6 py-4 text-sm text-white/80 font-mono">
+                                <td className="px-6 py-4 text-sm text-[var(--text-secondary)] font-mono">
                                     {formatCurrency(campaign.cost_30d)}
                                 </td>
                                 <td className="px-6 py-4 text-right">
-                                    <div className={`inline-block font-mono font-medium ${campaign.roas_30d >= 4.0 ? 'text-green-400' :
-                                        campaign.roas_30d >= 2.5 ? 'text-yellow-400' : 'text-red-400'
+                                    <div className={`inline-block font-mono font-medium ${campaign.roas_30d >= 4.0 ? 'text-green-500' :
+                                        campaign.roas_30d >= 2.5 ? 'text-yellow-500' : 'text-red-500'
                                         }`}>
                                         {campaign.roas_30d.toFixed(2)}x
                                     </div>
@@ -121,7 +121,7 @@ const CampaignSelectionTable = ({ campaigns, onSelect }) => {
                                             e.stopPropagation();
                                             onSelect(campaign);
                                         }}
-                                        className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs rounded-lg
+                                        className="px-3 py-1.5 bg-[var(--bg-surface)] hover:bg-[var(--bg-hover)] text-[var(--text-primary)] border border-[var(--border-color)] text-xs rounded-lg
                                                    transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"
                                     >
                                         Deep Dive →
@@ -134,7 +134,7 @@ const CampaignSelectionTable = ({ campaigns, onSelect }) => {
             </div>
 
             {/* Footer / Summary */}
-            <div className="px-6 py-3 border-t border-white/10 bg-white/5 text-xs text-luxury-gray flex justify-between">
+            <div className="px-6 py-3 border-t border-[var(--border-color)] bg-[var(--bg-surface)] text-xs text-[var(--text-secondary)] flex justify-between">
                 <span>Total Spend: {formatCurrency(sortedCampaigns.reduce((sum, c) => sum + c.cost_30d, 0))}</span>
                 <span>Avg ROAS: {(sortedCampaigns.reduce((sum, c) => sum + c.roas_30d, 0) / sortedCampaigns.length).toFixed(2)}x</span>
             </div>
