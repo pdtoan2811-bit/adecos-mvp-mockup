@@ -11,6 +11,7 @@ function ChatPage() {
     const { messages, setMessages, getHistory } = useChatContext();
     const [isSearching, setIsSearching] = useState(false);
     const [hasSearched, setHasSearched] = useState(false);
+    const [onboardingKey, setOnboardingKey] = useState(0);
 
     // Calculate visible messages
     const MAX_VISIBLE_MESSAGES = 20;
@@ -19,7 +20,7 @@ function ChatPage() {
 
     // Custom hooks
     const messagesEndRef = useAutoScroll(messages);
-    useOnboarding(messages, setMessages);
+    useOnboarding(messages, setMessages, onboardingKey);
 
     // Initial search state effect
     useEffect(() => {
@@ -31,6 +32,7 @@ function ChatPage() {
             setMessages([]);
             setIsSearching(false);
             setHasSearched(false);
+            setOnboardingKey(prev => prev + 1);
         }
     };
 

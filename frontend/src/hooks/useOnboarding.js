@@ -6,29 +6,21 @@ import { onboardingSequence } from '../data/onboardingData';
  * @param {Array} messages - Current messages array
  * @param {Function} setMessages - State setter for messages
  */
-export const useOnboarding = (messages, setMessages) => {
-    // Use a ref to track if the component is mounted
-    // This allows the async sequence to continue even if the effect re-runs (due to dependency change),
-    // but stops it if the component is truly unmounted.
-    const isMountedRef = useRef(true);
-
+export const useOnboarding = (messages, setMessages, onboardingKey) => {
     useEffect(() => {
-        isMountedRef.current = true;
-        return () => {
-            isMountedRef.current = false;
-        };
-    }, []);
+        // Only trigger on specific conditions based on key:
+        // 1. Initial load (key=0): Only if no messages exist
+        // 2. Restart (key>0): Always run (messages checked/cleared in parent)
+        if (onboardingKey === 0 && messages.length > 0) return;
 
-    useEffect(() => {
-        // Only run if there are no messages
-        if (messages.length > 0) return;
+        let isCancelled = false;
 
         const runOnboarding = async () => {
-            console.log('[useOnboarding] Starting sequence...');
+            console.log(`[useOnboarding] Starting sequence (Key: ${onboardingKey})...`);
             let previousDelay = 0;
 
             for (const step of onboardingSequence) {
-                if (!isMountedRef.current) break;
+                if (isCancelled) break;
 
                 // Calculate relative delay needed to reach the absolute timestamp in step.delay
                 const delayFromPrevious = (step.delay || 0) - previousDelay;
@@ -37,7 +29,7 @@ export const useOnboarding = (messages, setMessages) => {
                 // Wait for the calculated relative delay
                 await new Promise(resolve => setTimeout(resolve, safeDelay));
 
-                if (!isMountedRef.current) break;
+                if (isCancelled) break;
 
                 // Update previousDelay for next iteration
                 previousDelay = step.delay || 0;
@@ -58,7 +50,7 @@ export const useOnboarding = (messages, setMessages) => {
                     let currentContent = '';
 
                     for (let i = 0; i < words.length; i++) {
-                        if (!isMountedRef.current) break;
+                        if (isCancelled) break;
 
                         currentContent += (i > 0 ? ' ' : '') + words[i];
 
@@ -93,7 +85,11 @@ export const useOnboarding = (messages, setMessages) => {
 
         runOnboarding();
 
-        // No cleanup function here for the loop itself, rely on isMountedRef for unmounts.
+        return () => {
+            isCancelled = true;
+        };
+        // Explicitly depend ONLY on onboardingKey.
+        // We do not want to re-run or cancel when 'messages' changes during the sequence.
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [messages.length === 0]); // Run when messages become empty
+    }, [onboardingKey]);
 };
