@@ -146,9 +146,9 @@ function ChatPage() {
         <div className="flex flex-col h-full bg-[var(--bg-primary)] text-[var(--text-primary)] overflow-hidden transition-colors duration-300">
             {/* Header */}
             <div className="px-8 py-6 border-b border-[var(--border-color)] flex-shrink-0">
-                <h1 className="text-2xl font-serif tracking-tight text-[var(--text-primary)]">AI Agent</h1>
+                <h1 className="text-3xl font-serif tracking-tight text-[var(--text-primary)]">AI Agent</h1>
                 <p className="text-xs text-[var(--text-secondary)] uppercase tracking-widest mt-1">
-                    Phân tích dữ liệu thông minh • Powered by Gemini AI
+                    AI Agent tìm kiếm dự án và phân tích dữ liệu
                 </p>
             </div>
 

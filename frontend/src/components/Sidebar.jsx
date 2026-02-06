@@ -42,7 +42,7 @@ const Sidebar = () => {
     return (
         <div className="w-64 h-screen bg-[var(--bg-primary)] border-r border-[var(--border-color)] flex flex-col flex-shrink-0 transition-colors duration-300">
             {/* Logo/Brand */}
-            <div className="px-6 py-8 border-b border-[var(--border-color)]">
+            <div className="px-6 py-6 border-b border-[var(--border-color)]">
                 <h1 className="text-2xl font-serif text-[var(--text-primary)] tracking-tight">Adecos</h1>
                 <p className="text-xs text-[var(--text-secondary)] uppercase tracking-widest mt-1">AI-Powered Platform</p>
             </div>
@@ -82,7 +82,7 @@ const Sidebar = () => {
             </nav>
 
             {/* Footer */}
-            <div className="px-6 py-4 border-t border-[var(--border-color)] flex justify-between items-center">
+            <div className="px-6 pt-6 pb-8 border-t border-[var(--border-color)] flex justify-between items-center">
                 <p className="text-xs text-[var(--text-secondary)]">MVP v1.0</p>
                 <button
                     onClick={toggleTheme}

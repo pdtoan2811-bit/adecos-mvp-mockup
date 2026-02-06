@@ -17,7 +17,7 @@ const ResearchProgressMessage = ({ taskId }) => {
     if (!task) return null;
 
     return (
-        <div className="my-4 border border-[var(--border-color)] bg-[var(--bg-card)] rounded-xl overflow-hidden max-w-2xl w-full fade-in-up">
+        <div className="my-4 border border-[var(--border-color)] bg-[var(--bg-card)] rounded-xl overflow-hidden w-full fade-in-up">
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border-color)] bg-[var(--bg-surface)]">
                 <div className="flex items-center gap-3">
@@ -28,8 +28,8 @@ const ResearchProgressMessage = ({ taskId }) => {
                         {task.status === 'completed' ? <span className="text-white">✓</span> : <span className="animate-pulse">⚡</span>}
                     </div>
                     <div>
-                        <h3 className="text-sm font-medium text-[var(--text-primary)]">{task.query}</h3>
-                        <p className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide">
+                        <h3 className="text-xl font-serif text-[var(--text-primary)] tracking-tight">{task.query}</h3>
+                        <p className="text-[10px] text-[var(--text-secondary)] uppercase tracking-widest opacity-70">
                             {task.status === 'completed' ? 'Phân tích hoàn tất (Analysis Complete)' : 'Đang phân tích Web Sources...'}
                         </p>
                     </div>
@@ -45,7 +45,7 @@ const ResearchProgressMessage = ({ taskId }) => {
             <div className="p-4">
                 {/* Progress Bar */}
                 <div className="mb-4">
-                    <div className="flex justify-between text-[10px] uppercase tracking-wider text-[var(--text-secondary)] mb-1">
+                    <div className="flex justify-between text-xs uppercase tracking-widest text-[var(--text-secondary)] mb-2 font-medium">
                         <span>Tiến độ (Progress)</span>
                         <span>{Math.round(task.progress)}%</span>
                     </div>
@@ -62,10 +62,10 @@ const ResearchProgressMessage = ({ taskId }) => {
                 </div>
 
                 {/* Terminal Logs */}
-                <div className="bg-[var(--bg-surface)] p-3 font-mono text-[10px] border border-[var(--border-color)] rounded-lg h-32 overflow-y-auto custom-scrollbar mb-0">
-                    <div className="flex flex-col gap-1">
+                <div className="bg-[var(--bg-surface)] p-4 font-mono text-[11px] border border-[var(--border-color)] rounded-lg h-36 overflow-y-auto custom-scrollbar mb-0 leading-relaxed">
+                    <div className="flex flex-col gap-1.5">
                         {task.logs.slice(-6).map((log, i) => (
-                            <div key={i} className="text-[var(--text-secondary)]">
+                            <div key={i} className="text-[var(--text-secondary)] opacity-80">
                                 <span className="text-blue-400/70 mr-2">➜</span>
                                 {log}
                             </div>

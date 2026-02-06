@@ -48,7 +48,7 @@ const DeepResearchPage = () => {
                         ← Back
                     </button>
                     <div>
-                        <h1 className="text-xl font-serif tracking-tight text-[var(--text-primary)]">
+                        <h1 className="text-3xl font-serif tracking-tight text-[var(--text-primary)]">
                             Research Report: {selectedTask.query}
                         </h1>
                         <p className="text-xs text-[var(--text-secondary)] uppercase tracking-widest mt-1">
@@ -58,10 +58,10 @@ const DeepResearchPage = () => {
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-4 md:p-8">
-                    <div className="max-w-7xl mx-auto space-y-8">
+                    <div className="w-full px-8 space-y-8">
                         {/* Summary Card */}
                         <div className="p-6 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl">
-                            <h3 className="text-lg font-medium mb-2">Executive Summary</h3>
+                            <h3 className="text-lg font-serif mb-2">Executive Summary</h3>
                             <p className="text-[var(--text-secondary)] leading-relaxed">
                                 {selectedTask.result?.summary || "Analysis in progress..."}
                             </p>
@@ -71,7 +71,7 @@ const DeepResearchPage = () => {
                         {selectedTask.status === 'completed' && (
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center">
-                                    <h3 className="text-lg font-medium">Affiliate Program Opportunities ({detailData.length})</h3>
+                                    <h3 className="text-lg font-serif">Affiliate Program Opportunities ({detailData.length})</h3>
                                     <button className="text-xs text-blue-400 hover:underline">Export CSV</button>
                                 </div>
                                 <div className="border border-[var(--border-color)] rounded-lg overflow-hidden bg-[var(--bg-card)]">
@@ -103,7 +103,7 @@ const DeepResearchPage = () => {
             {/* Header */}
             <div className="px-8 py-6 border-b border-[var(--border-color)] flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-serif tracking-tight text-[var(--text-primary)]">Affiliate Deep Research</h1>
+                    <h1 className="text-3xl font-serif tracking-tight text-[var(--text-primary)]">Affiliate Deep Research</h1>
                     <p className="text-xs text-[var(--text-secondary)] uppercase tracking-widest mt-1">
                         Tự động tìm kiếm & Đánh giá (Program Discovery & Vetting)
                     </p>

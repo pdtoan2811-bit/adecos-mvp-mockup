@@ -1,6 +1,8 @@
 import os
 import json
-import google.generativeai as genai
+import os
+import json
+from google import genai
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -11,8 +13,8 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 if not GOOGLE_API_KEY:
     raise ValueError("GOOGLE_API_KEY environment variable is not set")
 
-genai.configure(api_key=GOOGLE_API_KEY)
-model = genai.GenerativeModel("gemini-3-flash-preview")
+client = genai.Client(api_key=GOOGLE_API_KEY)
+# We don't need a module-level model object anymore, we pass model to methods
 
 CHAT_SYSTEM_INSTRUCTION = """You are an expert affiliate marketing consultant with deep knowledge of Vietnamese and global markets.
 You provide accurate, data-driven recommendations.
@@ -41,11 +43,14 @@ Return ONLY the JSON array.
 
 async def generate_research_stream(niche: str):
     """Generate affiliate program research for a niche."""
-    """Generate affiliate program research for a niche."""
+    # Note: Duplicate docstring removed
     prompt = PROMPT_TEMPLATE.format(niche=niche, context="")
     
     try:
-        response = await model.generate_content_async(prompt, stream=True)
+        response = await client.aio.models.generate_content_stream(
+            model="gemini-3-flash-preview",
+            contents=prompt
+        )
         buffer = ""
         async for chunk in response:
             if chunk.text:
@@ -120,7 +125,10 @@ async def generate_chat_stream(messages: list):
         try:
             prompt = PROMPT_TEMPLATE.format(niche=user_query, context=conversation_history)
             
-            response = await model.generate_content_async(prompt, stream=True)
+            response = await client.aio.models.generate_content_stream(
+                model="gemini-3-flash-preview",
+                contents=prompt
+            )
             buffer = ""
             async for chunk in response:
                 if chunk.text:
@@ -169,7 +177,10 @@ Provide a helpful explanation in Vietnamese.
 """
         
         try:
-            response = await model.generate_content_async(prompt, stream=True)
+            response = await client.aio.models.generate_content_stream(
+                model="gemini-3-flash-preview",
+                contents=prompt
+            )
             buffer = ""
             async for chunk in response:
                 if chunk.text:
@@ -207,7 +218,10 @@ Respond ONLY with ONE word: research, explanation, or followup
 """
     
     try:
-        response = await model.generate_content_async(classifier_prompt)
+        response = await client.aio.models.generate_content(
+            model="gemini-3-flash-preview",
+            contents=classifier_prompt
+        )
         intent = response.text.strip().lower()
         
         # Validate and default to research if invalid

@@ -19,7 +19,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1001",
@@ -35,7 +37,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "DeFi",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1002",
@@ -51,7 +55,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Mining",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1003",
@@ -69,7 +75,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Mining",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1004",
@@ -85,7 +93,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1005",
@@ -101,7 +111,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Staking",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1006",
@@ -118,7 +130,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "DeFi",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1007",
@@ -134,7 +148,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Staking",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1008",
@@ -151,7 +167,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Trading Bot",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1009",
@@ -167,7 +185,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1010",
@@ -183,7 +203,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Staking",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1011",
@@ -201,7 +223,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Tax Tool",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1012",
@@ -217,7 +241,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Staking",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1013",
@@ -235,7 +261,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1014",
@@ -253,7 +281,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1015",
@@ -271,7 +301,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1016",
@@ -288,7 +320,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "DeFi",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1017",
@@ -304,7 +338,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Mining",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1018",
@@ -321,7 +357,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Tax Tool",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1019",
@@ -338,7 +376,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "PartnerStack",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1020",
@@ -356,7 +396,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Mining",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1021",
@@ -372,7 +414,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Mining",
         "network": "PartnerStack",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1022",
@@ -389,7 +433,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1023",
@@ -405,7 +451,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Tax Tool",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1024",
@@ -421,7 +469,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1025",
@@ -437,7 +487,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Tax Tool",
         "network": "PartnerStack",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1026",
@@ -453,7 +505,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "PartnerStack",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1027",
@@ -470,7 +524,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "PartnerStack",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1028",
@@ -487,7 +543,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1029",
@@ -505,7 +563,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Staking",
         "network": "PartnerStack",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1030",
@@ -521,7 +581,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1031",
@@ -537,7 +599,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1032",
@@ -554,7 +618,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "PartnerStack",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1033",
@@ -570,7 +636,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Trading Bot",
         "network": "PartnerStack",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1034",
@@ -587,7 +655,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1035",
@@ -605,7 +675,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1036",
@@ -621,7 +693,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1037",
@@ -637,7 +711,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Tax Tool",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1038",
@@ -655,7 +731,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Mining",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1039",
@@ -672,7 +750,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1040",
@@ -689,7 +769,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Mining",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1041",
@@ -705,7 +787,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "DeFi",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1042",
@@ -721,7 +805,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Trading Bot",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1043",
@@ -739,7 +825,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1044",
@@ -755,7 +843,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Trading Bot",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1045",
@@ -771,7 +861,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "DeFi",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1046",
@@ -788,7 +880,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "DeFi",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1047",
@@ -806,7 +900,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Staking",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1048",
@@ -822,7 +918,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1049",
@@ -839,7 +937,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1050",
@@ -856,7 +956,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1051",
@@ -873,7 +975,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1052",
@@ -891,7 +995,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Staking",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1053",
@@ -908,7 +1014,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "DeFi",
         "network": "PartnerStack",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1054",
@@ -926,7 +1034,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Staking",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1055",
@@ -944,7 +1054,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1056",
@@ -960,7 +1072,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1057",
@@ -977,7 +1091,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "DeFi",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1058",
@@ -993,7 +1109,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1059",
@@ -1011,7 +1129,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Trading Bot",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1060",
@@ -1027,7 +1147,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "DeFi",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1061",
@@ -1045,7 +1167,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Staking",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1062",
@@ -1062,7 +1186,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Trading Bot",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1063",
@@ -1078,7 +1204,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Trading Bot",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1064",
@@ -1096,7 +1224,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "DeFi",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1065",
@@ -1112,7 +1242,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1066",
@@ -1128,7 +1260,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1067",
@@ -1146,7 +1280,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Tax Tool",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1068",
@@ -1162,7 +1298,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Mining",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1069",
@@ -1178,7 +1316,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1070",
@@ -1196,7 +1336,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1071",
@@ -1214,7 +1356,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Tax Tool",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1072",
@@ -1231,7 +1375,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "DeFi",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1073",
@@ -1247,7 +1393,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1074",
@@ -1264,7 +1412,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Trading Bot",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1075",
@@ -1280,7 +1430,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Tax Tool",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1076",
@@ -1298,7 +1450,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1077",
@@ -1315,7 +1469,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1078",
@@ -1333,7 +1489,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "DeFi",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1079",
@@ -1351,7 +1509,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Tax Tool",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1080",
@@ -1367,7 +1527,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1081",
@@ -1385,7 +1547,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1082",
@@ -1401,7 +1565,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1083",
@@ -1417,7 +1583,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "PartnerStack",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1084",
@@ -1434,7 +1602,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1085",
@@ -1451,7 +1621,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1086",
@@ -1467,7 +1639,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "PartnerStack",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1087",
@@ -1485,7 +1659,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Staking",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1088",
@@ -1503,7 +1679,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Staking",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1089",
@@ -1520,7 +1698,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Trading Bot",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1090",
@@ -1537,7 +1717,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": false
     },
     {
         "id": "aff_1091",
@@ -1553,7 +1735,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Tax Tool",
         "network": "PartnerStack",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1092",
@@ -1569,7 +1753,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "In-house",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1093",
@@ -1587,7 +1773,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Tax Tool",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1094",
@@ -1604,7 +1792,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Education",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": true
     },
     {
         "id": "aff_1095",
@@ -1622,7 +1812,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Wallet",
         "network": "CJ",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1096",
@@ -1640,7 +1832,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Mining",
         "network": "Impact",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     },
     {
         "id": "aff_1097",
@@ -1657,7 +1851,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Exchange",
         "network": "PartnerStack",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1098",
@@ -1673,7 +1869,9 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Staking",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": true,
+        "ads_allowed": false
     },
     {
         "id": "aff_1099",
@@ -1691,6 +1889,8 @@ export const mockCryptoAffiliates = [
         ],
         "category": "Tax Tool",
         "network": "ShareASale",
-        "status": "Active"
+        "status": "Active",
+        "brand_name_allowed": false,
+        "ads_allowed": true
     }
 ];

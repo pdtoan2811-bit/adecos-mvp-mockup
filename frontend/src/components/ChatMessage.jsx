@@ -84,9 +84,7 @@ const ChatMessage = ({ message, onSearch }) => {
     if (type === 'composite') {
         return (
             <div className="w-full my-8 px-4 md:px-0 fade-in-up">
-                <div className="max-w-4xl mx-auto">
-                    <CompositeMessage content={content} context={context} />
-                </div>
+                <CompositeMessage content={content} context={context} />
             </div>
         );
     }

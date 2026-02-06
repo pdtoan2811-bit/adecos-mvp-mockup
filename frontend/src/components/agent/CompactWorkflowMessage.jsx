@@ -124,8 +124,8 @@ const CompactWorkflowMessage = ({ content, context, onSaveExperiment }) => {
                         </svg>
                     </div>
                     <div>
-                        <h3 className="text-sm font-medium text-[var(--text-primary)]">{title}</h3>
-                        <span className="text-[10px] text-[var(--text-secondary)]">{items.length} tasks • SMART framework</span>
+                        <h3 className="text-base font-serif text-[var(--text-primary)] tracking-tight">{title}</h3>
+                        <span className="text-[10px] uppercase tracking-widest text-[var(--text-secondary)]">{items.length} tasks • SMART framework</span>
                     </div>
                 </div>
 
@@ -144,7 +144,7 @@ const CompactWorkflowMessage = ({ content, context, onSaveExperiment }) => {
                     {/* Mini Chart Preview */}
                     {chartSection && (
                         <div className="mb-4">
-                            <div className="text-[10px] uppercase text-[var(--text-secondary)] mb-2">Performance</div>
+                            <div className="text-[10px] uppercase tracking-widest text-[var(--text-secondary)] mb-3 font-medium">Performance</div>
                             <div className="h-20 bg-gradient-to-r from-blue-500/10 to-blue-500/5 rounded-lg 
                                             flex items-center justify-center border border-[var(--border-color)]">
                                 <div className="flex items-end gap-1 h-12">
@@ -164,11 +164,11 @@ const CompactWorkflowMessage = ({ content, context, onSaveExperiment }) => {
                     <div className="grid grid-cols-2 gap-2 mb-4">
                         <div className="p-2 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-lg">
                             <div className="text-lg font-serif text-[var(--text-primary)]">2.8x</div>
-                            <div className="text-[10px] text-[var(--text-secondary)]">ROAS</div>
+                            <div className="text-[10px] uppercase tracking-widest text-[var(--text-secondary)]">ROAS</div>
                         </div>
                         <div className="p-2 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-lg">
                             <div className="text-lg font-serif text-green-500">+15%</div>
-                            <div className="text-[10px] text-[var(--text-secondary)]">vs Last Week</div>
+                            <div className="text-[10px] uppercase tracking-widest text-[var(--text-secondary)]">vs Last Week</div>
                         </div>
                     </div>
 

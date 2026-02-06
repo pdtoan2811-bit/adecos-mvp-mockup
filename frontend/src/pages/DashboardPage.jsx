@@ -198,7 +198,7 @@ const DashboardPage = () => {
             <div className="max-w-[1800px] mx-auto">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-serif text-[var(--text-primary)] mb-2">Google Ads Dashboard</h1>
+                    <h1 className="text-3xl font-serif tracking-tight text-[var(--text-primary)] mb-2">Google Ads Dashboard</h1>
                     <p className="text-[var(--text-secondary)] text-sm">Phân tích hiệu suất chiến dịch</p>
                 </div>
 
@@ -397,7 +397,7 @@ const DashboardPage = () => {
                 <div className="space-y-8">
                     {/* Cost & Revenue Chart */}
                     <div className="border border-[var(--border-color)] p-6 rounded-sm">
-                        <h3 className="text-sm font-serif text-[var(--text-primary)] mb-4 uppercase tracking-wider">Chi phí & Doanh thu</h3>
+                        <h3 className="text-lg font-serif text-[var(--text-primary)] mb-4 uppercase tracking-wider">Chi phí & Doanh thu</h3>
                         <ResponsiveContainer width="100%" height={300}>
                             <AreaChart data={chartData}>
                                 <defs>
@@ -431,7 +431,7 @@ const DashboardPage = () => {
 
                     {/* Clicks Chart */}
                     <div className="border border-[var(--border-color)] p-6 rounded-sm">
-                        <h3 className="text-sm font-serif text-[var(--text-primary)] mb-4 uppercase tracking-wider">Lượng truy cập</h3>
+                        <h3 className="text-lg font-serif text-[var(--text-primary)] mb-4 uppercase tracking-wider">Lượng truy cập</h3>
                         <ResponsiveContainer width="100%" height={250}>
                             <LineChart data={chartData}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
@@ -460,7 +460,7 @@ const DashboardPage = () => {
 
                     {/* Conversions Chart */}
                     <div className="border border-[var(--border-color)] p-6 rounded-sm">
-                        <h3 className="text-sm font-serif text-[var(--text-primary)] mb-4 uppercase tracking-wider">Chuyển đổi</h3>
+                        <h3 className="text-lg font-serif text-[var(--text-primary)] mb-4 uppercase tracking-wider">Chuyển đổi</h3>
                         <ResponsiveContainer width="100%" height={250}>
                             <BarChart data={chartData}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />

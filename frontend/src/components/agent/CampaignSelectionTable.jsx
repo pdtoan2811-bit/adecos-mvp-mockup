@@ -46,16 +46,16 @@ const CampaignSelectionTable = ({ campaigns, onSelect }) => {
 
     return (
         <div className="w-full bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl overflow-hidden mt-4">
-            <div className="px-6 py-4 border-b border-[var(--border-color)] bg-[var(--bg-surface)] flex justify-between items-center">
-                <h3 className="text-sm font-medium text-[var(--text-primary)]">Select a Campaign to Analyze</h3>
-                <span className="text-xs text-[var(--text-secondary)]">{campaigns.length} Active Campaigns</span>
+            <div className="px-6 py-5 border-b border-[var(--border-color)] bg-[var(--bg-surface)] flex justify-between items-center">
+                <h3 className="text-lg font-serif text-[var(--text-primary)] tracking-tight">Select a Campaign to Analyze</h3>
+                <span className="text-xs uppercase tracking-widest text-[var(--text-secondary)]">{campaigns.length} Active Campaigns</span>
             </div>
 
             <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                     <thead>
-                        <tr className="border-b border-[var(--border-color)] text-xs text-[var(--text-secondary)] uppercase tracking-wider">
-                            <th className="px-6 py-4 font-normal">Campaign</th>
+                        <tr className="border-b border-[var(--border-color)] text-xs text-[var(--text-secondary)] uppercase tracking-[0.2em] font-medium">
+                            <th className="px-6 py-5 font-medium">Campaign</th>
                             <th className="px-6 py-4 font-normal text-center">Status</th>
                             <th
                                 className="px-6 py-4 font-normal cursor-pointer hover:text-[var(--text-primary)] transition-colors"
@@ -85,8 +85,8 @@ const CampaignSelectionTable = ({ campaigns, onSelect }) => {
                                 className="hover:bg-[var(--bg-hover)] transition-colors group cursor-pointer"
                                 onClick={() => onSelect(campaign)}
                             >
-                                <td className="px-6 py-4">
-                                    <div className="font-medium text-[var(--text-primary)] group-hover:text-blue-500 transition-colors">
+                                <td className="px-6 py-5">
+                                    <div className="text-base font-medium text-[var(--text-primary)] group-hover:text-blue-500 transition-colors">
                                         {campaign.name}
                                     </div>
                                     <div className="text-xs text-[var(--text-secondary)] mt-1 flex items-center gap-2">
@@ -134,7 +134,7 @@ const CampaignSelectionTable = ({ campaigns, onSelect }) => {
             </div>
 
             {/* Footer / Summary */}
-            <div className="px-6 py-3 border-t border-[var(--border-color)] bg-[var(--bg-surface)] text-xs text-[var(--text-secondary)] flex justify-between">
+            <div className="px-6 py-3 border-t border-[var(--border-color)] bg-[var(--bg-surface)] text-sm text-[var(--text-secondary)] flex justify-between">
                 <span>Total Spend: {formatCurrency(sortedCampaigns.reduce((sum, c) => sum + c.cost_30d, 0))}</span>
                 <span>Avg ROAS: {(sortedCampaigns.reduce((sum, c) => sum + c.roas_30d, 0) / sortedCampaigns.length).toFixed(2)}x</span>
             </div>

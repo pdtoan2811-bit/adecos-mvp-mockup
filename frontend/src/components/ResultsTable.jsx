@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useDeepResearch } from '../context/DeepResearchContext';
 import { useChatContext } from '../context/ChatContext';
 import ConfirmationModal from './ConfirmationModal';
+import Toast from './Toast';
 
 const ResultsTable = ({ data, enablePagination = false, itemsPerPageOptions = [5, 10, 20, 50], showResearchAction = true }) => {
     const [sortConfig, setSortConfig] = useState(null);
@@ -9,6 +10,9 @@ const ResultsTable = ({ data, enablePagination = false, itemsPerPageOptions = [5
     const { setMessages } = useChatContext();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [researchQuery, setResearchQuery] = useState('');
+
+    // Toast State
+    const [toast, setToast] = useState({ isVisible: false, message: '', type: 'success' });
 
     // Pagination & Search State
     const [currentPage, setCurrentPage] = useState(1);
@@ -41,10 +45,19 @@ const ResultsTable = ({ data, enablePagination = false, itemsPerPageOptions = [5
             };
             savedPrograms.push(programWithMeta);
             localStorage.setItem('savedPrograms', JSON.stringify(savedPrograms));
-            alert(`Đã lưu ${program.brand}!`);
+            window.dispatchEvent(new Event('programSaved'));
+            showToast(`Đã lưu ${program.brand} thành công!`, 'success');
         } else {
-            alert(`${program.brand} đã được lưu trước đó!`);
+            showToast(`${program.brand} đã được lưu trước đó!`, 'info');
         }
+    };
+
+    const showToast = (message, type = 'success') => {
+        setToast({ isVisible: true, message, type });
+    };
+
+    const closeToast = () => {
+        setToast(prev => ({ ...prev, isVisible: false }));
     };
 
     // Filter & Sort
@@ -90,9 +103,9 @@ const ResultsTable = ({ data, enablePagination = false, itemsPerPageOptions = [5
     if (!data || data.length === 0) return null;
 
     return (
-        <div className="w-full px-6 fade-in-up">
+        <div className="w-full fade-in-up">
             {enablePagination && (
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-between items-center p-4">
                     <div className="relative">
                         <input
                             type="text"
@@ -122,31 +135,32 @@ const ResultsTable = ({ data, enablePagination = false, itemsPerPageOptions = [5
             <div className="relative overflow-hidden rounded-none border-t border-b border-[var(--border-color)] bg-transparent">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-[var(--text-secondary)] font-sans">
-                        <thead className="uppercase text-xs tracking-[0.2em] text-[var(--text-secondary)] font-light border-b border-[var(--border-color)]">
+                        <thead className="text-xs uppercase tracking-widest text-[var(--text-secondary)] font-medium border-b border-[var(--border-color)]">
                             <tr>
-                                <th className="px-6 py-6 font-normal">Thương hiệu</th>
-                                <th className="px-6 py-6 font-normal">Chương trình</th>
+                                <th className="px-4 py-4 font-normal">Thương hiệu</th>
+                                <th className="px-4 py-4 font-normal">Chương trình</th>
                                 <th
-                                    className="px-6 py-6 cursor-pointer hover:text-[var(--text-primary)] transition font-normal"
+                                    className="px-4 py-4 cursor-pointer hover:text-[var(--text-primary)] transition font-normal whitespace-nowrap"
                                     onClick={() => requestSort('commission_percent')}
                                 >
-                                    Hoa hồng (%) ↕
+                                    Hoa hồng ↕
                                 </th>
-                                <th className="px-6 py-6 font-normal">Loại HH</th>
-                                <th className="px-6 py-6 font-normal text-center">Brand Name</th>
+                                <th className="px-4 py-4 font-normal">Loại</th>
+                                <th className="px-4 py-4 font-normal text-center">Brand Name</th>
+                                <th className="px-4 py-4 font-normal text-center">Ads</th>
                                 <th
-                                    className="px-6 py-6 cursor-pointer hover:text-[var(--text-primary)] transition font-normal"
+                                    className="px-4 py-4 cursor-pointer hover:text-[var(--text-primary)] transition font-normal whitespace-nowrap"
                                     onClick={() => requestSort('traffic_3m')}
                                 >
-                                    Traffic (3M) ↕
+                                    Traffic ↕
                                 </th>
                                 <th
-                                    className="px-6 py-6 cursor-pointer hover:text-[var(--text-primary)] transition font-normal"
+                                    className="px-4 py-4 cursor-pointer hover:text-[var(--text-primary)] transition font-normal whitespace-nowrap"
                                     onClick={() => requestSort('legitimacy_score')}
                                 >
-                                    Điểm AI ↕
+                                    Score ↕
                                 </th>
-                                <th className="px-6 py-6 font-normal">Hành động</th>
+                                <th className="px-4 py-4 font-normal text-right"></th>
                             </tr>
                         </thead>
                         <tbody className="text-sm font-light">
@@ -155,49 +169,55 @@ const ResultsTable = ({ data, enablePagination = false, itemsPerPageOptions = [5
                                     key={index}
                                     className="border-b border-[var(--border-color)] last:border-0 hover:bg-[var(--bg-surface)] transition-colors duration-200 group"
                                 >
-                                    <td className="px-6 py-4 font-medium text-[var(--text-primary)] text-sm">
+                                    <td className="px-4 py-3 font-medium text-[var(--text-primary)] text-sm" title={program.brand}>
                                         {program.brand}
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="px-4 py-3">
                                         <a
                                             href={program.program_url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-blue-400 hover:text-blue-300 text-sm hover:underline"
+                                            className="text-blue-400 hover:text-blue-300 text-sm hover:underline block"
+                                            title="Visit Program Link"
                                         >
                                             Visit Link ↗
                                         </a>
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="px-4 py-3">
                                         <span className="text-emerald-400 font-medium text-sm">{program.commission_percent}%</span>
                                     </td>
-                                    <td className="px-6 py-4 text-xs opacity-80 uppercase tracking-wide">{program.commission_type}</td>
-                                    <td className="px-6 py-4 text-center">
-                                        <span className="uppercase text-[10px] tracking-widest border border-[var(--border-color)] px-2 py-1 rounded text-[var(--text-secondary)]">
-                                            {program.brand.split(' ')[0]}
+                                    <td className="px-4 py-3 text-xs opacity-80 uppercase tracking-wide">{program.commission_type}</td>
+                                    <td className="px-4 py-3 text-center">
+                                        <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full ${program.brand_name_allowed ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'} text-xs`}>
+                                            {program.brand_name_allowed ? '✓' : '✕'}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 font-mono text-xs opacity-70">
+                                    <td className="px-4 py-3 text-center">
+                                        <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full ${program.ads_allowed ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'} text-xs`}>
+                                            {program.ads_allowed ? '✓' : '✕'}
+                                        </span>
+                                    </td>
+                                    <td className="px-4 py-3 font-mono text-sm opacity-70">
                                         {(program.traffic_3m / 1000000).toFixed(1)}M
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="px-4 py-3">
                                         <div className="flex items-center gap-2">
-                                            <div className="w-16 h-1 bg-[var(--bg-surface)] rounded-full overflow-hidden">
+                                            <div className="w-12 h-1 bg-[var(--bg-surface)] rounded-full overflow-hidden">
                                                 <div
                                                     className={`h-full ${program.legitimacy_score >= 8 ? 'bg-emerald-500' : 'bg-yellow-500'}`}
                                                     style={{ width: `${program.legitimacy_score * 10}%` }}
                                                 ></div>
                                             </div>
-                                            <span className="text-xs">{program.legitimacy_score}</span>
+                                            <span className="text-sm">{program.legitimacy_score}</span>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="px-4 py-3 text-right">
                                         <button
                                             onClick={() => handleSave(program)}
-                                            className="opacity-0 group-hover:opacity-100 transition-opacity text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                                            className="text-[var(--text-secondary)] hover:text-emerald-500 transition-colors p-2 hover:bg-emerald-500/10 rounded-full"
                                             title="Save Program"
                                         >
-                                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                                             </svg>
                                         </button>
@@ -210,7 +230,7 @@ const ResultsTable = ({ data, enablePagination = false, itemsPerPageOptions = [5
 
                 {/* Footer / Pagination Controls */}
                 <div className="px-6 py-4 border-t border-[var(--border-color)] flex justify-between items-center">
-                    <span className="text-xs text-[var(--text-secondary)] uppercase tracking-widest">
+                    <span className="text-sm text-[var(--text-secondary)] uppercase tracking-widest">
                         {enablePagination
                             ? `Showing ${((currentPage - 1) * itemsPerPage) + 1} - ${Math.min(currentPage * itemsPerPage, filteredData.length)} of ${filteredData.length}`
                             : `${filteredData.length} Kết quả`
@@ -256,6 +276,13 @@ const ResultsTable = ({ data, enablePagination = false, itemsPerPageOptions = [5
                 message={`Hệ thống sẽ thực hiện phân tích chuyên sâu trong 15 phút để tìm kiếm các Affiliate Programs chuyển đổi cao liên quan đến "${researchQuery}". Agent sẽ verify commission rates, cookie durations, và độ tin cậy thanh toán.`}
                 confirmText="Start Research"
                 cancelText="Hủy bỏ"
+            />
+
+            <Toast
+                message={toast.message}
+                type={toast.type}
+                isVisible={toast.isVisible}
+                onClose={closeToast}
             />
         </div>
     );

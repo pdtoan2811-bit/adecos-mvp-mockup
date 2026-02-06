@@ -85,7 +85,7 @@ const ProjectsPage = () => {
             <div className="flex-1 flex items-center justify-center">
                 <div className="text-center">
                     <div className="text-6xl mb-4">📁</div>
-                    <h2 className="text-2xl font-serif text-white mb-2">Chưa có dự án nào</h2>
+                    <h2 className="text-3xl font-serif text-white mb-2">Chưa có dự án nào</h2>
                     <p className="text-luxury-gray text-sm">
                         Lưu các chương trình affiliate từ trang Chat để xem tại đây
                     </p>
@@ -113,7 +113,7 @@ const ProjectsPage = () => {
                 {/* Header controls */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 shrink-0">
                     <div>
-                        <h1 className="text-3xl font-serif text-[var(--text-primary)] mb-1">Dự án đã lưu</h1>
+                        <h1 className="text-3xl font-serif tracking-tight text-[var(--text-primary)] mb-1">Dự án đã lưu</h1>
                         <p className="text-[var(--text-secondary)] text-sm">{savedPrograms.length} chương trình</p>
                     </div>
 
@@ -179,7 +179,7 @@ const ProjectsPage = () => {
                                     <div className="flex justify-between items-start mb-4">
                                         <div className="flex-1 pr-2">
                                             <div className="flex items-center gap-2 mb-1">
-                                                <h3 className="text-xl font-serif text-[var(--text-primary)] truncate" title={program.brand}>{program.brand}</h3>
+                                                <h3 className="text-xl font-serif tracking-tight text-[var(--text-primary)] truncate" title={program.brand}>{program.brand}</h3>
                                                 {program.country && <span title="Country">{/* Flag could go here if we had mapping, or just text */}</span>}
                                             </div>
                                             <StatusBadge status={program.status} />

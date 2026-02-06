@@ -14,7 +14,16 @@ from typing import Optional
 from crewai import Agent, Task, Crew, Process
 from crewai.tools import BaseTool
 from data_tools import get_all_tools, QueryAdsCampaignsTool, CalculateMetricsTool
-import google.generativeai as genai
+from intent_classifier import classify_intent
+import os
+import json
+import logging
+from typing import Optional
+from crewai import Agent, Task, Crew, Process
+from crewai.tools import BaseTool
+from data_tools import get_all_tools, QueryAdsCampaignsTool, CalculateMetricsTool
+from intent_classifier import classify_intent
+from google import genai
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -34,18 +43,21 @@ if not logger.handlers:
 
 # Configure Gemini
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-genai.configure(api_key=GOOGLE_API_KEY)
+client = genai.Client(api_key=GOOGLE_API_KEY)
 
 
 class GeminiLLM:
     """Simple wrapper to use Gemini as the LLM for crewAI agents."""
     
     def __init__(self, model_name: str = "gemini-3-flash-preview"):
-        self.model = genai.GenerativeModel(model_name)
         self.model_name = model_name
+        self.client = client
     
     def __call__(self, prompt: str) -> str:
-        response = self.model.generate_content(prompt)
+        response = self.client.models.generate_content(
+            model=self.model_name,
+            contents=prompt
+        )
         return response.text
 
 
@@ -96,73 +108,8 @@ def create_narrative_agent() -> Agent:
     )
 
 
-def classify_intent(query: str, conversation_history: str = "") -> dict:
-    """Classify user query intent using Gemini."""
-    
-    logger.info(f"🔍 CLASSIFYING INTENT for query: '{query}'")
-    
-    prompt = f"""Bạn là một bộ phân loại intent cho một ứng dụng quản lý quảng cáo affiliate.
+# Local classify_intent function removed in favor of imported version from intent_classifier.py
 
-Phân loại câu hỏi của người dùng vào MỘT trong các loại sau:
-
-1. **data_analysis** - Người dùng muốn xem dữ liệu, biểu đồ, metrics về quảng cáo. BAO GỒM CẢ PHÂN TÍCH THEO GROUP.
-   Ví dụ: "Chi phí tháng 11", "Hiển thị clicks tuần này", "ROAS của tôi thế nào?", "CPC", "Cost per click"
-   Ví dụ Grouping: "Chi phí theo tài khoản", "Doanh thu theo chiến dịch", "Hiệu quả từng account" -> Intent này.
-   
-2. **data_query** - Người dùng muốn danh sách, bảng dữ liệu cụ thể về campaigns/accounts (CHỈ LIST/TABLE)
-   Ví dụ: "Liệt kê các chiến dịch", "Tài khoản nào đang active?", "Danh sách tài khoản"
-
-3. **comparison** - Người dùng muốn so sánh dữ liệu giữa các khoảng thời gian hoặc đối tượng
-   Ví dụ: "So sánh tháng 10 và 11", "Campaign nào tốt hơn?", "Tuần này vs tuần trước"
-   
-4. **explanation** - Người dùng cần giải thích, hướng dẫn, hoặc hiểu một khái niệm
-   Ví dụ: "CPC là gì?", "Tại sao chi phí tăng?", "Giải thích ROAS"
-
-5. **followup** - Người dùng hỏi tiếp về response trước đó
-   Ví dụ: "Chi tiết hơn", "Tại sao ngày 15 lại cao?", "Giải thích thêm"
-
-6. **research** - Người dùng muốn TÌM KIẾM chương trình affiliate, niche, hoặc cơ hội kiếm tiền
-   Ví dụ: "Crypto", "Forex", "Finance", "Gaming", "Tìm affiliate program", "Ngách nào tốt?"
-
-Câu hỏi: "{query}"
-
-Lịch sử hội thoại: {conversation_history if conversation_history else "Chưa có"}
-
-Trả lời CHÍNH XÁC theo format JSON:
-{{
-    "intent": "<loại>", 
-    "entities": {{
-        "time_range": "<khoảng thời gian nếu có>", 
-        "metrics": ["<metrics được nhắc đến>"], 
-        "campaigns": ["<campaigns nếu có>"], 
-        "niche": "<ngách/lĩnh vực nếu có>",
-        "program": "<tên chương trình affiliate nếu có, v.d. Shopee, Binance>",
-        "keywords": ["<từ khóa cần lọc nều có, v.d. crypto, forex>"],
-        "group_by": "<account|campaign|day|week|month>",
-        "breakdown": "<account|campaign|none>",
-        "visual_type": "<line|bar|area|none>"
-    }}
-}}
-"""
-    
-    model = genai.GenerativeModel("gemini-3-flash-preview")
-    response = model.generate_content(prompt)
-    
-    try:
-        # Clean up response
-        text = response.text.strip()
-        if text.startswith("```"):
-            text = text.split("```")[1]
-            if text.startswith("json"):
-                text = text[4:]
-        text = text.strip()
-        
-        result = json.loads(text)
-        logger.info(f"✅ INTENT CLASSIFIED: {result.get('intent')} | Entities: {result.get('entities')}")
-        return result
-    except (json.JSONDecodeError, IndexError) as e:
-        logger.warning(f"⚠️ Failed to parse intent response: {e}, defaulting to data_analysis")
-        return {"intent": "data_analysis", "entities": {}}
 
 
 async def execute_data_analysis_crew(query: str, entities: dict) -> dict:
@@ -229,8 +176,10 @@ Yêu cầu logic:
 4. Ngắn gọn (2-3 câu). Tiếng Việt.
 """
 
-    model = genai.GenerativeModel("gemini-3-flash-preview")
-    narrative_response = model.generate_content(narrative_prompt)
+    narrative_response = await client.aio.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=narrative_prompt
+    )
     narrative = narrative_response.text.strip()
     
     # Step 3: Prepare Visualization Data
@@ -371,8 +320,10 @@ Yêu cầu:
 - Format với markdown khi phù hợp
 - Thân thiện nhưng chuyên nghiệp"""
 
-    model = genai.GenerativeModel("gemini-3-flash-preview")
-    response = model.generate_content(prompt)
+    response = await client.aio.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=prompt
+    )
     
     return {
         "type": "text",
@@ -483,11 +434,14 @@ For each program, provide:
 Return ONLY the JSON array.
 """
     
-    model = genai.GenerativeModel("gemini-3-flash-preview")
-    response = model.generate_content(prompt)
+    response = await client.aio.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=prompt
+    )
     
     # Parse the response
     buffer = response.text.strip()
+
     
     # Post-process: Strip markdown wrappers if present
     if buffer.startswith('```'):
@@ -572,7 +526,8 @@ async def run_agent_workflow(messages: list) -> dict:
             conversation_history += f"{role}: [Previous data/chart response]\n"
     
     # Step 1: Classify intent
-    intent_result = classify_intent(query, conversation_history)
+    # Note: classify_intent from intent_classifier is async
+    intent_result = await classify_intent(query, conversation_history)
     intent = intent_result.get("intent", "data_analysis")
     entities = intent_result.get("entities", {})
     

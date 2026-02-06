@@ -118,7 +118,7 @@ const ExperimentsPage = () => {
             <div className="px-8 py-6 border-b border-[var(--border-color)] flex-shrink-0">
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h1 className="text-2xl font-serif tracking-tight text-[var(--text-primary)]">Experiments</h1>
+                        <h1 className="text-3xl font-serif tracking-tight text-[var(--text-primary)]">Experiments</h1>
                         <p className="text-xs text-[var(--text-secondary)] uppercase tracking-widest mt-1">
                             Manage your AI-generated workflows and track progress
                         </p>

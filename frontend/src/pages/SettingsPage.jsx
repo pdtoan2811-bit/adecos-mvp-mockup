@@ -36,13 +36,13 @@ const SettingsPage = () => {
         <div className="flex-1 p-8 overflow-auto bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-300">
             <div className="max-w-4xl mx-auto">
                 <div className="mb-8">
-                    <h1 className="text-3xl font-serif text-[var(--text-primary)] mb-2">Cài đặt</h1>
+                    <h1 className="text-3xl font-serif tracking-tight text-[var(--text-primary)] mb-2">Cài đặt</h1>
                     <p className="text-[var(--text-secondary)] text-sm">Quản lý tài khoản và kết nối</p>
                 </div>
 
                 <div className="border border-[var(--border-color)] rounded-sm p-6 mb-8">
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-xl font-serif">Tài khoản quảng cáo</h2>
+                        <h2 className="text-lg font-serif text-[var(--text-primary)]">Tài khoản quảng cáo</h2>
                         <button
                             onClick={() => setIsAdding(true)}
                             className="px-4 py-2 bg-[var(--text-primary)] text-[var(--bg-primary)] text-xs uppercase tracking-wider font-medium hover:opacity-90 transition-opacity"
