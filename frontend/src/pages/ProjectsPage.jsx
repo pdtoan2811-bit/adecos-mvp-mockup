@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import ProjectModal from '../components/ProjectModal';
+import StatusBadge from '../components/StatusBadge';
+import ViewModeToggle from '../components/ViewModeToggle';
 
 const ProjectsPage = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
     const [savedPrograms, setSavedPrograms] = useState([]);
     const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
     const [filterStatus, setFilterStatus] = useState('all');
@@ -13,6 +18,22 @@ const ProjectsPage = () => {
     useEffect(() => {
         loadSavedPrograms();
     }, []);
+
+    // Open edit modal when returning from detail page with openEditProject
+    useEffect(() => {
+        const state = location.state;
+        if (state?.openEditProject && savedPrograms.length > 0) {
+            const idx = typeof state.indexInSaved === 'number' && state.indexInSaved >= 0
+                ? state.indexInSaved
+                : savedPrograms.findIndex(p => p.brand === state.openEditProject.brand && p.program_url === state.openEditProject.program_url);
+            if (idx >= 0) {
+                setEditingProject(savedPrograms[idx]);
+                setEditingIndex(idx);
+                setIsModalOpen(true);
+            }
+            navigate(location.pathname, { replace: true, state: {} });
+        }
+    }, [location.state, savedPrograms, navigate, location.pathname]);
 
     const loadSavedPrograms = () => {
         const saved = JSON.parse(localStorage.getItem('savedPrograms') || '[]');
@@ -80,32 +101,47 @@ const ProjectsPage = () => {
         return 0; // Keep existing order if no date
     });
 
-    if (savedPrograms.length === 0) {
-        return (
-            <div className="flex-1 flex items-center justify-center">
-                <div className="text-center">
-                    <div className="text-6xl mb-4">📁</div>
-                    <h2 className="text-3xl font-serif text-white mb-2">Chưa có dự án nào</h2>
-                    <p className="text-luxury-gray text-sm">
-                        Lưu các chương trình affiliate từ trang Chat để xem tại đây
+    const WaitlistBanner = () => (
+        <section
+            className="shrink-0 mt-auto border-t border-[var(--border-color)] bg-gradient-to-r from-[var(--bg-surface)] via-[var(--bg-hover)]/50 to-[var(--bg-surface)] backdrop-blur-sm"
+            style={{ boxShadow: '0 -4px 24px var(--shadow-color)' }}
+        >
+            <div className="max-w-7xl mx-auto py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 px-6 border-l-4 border-blue-500/60">
+                <div className="text-center sm:text-left flex-1 min-w-0 w-full sm:w-auto">
+                    <h3 className="font-serif text-lg sm:text-xl text-[var(--text-primary)] tracking-tight mb-1.5">
+                        Quản lý dự án Pro
+                    </h3>
+                    <p className="text-sm text-[var(--text-secondary)] max-w-xl leading-relaxed">
+                        Liên kết dự án với chiến dịch quảng cáo, nhập số ref affiliate để có insight chiến dịch và doanh nghiệp affiliate rõ ràng hơn.
                     </p>
                 </div>
+                <button
+                    type="button"
+                    onClick={() => {}}
+                    className="shrink-0 self-center sm:ml-auto sm:mr-0 px-6 py-3 border-2 border-blue-500 text-blue-500 bg-transparent text-xs font-medium uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all duration-300"
+                >
+                    Tham gia waitlist
+                </button>
+            </div>
+        </section>
+    );
+
+    if (savedPrograms.length === 0) {
+        return (
+            <div className="flex-1 flex flex-col bg-[var(--bg-primary)] transition-colors duration-300">
+                <div className="flex-1 flex items-center justify-center">
+                    <div className="text-center">
+                        <div className="text-6xl mb-4">📁</div>
+                        <h2 className="text-3xl font-serif text-white mb-2">Chưa có dự án nào</h2>
+                        <p className="text-[var(--text-secondary)] text-sm">
+                            Lưu các chương trình affiliate từ trang Chat để xem tại đây
+                        </p>
+                    </div>
+                </div>
+                <WaitlistBanner />
             </div>
         );
     }
-
-    const StatusBadge = ({ status }) => {
-        let colors = "bg-[var(--bg-surface)] text-[var(--text-secondary)]";
-        if (status === 'Đang chạy') colors = "bg-green-500/20 text-green-400";
-        if (status === 'Tạm dừng') colors = "bg-yellow-500/20 text-yellow-400";
-        if (status === 'Đang tìm hiểu') colors = "bg-blue-500/20 text-blue-400";
-
-        return (
-            <span className={`inline-block px-2 py-0.5 rounded text-[10px] uppercase tracking-wider font-medium ${colors}`}>
-                {status}
-            </span>
-        );
-    };
 
     return (
         <div className="flex-1 p-8 overflow-hidden flex flex-col bg-[var(--bg-primary)] transition-colors duration-300">
@@ -113,7 +149,7 @@ const ProjectsPage = () => {
                 {/* Header controls */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 shrink-0">
                     <div>
-                        <h1 className="text-3xl font-serif tracking-tight text-[var(--text-primary)] mb-1">Dự án đã lưu</h1>
+                        <h1 className="text-3xl font-serif tracking-tight text-[var(--text-primary)] mb-1">Quản lý dự án</h1>
                         <p className="text-[var(--text-secondary)] text-sm">{savedPrograms.length} chương trình</p>
                     </div>
 
@@ -147,23 +183,7 @@ const ProjectsPage = () => {
                             <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-[var(--text-secondary)]">▼</span>
                         </div>
 
-                        {/* View Toggle */}
-                        <div className="flex bg-[var(--bg-surface)] rounded border border-[var(--border-color)] p-0.5">
-                            <button
-                                onClick={() => setViewMode('grid')}
-                                className={`p-1.5 rounded transition-colors ${viewMode === 'grid' ? 'bg-[var(--bg-hover)] text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
-                                title="Grid View"
-                            >
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-                            </button>
-                            <button
-                                onClick={() => setViewMode('list')}
-                                className={`p-1.5 rounded transition-colors ${viewMode === 'list' ? 'bg-[var(--bg-hover)] text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
-                                title="List View"
-                            >
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-                            </button>
-                        </div>
+                        <ViewModeToggle viewMode={viewMode} onViewModeChange={setViewMode} />
                     </div>
                 </div>
 
@@ -182,7 +202,7 @@ const ProjectsPage = () => {
                                                 <h3 className="text-xl font-serif tracking-tight text-[var(--text-primary)] truncate" title={program.brand}>{program.brand}</h3>
                                                 {program.country && <span title="Country">{/* Flag could go here if we had mapping, or just text */}</span>}
                                             </div>
-                                            <StatusBadge status={program.status} />
+                                            <StatusBadge status={program.status} variant="project" />
                                         </div>
                                         <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <button
@@ -232,14 +252,13 @@ const ProjectsPage = () => {
                                         )}
                                     </div>
 
-                                    <a
-                                        href={program.program_url}
-                                        target="_blank"
-                                        rel="noreferrer"
+                                    <button
+                                        type="button"
+                                        onClick={() => navigate('/projects/detail', { state: { project: program, indexInSaved: savedPrograms.indexOf(program) } })}
                                         className="mt-6 block w-full text-center py-2 border border-[var(--border-color)] hover:border-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all duration-300 text-xs uppercase tracking-widest text-[var(--text-primary)]"
                                     >
-                                        Truy cập
-                                    </a>
+                                        Chi tiết dự án
+                                    </button>
                                 </div>
                             ))}
                         </div>
@@ -262,7 +281,7 @@ const ProjectsPage = () => {
                                         <tr key={index} className="hover:bg-[var(--bg-hover)] transition-colors group text-[var(--text-primary)]">
                                             <td className="px-4 py-4 font-medium text-[var(--text-primary)]">{program.brand}</td>
                                             <td className="px-4 py-4">
-                                                <StatusBadge status={program.status} />
+                                                <StatusBadge status={program.status} variant="project" />
                                             </td>
                                             <td className="px-4 py-4 text-[var(--text-secondary)]">{program.niche}</td>
                                             <td className="px-4 py-4 font-mono text-[var(--text-primary)]">
@@ -270,7 +289,13 @@ const ProjectsPage = () => {
                                             </td>
                                             <td className="px-4 py-4 font-mono text-xs opacity-70">{program.payment_time || 'NET30'}</td>
                                             <td className="px-4 py-4 text-right">
-                                                <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity items-center">
+                                                    <button
+                                                        onClick={() => navigate('/projects/detail', { state: { project: program, indexInSaved: savedPrograms.indexOf(program) } })}
+                                                        className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                                                    >
+                                                        Chi tiết
+                                                    </button>
                                                     <button onClick={() => openEditModal(program, index)} className="text-[var(--text-secondary)] hover:text-[var(--text-primary)]">✎</button>
                                                     <button onClick={() => handleDelete(index)} className="text-[var(--text-secondary)] hover:text-red-400">✕</button>
                                                 </div>
@@ -282,6 +307,8 @@ const ProjectsPage = () => {
                         </div>
                     )}
                 </div>
+
+                <WaitlistBanner />
             </div>
 
             <ProjectModal

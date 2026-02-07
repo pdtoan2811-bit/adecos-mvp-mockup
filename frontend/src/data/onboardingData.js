@@ -18,7 +18,7 @@ Tôi ở đây để giúp bạn tìm ngách tiềm năng, tối ưu quảng cá
 Tôi liên tục quét thị trường để tìm các dự án Crypto/Finance tiềm năng nhất.
 
 Ví dụ: Top 5 dự án Crypto đang có dòng tiền mạnh trong 24h qua:`,
-        delay: 2000
+        delay: 700
     },
     {
         role: 'assistant',
@@ -128,7 +128,7 @@ Ví dụ: Top 5 dự án Crypto đang có dòng tiền mạnh trong 24h qua:`,
         context: {
             description: "Dữ liệu được cập nhật realtime."
         },
-        delay: 4000
+        delay: 2000
     },
     // Feature 2: Analytics (Charts)
     {
@@ -139,7 +139,7 @@ Ví dụ: Top 5 dự án Crypto đang có dòng tiền mạnh trong 24h qua:`,
 Kết nối Ads Account và xem báo cáo hiệu suất ngay trong khung chat. Không cần switch tab.
 
 **Hiệu suất CPC (7 ngày qua):**`,
-        delay: 8000
+        delay: 5000
     },
     {
         role: 'assistant',
@@ -163,13 +163,13 @@ Kết nối Ads Account và xem báo cáo hiệu suất ngay trong khung chat. K
                 ]
             }
         },
-        delay: 10000
+        delay: 7000
     },
     {
         role: 'assistant',
         type: 'text',
         content: `**Chi phí theo chiến dịch (14 ngày qua):**`,
-        delay: 13000
+        delay: 10000
     },
     {
         role: 'assistant',
@@ -186,11 +186,11 @@ Kết nối Ads Account và xem báo cáo hiệu suất ngay trong khung chat. K
             config: {
                 xAxis: 'name',
                 series: [
-                    { dataKey: 'cost', name: 'Chi phí (₫)', color: '#F472B6' }
+                    { dataKey: 'cost', name: 'Chi phí (₫)', color: '#2161eb' }
                 ]
             }
         },
-        delay: 15000
+        delay: 12000
     },
     // Coming Soon Divider
     {
@@ -199,7 +199,7 @@ Kết nối Ads Account và xem báo cáo hiệu suất ngay trong khung chat. K
         content: `🚀 **Tính năng Sắp ra mắt (Coming Soon)**
 
 Chúng tôi đang phát triển các công cụ mạnh mẽ để thay đổi cách bạn làm Affiliate. Click vào các thẻ bên dưới để khám phá:`,
-        delay: 18000
+        delay: 15000
     },
 
     // Feature 3: Affiliate Ads Autopilot (Feature Preview - Static)
@@ -218,7 +218,7 @@ Chúng tôi đang phát triển các công cụ mạnh mẽ để thay đổi c�
             ctaUrl: "https://calendly.com/adecos-demo",
             autoRedirect: true
         },
-        delay: 20000
+        delay: 17000
     },
 
     // Feature 4: Chat with Data (Feature Preview)
@@ -236,7 +236,7 @@ Chúng tôi đang phát triển các công cụ mạnh mẽ để thay đổi c�
             ctaText: "Đăng ký Early Access",
             ctaUrl: "https://adecos.io/early-access"
         },
-        delay: 23000
+        delay: 20000
     },
 
     // Community CTA
@@ -244,7 +244,7 @@ Chúng tôi đang phát triển các công cụ mạnh mẽ để thay đổi c�
         role: 'assistant',
         type: 'community_card',
         content: {},
-        delay: 26000
+        delay: 23000
     },
 
     // Connect Ads CTA
@@ -252,6 +252,6 @@ Chúng tôi đang phát triển các công cụ mạnh mẽ để thay đổi c�
         role: 'assistant',
         type: 'email_capture',
         content: {},
-        delay: 29000
+        delay: 26000
     }
 ];

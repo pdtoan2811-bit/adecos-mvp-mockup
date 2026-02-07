@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import { useNotifications } from '../context/NotificationContext';
 
 const Sidebar = () => {
     const location = useLocation();
     const [savedCount, setSavedCount] = useState(0);
+    const { unreadCount } = useNotifications();
 
     // Update saved count on mount and when localStorage changes
     React.useEffect(() => {
@@ -29,12 +31,12 @@ const Sidebar = () => {
 
     const navItems = [
         { path: '/', label: 'AI Agent', icon: '🤖' },
-        { path: '/projects', label: 'Dự án đã lưu', icon: '◫', badge: savedCount },
+        { path: '/projects', label: 'Quản lý dự án', icon: '◫', badge: savedCount },
         { path: '/ads', label: 'Quản lý Ads', icon: '📢' },
-        { path: '/experiments', label: 'Experiments', icon: '🧪' },
+        { path: '/experiments', label: 'Thí nghiệm', icon: '🧪' },
         { path: '/deep-research', label: 'Deep Research', icon: '🔍' },
         { path: '/dashboard', label: 'Analytics', icon: '▭' },
-        { path: '/settings', label: 'Settings', icon: '⚙' },
+        { path: '/notification', label: 'Thông báo', icon: '🔔', unread: true },
     ];
 
     const { theme, toggleTheme } = useTheme();
@@ -68,14 +70,18 @@ const Sidebar = () => {
                                 <span className="text-sm font-mono opacity-60">{item.icon}</span>
                                 <span className="text-sm font-light tracking-wide">{item.label}</span>
                             </div>
-                            {item.badge !== undefined && item.badge > 0 && (
+                            {item.unread && unreadCount > 0 ? (
+                                <span className="min-w-[1.25rem] px-2 py-0.5 rounded-full text-xs font-mono bg-red-500 text-white text-center">
+                                    {unreadCount > 99 ? '99+' : unreadCount}
+                                </span>
+                            ) : item.badge !== undefined && item.badge > 0 ? (
                                 <span className={`
                                     px-2 py-0.5 rounded-full text-xs font-mono
                                     ${isActive ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]' : 'bg-[var(--bg-surface)] text-[var(--text-secondary)]'}
                                 `}>
                                     {item.badge}
                                 </span>
-                            )}
+                            ) : null}
                         </Link>
                     );
                 })}

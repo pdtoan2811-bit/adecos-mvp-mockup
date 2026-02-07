@@ -90,7 +90,7 @@ const ResearchProgressMessage = ({ taskId }) => {
                 )}
                 {task.status === 'completed' && (
                     <button
-                        onClick={() => navigate('/deep-research')}
+                        onClick={() => navigate(`/deep-research?taskId=${task.id}`)}
                         className="px-4 py-1.5 text-xs bg-[var(--text-primary)] text-[var(--bg-primary)] hover:opacity-90 shadow-lg hover:shadow-[var(--shadow-color)] transition-all rounded-lg font-medium tracking-wide flex items-center gap-2"
                     >
                         <span>Xem Báo Cáo</span>

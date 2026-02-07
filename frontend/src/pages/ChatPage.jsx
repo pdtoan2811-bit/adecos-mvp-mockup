@@ -6,12 +6,14 @@ import { generateMockWorkflow, shouldTriggerWorkflow } from '../data/mockWorkflo
 import { useAutoScroll } from '../hooks/useAutoScroll';
 import { useOnboarding } from '../hooks/useOnboarding';
 import { streamChatResponse } from '../services/chatService';
+import { useDeepResearch } from '../context/DeepResearchContext';
 
 function ChatPage() {
     const { messages, setMessages, getHistory } = useChatContext();
     const [isSearching, setIsSearching] = useState(false);
     const [hasSearched, setHasSearched] = useState(false);
     const [onboardingKey, setOnboardingKey] = useState(0);
+    const { startResearch } = useDeepResearch();
 
     // Calculate visible messages
     const MAX_VISIBLE_MESSAGES = 20;
@@ -36,13 +38,24 @@ function ChatPage() {
         }
     };
 
-    const handleSearch = useCallback(async (query) => {
+    const handleSearch = useCallback(async (input) => {
+        if (!input) return;
+
+        const isObjectPayload = typeof input === 'object' && input !== null;
+        const query = isObjectPayload ? input.query : input;
+        const deepResearch = isObjectPayload ? Boolean(input.deepResearch) : false;
+
         if (!query) return;
 
         setIsSearching(true);
         setHasSearched(true);
 
         const history = getHistory();
+
+        // Nếu bật Deep Research thì khởi chạy một task deep research song song với chat
+        if (deepResearch) {
+            startResearch(query);
+        }
 
         // Add user message to UI
         setMessages(prev => [...prev, { role: 'user', type: 'text', content: query }]);
@@ -128,7 +141,7 @@ function ChatPage() {
             });
             setIsSearching(false);
         }
-    }, [getHistory, setMessages, setIsSearching, setHasSearched]);
+    }, [getHistory, setMessages, setIsSearching, setHasSearched, startResearch]);
 
     // Listen for follow-up suggestion clicks
     useEffect(() => {
@@ -163,13 +176,13 @@ function ChatPage() {
                     {visibleMessages.map((msg, idx) => (
                         <ChatMessage key={hiddenCount + idx} message={msg} onSearch={handleSearch} />
                     ))}
-                    <div className="h-32" /> {/* Spacer for scrolling */}
+                    <div className="h-24" /> {/* Spacer for scrolling */}
                     <div ref={messagesEndRef} />
                 </div>
             </div>
 
             {/* Chat Interface */}
-            <div className="flex-shrink-0 bg-[var(--bg-primary)] pt-6 pb-8 px-4 md:px-8 border-t border-[var(--border-color)]">
+            <div className="flex-shrink-0 bg-[var(--bg-primary)] pt-3 pb-4 px-4 md:px-8 border-t border-[var(--border-color)]">
                 <div className="max-w-3xl mx-auto">
                     <ChatInterface
                         onSearch={handleSearch}

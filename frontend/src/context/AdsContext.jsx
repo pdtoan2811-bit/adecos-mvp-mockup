@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { mockAccounts, mockProxies, mockAssets } from '../data/mockAdsManager';
+import { mockCampaigns } from '../data/mockAdsData';
 
 const AdsContext = createContext();
 
@@ -22,6 +23,28 @@ export const AdsProvider = ({ children }) => {
         return saved ? JSON.parse(saved) : mockAssets;
     });
 
+    // Campaigns are mocked but mapped onto current accounts so 1 account (ID) can own many campaigns.
+    const [campaigns, setCampaigns] = useState(() => {
+        const saved = localStorage.getItem('adecos_ads_campaigns_v1');
+        const baseCampaigns = saved ? JSON.parse(saved) : mockCampaigns;
+
+        const savedAccounts = localStorage.getItem('adecos_ads_accounts_v2');
+        const accountList = savedAccounts ? JSON.parse(savedAccounts) : mockAccounts;
+
+        if (!accountList || accountList.length === 0) {
+            return baseCampaigns;
+        }
+
+        // Simple round‑robin mapping: distribute campaigns across available accounts.
+        return baseCampaigns.map((camp, index) => {
+            const owner = accountList[index % accountList.length];
+            return {
+                ...camp,
+                accountId: owner.id,
+            };
+        });
+    });
+
     // Persistence effects
     useEffect(() => {
         localStorage.setItem('adecos_ads_accounts_v2', JSON.stringify(accounts));
@@ -34,6 +57,10 @@ export const AdsProvider = ({ children }) => {
     useEffect(() => {
         localStorage.setItem('adecos_ads_assets_v2', JSON.stringify(assets));
     }, [assets]);
+
+    useEffect(() => {
+        localStorage.setItem('adecos_ads_campaigns_v1', JSON.stringify(campaigns));
+    }, [campaigns]);
 
     // Actions
     const addAccount = (newAccount) => {
@@ -89,6 +116,7 @@ export const AdsProvider = ({ children }) => {
             accounts,
             proxies,
             assets,
+            campaigns,
             addAccount,
             importAccounts,
             updateAccount,

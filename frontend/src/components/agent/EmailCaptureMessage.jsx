@@ -28,9 +28,6 @@ const EmailCaptureMessage = () => {
                             Kết nối Ads Account →
                         </Link>
 
-                        <p className="text-xs text-[var(--text-secondary)] opacity-50">
-                            Không cần thẻ tín dụng. Miễn phí trọn đời cho 1 tài khoản.
-                        </p>
                     </div>
                 </div>
             </div>

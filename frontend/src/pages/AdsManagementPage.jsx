@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAds } from '../context/AdsContext';
 import AdsAccountTable from '../components/ads/AdsAccountTable';
 import AddAccountModal from '../components/ads/AddAccountModal';
@@ -7,6 +8,7 @@ import AssetManager from '../components/ads/AssetManager';
 const AdsManagementPage = () => {
     const {
         accounts,
+        campaigns,
         importAccounts,
         addAccount,
         checkAccountHealth,
@@ -15,7 +17,11 @@ const AdsManagementPage = () => {
         proxies
     } = useAds();
 
-    const [activeTab, setActiveTab] = useState('accounts'); // accounts | assets | proxies
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const initialTab = location.state?.activeTab || 'accounts';
+    const [activeTab, setActiveTab] = useState(initialTab); // accounts | emails | ids | campaigns
     const [subTab, setSubTab] = useState('all'); // all | google | meta | tiktok
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedAccountIds, setSelectedAccountIds] = useState([]);
@@ -32,12 +38,86 @@ const AdsManagementPage = () => {
         return matchPlatform && matchSearch;
     });
 
-    // Calculate Overview Metrics for CURRENT PLATFORM
+    // Calculate Overview Metrics for CURRENT PLATFORM (Accounts tab)
     const metrics = filteredAccounts.reduce((acc, curr) => ({
         totalBudget: acc.totalBudget + (curr.budgetLoaded || 0),
         totalSpent: acc.totalSpent + (curr.budgetSpent || 0),
         remaining: acc.remaining + (curr.budgetRemaining || 0)
     }), { totalBudget: 0, totalSpent: 0, remaining: 0 });
+
+    // Email-level view: 1 email -> many IDs (accounts) -> many campaigns.
+    const emailSummary = useMemo(() => {
+        const map = new Map();
+
+        accounts.forEach(acc => {
+            if (!acc.email) return;
+            if (!map.has(acc.email)) {
+                map.set(acc.email, {
+                    email: acc.email,
+                    accountIds: new Set(),
+                    campaignCount: 0
+                });
+            }
+            const entry = map.get(acc.email);
+            entry.accountIds.add(acc.id);
+        });
+
+        campaigns.forEach(camp => {
+            const owner = accounts.find(a => a.id === camp.accountId);
+            if (!owner || !owner.email) return;
+            const entry = map.get(owner.email);
+            if (entry) {
+                entry.campaignCount += 1;
+            }
+        });
+
+        return Array.from(map.values()).map(entry => ({
+            email: entry.email,
+            idCount: entry.accountIds.size,
+            campaignCount: entry.campaignCount
+        }));
+    }, [accounts, campaigns]);
+
+    // ID view (each Ads account ID) with campaign counts.
+    const idSummary = useMemo(() => {
+        return accounts.map(acc => ({
+            id: acc.id,
+            name: acc.name,
+            email: acc.email,
+            platform: acc.platform,
+            campaignCount: campaigns.filter(camp => camp.accountId === acc.id).length
+        }));
+    }, [accounts, campaigns]);
+
+    // Campaign-level view: aggregate daily metrics into total Clicks / Impressions / Cost / CPC / CTR.
+    const campaignSummary = useMemo(() => {
+        return campaigns.map(camp => {
+            const totals = (camp.dailyData || []).reduce(
+                (agg, day) => ({
+                    clicks: agg.clicks + (day.clicks || 0),
+                    impressions: agg.impressions + (day.impressions || 0),
+                    cost: agg.cost + (day.cost || 0)
+                }),
+                { clicks: 0, impressions: 0, cost: 0 }
+            );
+
+            const cpc = totals.clicks > 0 ? totals.cost / totals.clicks : 0;
+            const ctr = totals.impressions > 0 ? (totals.clicks / totals.impressions) * 100 : 0;
+
+            const owner = accounts.find(a => a.id === camp.accountId);
+
+            return {
+                id: camp.id,
+                name: camp.name,
+                email: owner?.email || '',
+                clicks: totals.clicks,
+                impressions: totals.impressions,
+                cost: totals.cost,
+                cpc,
+                ctr
+            };
+        });
+    }, [campaigns, accounts]);
 
     const formatCurrency = (val) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(val);
 
@@ -81,8 +161,9 @@ const AdsManagementPage = () => {
             <div className="flex gap-8 border-b border-[var(--border-color)] mb-6">
                 {[
                     { id: 'accounts', label: 'Tài khoản Ads' },
-                    { id: 'assets', label: 'Tài sản (Thẻ/Creative)' },
-                    { id: 'proxies', label: 'Proxy System' }
+                    { id: 'emails', label: 'Quản lý Email' },
+                    { id: 'ids', label: 'Quản lý ID' },
+                    { id: 'campaigns', label: 'Quản lý chiến dịch' }
                 ].map(tab => (
                     <button
                         key={tab.id}
@@ -171,31 +252,135 @@ const AdsManagementPage = () => {
                     </div>
                 )}
 
-                {activeTab === 'assets' && (
-                    <AssetManager assets={assets} onAddAsset={addAsset} />
+                {activeTab === 'emails' && (
+                    <div className="border border-[var(--border-color)] rounded-lg bg-[var(--bg-surface)]">
+                        <div className="px-6 py-4 border-b border-[var(--border-color)] flex justify-between items-center">
+                            <h3 className="text-lg font-serif text-[var(--text-primary)]">Quản lý Email</h3>
+                            <span className="text-xs text-[var(--text-secondary)] uppercase tracking-[0.2em]">
+                                {emailSummary.length} email
+                            </span>
+                        </div>
+                        <table className="w-full text-left text-sm">
+                            <thead className="text-[var(--text-secondary)] text-xs uppercase tracking-[0.2em] border-b border-[var(--border-color)]">
+                                <tr>
+                                    <th className="px-6 py-3">Email</th>
+                                    <th className="px-6 py-3 text-right">Số ID</th>
+                                    <th className="px-6 py-3 text-right">Số chiến dịch</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-[var(--border-color)]">
+                                {emailSummary.map(row => (
+                                    <tr key={row.email} className="hover:bg-[var(--bg-hover)] transition-colors">
+                                        <td className="px-6 py-3 font-mono text-[var(--text-primary)]">{row.email}</td>
+                                        <td className="px-6 py-3 text-right">{row.idCount}</td>
+                                        <td className="px-6 py-3 text-right">{row.campaignCount}</td>
+                                    </tr>
+                                ))}
+                                {emailSummary.length === 0 && (
+                                    <tr>
+                                        <td colSpan={3} className="px-6 py-4 text-center text-[var(--text-secondary)] text-sm">
+                                            Chưa có email nào được lưu.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
 
-                {activeTab === 'proxies' && (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full overflow-y-auto">
-                        <div className="border border-[var(--border-color)] rounded p-6 bg-[var(--bg-surface)]">
-                            <h3 className="text-lg font-serif mb-4 text-[var(--text-primary)]">Danh sách Proxy</h3>
-                            <div className="space-y-3">
-                                {proxies.map(proxy => (
-                                    <div key={proxy.id} className="p-3 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded flex justify-between items-center">
-                                        <div>
-                                            <div className="font-mono text-sm text-[var(--text-primary)]">{proxy.ip}</div>
-                                            <div className="text-xs opacity-50 text-[var(--text-secondary)]">{proxy.location} • {proxy.provider}</div>
-                                        </div>
-                                        <div className={`text-xs px-2 py-1 rounded ${proxy.status === 'Live' ? 'bg-green-900/20 text-green-400' : 'bg-red-900/20 text-red-400'}`}>
-                                            {proxy.status}
-                                        </div>
-                                    </div>
-                                ))}
-                                {proxies.length === 0 && (
-                                    <div className="text-center text-[var(--text-secondary)] text-sm py-4">Chưa có proxy nào.</div>
-                                )}
-                            </div>
+                {activeTab === 'ids' && (
+                    <div className="border border-[var(--border-color)] rounded-lg bg-[var(--bg-surface)]">
+                        <div className="px-6 py-4 border-b border-[var(--border-color)] flex justify-between items-center">
+                            <h3 className="text-lg font-serif text-[var(--text-primary)]">Quản lý ID</h3>
+                            <span className="text-xs text-[var(--text-secondary)] uppercase tracking-[0.2em]">
+                                {idSummary.length} ID
+                            </span>
                         </div>
+                        <table className="w-full text-left text-sm">
+                            <thead className="text-[var(--text-secondary)] text-xs uppercase tracking-[0.2em] border-b border-[var(--border-color)]">
+                                <tr>
+                                    <th className="px-6 py-3">ID</th>
+                                    <th className="px-6 py-3">Tên tài khoản</th>
+                                    <th className="px-6 py-3">Email</th>
+                                    <th className="px-6 py-3">Nền tảng</th>
+                                    <th className="px-6 py-3 text-right">Số chiến dịch</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-[var(--border-color)]">
+                                {idSummary.map(row => (
+                                    <tr key={row.id} className="hover:bg-[var(--bg-hover)] transition-colors">
+                                        <td className="px-6 py-3 font-mono text-[var(--text-primary)]">{row.id}</td>
+                                        <td className="px-6 py-3">{row.name}</td>
+                                        <td className="px-6 py-3 text-[var(--text-secondary)]">{row.email}</td>
+                                        <td className="px-6 py-3 text-[var(--text-secondary)] uppercase text-xs">{row.platform}</td>
+                                        <td className="px-6 py-3 text-right">{row.campaignCount}</td>
+                                    </tr>
+                                ))}
+                                {idSummary.length === 0 && (
+                                    <tr>
+                                        <td colSpan={5} className="px-6 py-4 text-center text-[var(--text-secondary)] text-sm">
+                                            Chưa có ID nào.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+
+                {activeTab === 'campaigns' && (
+                    <div className="border border-[var(--border-color)] rounded-lg bg-[var(--bg-surface)]">
+                        <div className="px-6 py-4 border-b border-[var(--border-color)] flex justify-between items-center">
+                            <h3 className="text-lg font-serif text-[var(--text-primary)]">Quản lý chiến dịch</h3>
+                            <span className="text-xs text-[var(--text-secondary)] uppercase tracking-[0.2em]">
+                                {campaignSummary.length} chiến dịch
+                            </span>
+                        </div>
+                        <table className="w-full text-left text-sm">
+                            <thead className="text-[var(--text-secondary)] text-xs uppercase tracking-[0.2em] border-b border-[var(--border-color)]">
+                                <tr>
+                                    <th className="px-6 py-3">Chiến dịch</th>
+                                    <th className="px-6 py-3">Email</th>
+                                    <th className="px-6 py-3 text-right">Clicks</th>
+                                    <th className="px-6 py-3 text-right">Lượt hiển thị</th>
+                                    <th className="px-6 py-3 text-right">Chi phí</th>
+                                    <th className="px-6 py-3 text-right">CPC</th>
+                                    <th className="px-6 py-3 text-right">CTR</th>
+                                    <th className="px-6 py-3" />
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-[var(--border-color)]">
+                                {campaignSummary.map(row => (
+                                    <tr key={row.id} className="hover:bg-[var(--bg-hover)] transition-colors">
+                                        <td className="px-6 py-3">
+                                            <div className="text-[var(--text-primary)] font-medium">{row.name}</div>
+                                            <div className="text-[10px] text-[var(--text-secondary)] mt-1">ID: {row.id}</div>
+                                        </td>
+                                        <td className="px-6 py-3 text-[var(--text-secondary)]">{row.email}</td>
+                                        <td className="px-6 py-3 text-right font-mono">{row.clicks.toLocaleString()}</td>
+                                        <td className="px-6 py-3 text-right font-mono">{row.impressions.toLocaleString()}</td>
+                                        <td className="px-6 py-3 text-right font-mono">{row.cost.toLocaleString()} ₫</td>
+                                        <td className="px-6 py-3 text-right font-mono">{Math.round(row.cpc).toLocaleString()} ₫</td>
+                                        <td className="px-6 py-3 text-right font-mono">{row.ctr.toFixed(2)}%</td>
+                                        <td className="px-6 py-3 text-right">
+                                            <button
+                                                onClick={() => navigate(`/ads/campaigns/${row.id}`)}
+                                                className="px-3 py-1.5 text-xs border border-[var(--border-color)] rounded-sm hover:bg-[var(--bg-hover)]"
+                                            >
+                                                Chi tiết →
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                                {campaignSummary.length === 0 && (
+                                    <tr>
+                                        <td colSpan={8} className="px-6 py-4 text-center text-[var(--text-secondary)] text-sm">
+                                            Chưa có dữ liệu chiến dịch.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
                     </div>
                 )}
             </div>
