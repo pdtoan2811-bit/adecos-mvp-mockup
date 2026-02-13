@@ -83,6 +83,12 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+@media (min-width: 1536px) {
+  html {
+    font-size: 17px;
+  }
+}
+
 [data-theme="light"] body {
   font-weight: 500;
 }

@@ -1,13 +1,14 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
 import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { mockCampaigns, getPrograms, getKeywords, aggregateData } from '../data/mockAdsData';
+import DateRangePickerPopover from '../components/DateRangePickerPopover';
 
 const DashboardPage = () => {
     const [groupBy, setGroupBy] = useState('day');
-    const [startDate, setStartDate] = useState(new Date('2026-10-01'));
-    const [endDate, setEndDate] = useState(new Date('2026-12-31'));
+    const [dateRange, setDateRange] = useState({
+        startDate: new Date('2026-10-01'),
+        endDate: new Date('2026-12-31')
+    });
     const [selectedPrograms, setSelectedPrograms] = useState([]);
     const [selectedKeywords, setSelectedKeywords] = useState([]);
 
@@ -75,6 +76,8 @@ const DashboardPage = () => {
         return date.toISOString().split('T')[0];
     };
 
+    const { startDate, endDate } = dateRange;
+
     // Aggregate data for CURRENT period
     const chartData = useMemo(() => {
         return aggregateData(filteredCampaigns, groupBy, formatDate(startDate), formatDate(endDate));
@@ -126,22 +129,7 @@ const DashboardPage = () => {
         }
     }
 
-    // Quick date handlers
-    const setLast30Days = () => {
-        const end = new Date();
-        const start = new Date();
-        start.setDate(end.getDate() - 30);
-        setStartDate(start);
-        setEndDate(end);
-    };
 
-    const setLast90Days = () => {
-        const end = new Date();
-        const start = new Date();
-        start.setDate(end.getDate() - 90);
-        setStartDate(start);
-        setEndDate(end);
-    };
 
     // Custom tooltip
     const CustomTooltip = ({ active, payload }) => {
@@ -197,77 +185,40 @@ const DashboardPage = () => {
         <div className="flex-1 p-8 overflow-auto bg-[var(--bg-primary)] transition-colors duration-300">
             <div className="max-w-[1800px] mx-auto">
                 {/* Header */}
-                <div className="mb-8">
-                    <h1 className="text-3xl font-serif tracking-tight text-[var(--text-primary)] mb-2">Google Ads Dashboard</h1>
-                    <p className="text-[var(--text-secondary)] text-sm">Phân tích hiệu suất chiến dịch</p>
+                <div className="mb-8 flex justify-between items-start">
+                    <div>
+                        <h1 className="text-3xl font-serif tracking-tight text-[var(--text-primary)] mb-2">Google Ads Dashboard</h1>
+                        <p className="text-[var(--text-secondary)] text-sm">Phân tích hiệu suất chiến dịch</p>
+                    </div>
+                    <div className="text-right">
+                        <div className="text-xs text-[var(--text-secondary)] mb-1">Khoảng thời gian</div>
+                        <DateRangePickerPopover value={dateRange} onChange={setDateRange} />
+                    </div>
+                </div>
+
+                {/* Group By Controls */}
+                <div className="mb-6 flex items-center gap-4">
+                    <label className="text-xs text-[var(--text-secondary)] uppercase tracking-wider">Nhóm theo</label>
+                    <div className="flex gap-2">
+                        {['day', 'week', 'month'].map(group => (
+                            <button
+                                key={group}
+                                onClick={() => setGroupBy(group)}
+                                className={`px-4 py-1.5 text-xs uppercase tracking-wider transition-all rounded-sm ${groupBy === group
+                                        ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
+                                        : 'border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-primary)]'
+                                    }`}
+                            >
+                                {group === 'day' ? 'Ngày' : group === 'week' ? 'Tuần' : 'Tháng'}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Filters */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-                    {/* Date Range with Calendar & Group By */}
-                    <div className="border border-[var(--border-color)] p-4 rounded-sm flex flex-col h-[350px]">
-                        <label className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-3 block">
-                            Thời gian
-                        </label>
-
-                        {/* Quick Filters */}
-                        <div className="flex gap-2 mb-3">
-                            <button onClick={setLast30Days} className="flex-1 px-2 py-1 text-[10px] border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors rounded-sm uppercase">Last 30D</button>
-                            <button onClick={setLast90Days} className="flex-1 px-2 py-1 text-[10px] border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors rounded-sm uppercase">Last 90D</button>
-                        </div>
-
-                        <div className="space-y-3 mb-4">
-                            <div>
-                                <label className="text-xs text-[var(--text-secondary)] mb-1 block">Từ ngày</label>
-                                <DatePicker
-                                    selected={startDate}
-                                    onChange={(date) => setStartDate(date)}
-                                    selectsStart
-                                    startDate={startDate}
-                                    endDate={endDate}
-                                    dateFormat="dd/MM/yyyy"
-                                    className="w-full bg-transparent border border-[var(--border-color)] text-[var(--text-primary)] text-sm px-3 py-2 rounded-sm focus:outline-none focus:border-[var(--text-primary)]"
-                                />
-                            </div>
-                            <div>
-                                <label className="text-xs text-[var(--text-secondary)] mb-1 block">Đến ngày</label>
-                                <DatePicker
-                                    selected={endDate}
-                                    onChange={(date) => setEndDate(date)}
-                                    selectsEnd
-                                    startDate={startDate}
-                                    endDate={endDate}
-                                    minDate={startDate}
-                                    dateFormat="dd/MM/yyyy"
-                                    className="w-full bg-transparent border border-[var(--border-color)] text-[var(--text-primary)] text-sm px-3 py-2 rounded-sm focus:outline-none focus:border-[var(--text-primary)]"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Group By (Merged) */}
-                        <div className="mt-auto pt-4 border-t border-[var(--border-color)]">
-                            <label className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-2 block">
-                                Nhóm theo
-                            </label>
-                            <div className="flex gap-2">
-                                {['day', 'week', 'month'].map(group => (
-                                    <button
-                                        key={group}
-                                        onClick={() => setGroupBy(group)}
-                                        className={`flex-1 py-1 text-[10px] uppercase tracking-wider transition-all rounded-sm ${groupBy === group
-                                            ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
-                                            : 'border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-primary)]'
-                                            }`}
-                                    >
-                                        {group === 'day' ? 'Ngày' : group === 'week' ? 'Tuần' : 'Tháng'}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Account Filter (NEW) */}
-                    <div className="border border-[var(--border-color)] p-4 rounded-sm flex flex-col h-[350px]">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    {/* Account Filter */}
+                    <div className="border border-[var(--border-color)] p-4 rounded-sm flex flex-col h-[260px]">
                         <label className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-3 block flex-shrink-0">
                             Tài khoản
                         </label>
@@ -482,39 +433,6 @@ const DashboardPage = () => {
                     </div>
                 </div>
             </div>
-
-            {/* DatePicker Custom Styles */}
-            <style>{`
-                .react-datepicker {
-                    background-color: var(--bg-primary);
-                    border: 1px solid var(--border-color);
-                    font-family: var(--font-sans);
-                    color: var(--text-primary);
-                }
-                .react-datepicker__header {
-                    background-color: var(--bg-surface);
-                    border-bottom: 1px solid var(--border-color);
-                }
-                .react-datepicker__current-month,
-                .react-datepicker__day-name {
-                    color: var(--text-primary);
-                }
-                .react-datepicker__day {
-                    color: var(--text-secondary);
-                }
-                .react-datepicker__day:hover {
-                    background-color: var(--bg-hover);
-                    color: var(--text-primary);
-                }
-                .react-datepicker__day--selected,
-                .react-datepicker__day--in-range {
-                    background-color: var(--text-primary);
-                    color: var(--bg-primary);
-                }
-                .react-datepicker__day--keyboard-selected {
-                    background-color: var(--bg-hover);
-                }
-            `}</style>
         </div>
     );
 };

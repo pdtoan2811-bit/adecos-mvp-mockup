@@ -8,11 +8,177 @@
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
+
 .animate-fade-in-up {
     animation: fadeInUp 0.4s ease-out forwards;
+}
+
+/* Skeleton shimmer animation */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.skeleton-shimmer {
+    background: linear-gradient(90deg,
+            var(--border-color) 25%,
+            var(--bg-hover, rgba(255, 255, 255, 0.08)) 50%,
+            var(--border-color) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* Skeleton reveal — crossfade skeleton out, real content in */
+@keyframes skeletonReveal {
+    from {
+        opacity: 0;
+        transform: translateY(6px) scale(0.99);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.skeleton-reveal {
+    animation: skeletonReveal 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+/* ─── Onboarding Immersive Input ─── */
+
+@keyframes rotateGradient {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulseText {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.onboarding-glow {
+    position: relative;
+    background: var(--bg-surface);
+    /* Ensure z-index allows pseudo-element to sit behind */
+    z-index: 0;
+    overflow: hidden;
+}
+
+/* The expanding, rotating gradient border */
+.onboarding-glow::before {
+    content: "";
+    position: absolute;
+    /* Negative inset creates the border width */
+    inset: -2px;
+    border-radius: 9999px;
+    /* rounded-full */
+
+    background: conic-gradient(from 0deg,
+            transparent 0deg,
+            var(--text-primary) 90deg,
+            transparent 180deg,
+            var(--text-primary) 270deg,
+            transparent 360deg);
+
+    /* Rotate the gradient */
+    animation: rotateGradient 4s linear infinite;
+
+    /* Slight blur for the "glow" effect */
+    filter: blur(4px);
+    opacity: 0.4;
+
+    z-index: -1;
+}
+
+/* Inner mask to keep the background clean */
+.onboarding-glow::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    /* 1px border visible */
+    background: var(--bg-surface);
+    border-radius: 9999px;
+    z-index: -1;
+}
+
+/* Text pulse for placeholder */
+.placeholder-pulse::placeholder {
+    animation: pulseText 2s ease-in-out infinite;
+    color: var(--text-primary);
+}
+
+/* ─── Bento Feature Grid ─── */
+
+.bento-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .bento-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+}
+
+/* On mobile, all tiles span full width regardless of data config */
+@media (max-width: 767px) {
+    .bento-tile {
+        grid-column: span 1 !important;
+        grid-row: span 1 !important;
+    }
+}
+
+/* Tile hover glow ring */
+@keyframes tileGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 transparent;
+    }
+
+    50% {
+        box-shadow: 0 0 20px 2px var(--border-hover);
+    }
+}
+
+.bento-tile {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.bento-tile:hover {
+    border-color: var(--border-hover);
 }

@@ -5,6 +5,16 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 import os
 from generator import generate_research_stream
+from openrouter_client import fetch_suggestions
+
+import logging
+
+# Configure logging for the entire application
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -24,6 +34,9 @@ class ResearchRequest(BaseModel):
 
 class ChatRequest(BaseModel):
     messages: list
+
+class SuggestionRequest(BaseModel):
+    prompt: str
 
 @app.get("/")
 async def health_check():
@@ -71,6 +84,14 @@ async def agent_chat(request: ChatRequest):
         generate_agent_stream(request.messages),
         media_type="application/x-ndjson"
     )
+
+@app.post("/api/suggestions")
+async def get_suggestions(request: SuggestionRequest):
+    """
+    Get autocomplete suggestions for a given prompt.
+    """
+    suggestions = fetch_suggestions(request.prompt)
+    return {"suggestions": suggestions}
 
 if __name__ == "__main__":
     import uvicorn

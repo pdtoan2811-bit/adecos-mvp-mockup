@@ -30,7 +30,7 @@ const Sidebar = () => {
     }, []);
 
     const navItems = [
-        { path: '/', label: 'AI Agent', icon: '🤖' },
+        { path: '/chat', label: 'AI Agent', icon: '🤖' },
         { path: '/projects', label: 'Quản lý dự án', icon: '◫', badge: savedCount },
         { path: '/ads', label: 'Quản lý Ads', icon: '📢' },
         { path: '/experiments', label: 'Thí nghiệm', icon: '🧪' },
@@ -45,8 +45,10 @@ const Sidebar = () => {
         <div className="w-64 h-screen bg-[var(--bg-primary)] border-r border-[var(--border-color)] flex flex-col flex-shrink-0 transition-colors duration-300">
             {/* Logo/Brand */}
             <div className="px-6 py-6 border-b border-[var(--border-color)]">
-                <h1 className="text-2xl font-serif text-[var(--text-primary)] tracking-tight">Adecos</h1>
-                <p className="text-xs text-[var(--text-secondary)] uppercase tracking-widest mt-1">AI-Powered Platform</p>
+                <Link to="/" className="group block">
+                    <h1 className="text-2xl font-serif text-[var(--text-primary)] tracking-tight group-hover:opacity-80 transition-opacity">Adecos</h1>
+                    <p className="text-xs text-[var(--text-secondary)] uppercase tracking-widest mt-1">AI-Powered Platform</p>
+                </Link>
             </div>
 
             {/* Navigation */}

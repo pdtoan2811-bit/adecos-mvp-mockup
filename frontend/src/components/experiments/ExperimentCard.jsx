@@ -1,4 +1,5 @@
 import React from 'react';
+import { getStatusConfig, formatExperimentDate, calculateTimeProgress } from '../../utils/experimentUtils';
 
 /**
  * ExperimentCard - Card displaying experiment summary
@@ -23,61 +24,15 @@ const ExperimentCard = ({ experiment, onClick, onStatusChange, onDelete }) => {
         timeProgress
     } = experiment;
 
-    const statusConfig = {
-        running: {
-            color: 'bg-green-500/20 text-green-400 border-green-500/30',
-            icon: '▶',
-            text: 'Đang chạy'
-        },
-        paused: {
-            color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-            icon: '❚❚',
-            text: 'Tạm dừng'
-        },
-        completed: {
-            color: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-            icon: '✓',
-            text: 'Hoàn thành'
-        }
-    };
-
-    const config = statusConfig[status] || statusConfig.running;
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const now = new Date();
-        const diff = now - date;
-
-        if (diff < 86400000) {
-            const hours = Math.floor(diff / 3600000);
-            return hours === 0 ? 'Vừa tạo' : `${hours} giờ trước`;
-        }
-        if (diff < 604800000) {
-            return `${Math.floor(diff / 86400000)} ngày trước`;
-        }
-        return date.toLocaleDateString('vi-VN');
-    };
-
-    // Calculate time progress
-    let timePercent = 0;
-    let timeLabel = '';
-    if (timeProgress) {
-        const start = new Date(timeProgress.startDate).getTime();
-        const end = new Date(timeProgress.endDate).getTime();
-        const now = Date.now();
-        const total = end - start;
-        const elapsed = now - start;
-        timePercent = Math.min(100, Math.max(0, (elapsed / total) * 100));
-
-        const daysLeft = Math.ceil((end - now) / (1000 * 60 * 60 * 24));
-        timeLabel = daysLeft > 0 ? `${daysLeft} days left` : 'Finished';
-    }
+    const config = getStatusConfig(status);
+    const dateLabel = formatExperimentDate(createdAt);
+    const timeData = calculateTimeProgress(timeProgress);
 
     const completedCount = todoItems.filter(item => item.completed).length;
 
     return (
         <div
-            className="group border border-[var(--border-color)] rounded-lg bg-[var(--bg-surface)] p-5 hover:bg-[var(--bg-hover)] transition-all duration-300 cursor-pointer flex flex-col h-full"
+            className="group border border-[var(--border-color)] rounded-lg bg-[var(--bg-surface)] p-5 hover:bg-[var(--bg-hover)] transition-all duration-300 cursor-pointer flex flex-col h-full hover:shadow-lg hover:border-[var(--text-secondary)]/30"
             onClick={onClick}
         >
             {/* Header */}
@@ -87,7 +42,7 @@ const ExperimentCard = ({ experiment, onClick, onStatusChange, onDelete }) => {
                         {title}
                     </h3>
                     <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
-                        <span>{formatDate(createdAt)}</span>
+                        <span>{dateLabel}</span>
                         {result !== 'pending' && (
                             <span className={`px-1.5 py-0.5 rounded ${result === 'success' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
                                 {result === 'success' ? 'Success' : 'Failed'}
@@ -97,28 +52,28 @@ const ExperimentCard = ({ experiment, onClick, onStatusChange, onDelete }) => {
                 </div>
                 <span className={`shrink-0 flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full border ${config.color}`}>
                     <span className="text-[10px]">{config.icon}</span>
-                    <span className="whitespace-nowrap">{config.text}</span>
+                    <span className="whitespace-nowrap font-medium">{config.text}</span>
                 </span>
             </div>
 
             {/* Target & Time Progress Grid */}
             <div className="grid grid-cols-2 gap-4 mb-4">
-                {timeProgress && (
-                    <div className="border border-[var(--border-color)] rounded-lg p-3 bg-[var(--bg-primary)]">
-                        <div className="flex justify-between text-[10px] text-[var(--text-secondary)] mb-1">
-                            <span>Time Left</span>
-                            <span className="text-[var(--text-primary)]">{timeLabel}</span>
+                {timeData && (
+                    <div className="border border-[var(--border-color)] rounded-lg p-3 bg-[var(--bg-primary)] group-hover:bg-[var(--bg-surface)] transition-colors">
+                        <div className="flex justify-between text-[10px] text-[var(--text-secondary)] mb-1 uppercase tracking-wider">
+                            <span>Time</span>
+                            <span className="text-[var(--text-primary)] font-medium">{timeData.label}</span>
                         </div>
                         <div className="h-1 bg-[var(--border-color)] rounded-full overflow-hidden">
-                            <div className="h-full bg-blue-500" style={{ width: `${timePercent}%` }} />
+                            <div className="h-full bg-blue-500" style={{ width: `${timeData.percent}%` }} />
                         </div>
                     </div>
                 )}
                 {targetAccuracy ? (
-                    <div className="border border-[var(--border-color)] rounded-lg p-3 bg-[var(--bg-primary)]">
-                        <div className="flex justify-between text-[10px] text-[var(--text-secondary)] mb-1">
+                    <div className="border border-[var(--border-color)] rounded-lg p-3 bg-[var(--bg-primary)] group-hover:bg-[var(--bg-surface)] transition-colors">
+                        <div className="flex justify-between text-[10px] text-[var(--text-secondary)] mb-1 uppercase tracking-wider">
                             <span>Target ({targetAccuracy.unit})</span>
-                            <span className={targetAccuracy.status === 'over' ? 'text-green-400' : 'text-red-400'}>
+                            <span className={`font-medium ${targetAccuracy.status === 'over' ? 'text-green-400' : 'text-red-400'}`}>
                                 {targetAccuracy.current}
                             </span>
                         </div>
@@ -130,10 +85,10 @@ const ExperimentCard = ({ experiment, onClick, onStatusChange, onDelete }) => {
                         </div>
                     </div>
                 ) : (
-                    <div className="border border-[var(--border-color)] rounded-lg p-3 bg-[var(--bg-primary)]">
-                        <div className="flex justify-between text-[10px] text-[var(--text-secondary)] mb-1">
+                    <div className="border border-[var(--border-color)] rounded-lg p-3 bg-[var(--bg-primary)] group-hover:bg-[var(--bg-surface)] transition-colors">
+                        <div className="flex justify-between text-[10px] text-[var(--text-secondary)] mb-1 uppercase tracking-wider">
                             <span>Tasks</span>
-                            <span className="text-[var(--text-primary)]">{completedCount}/{todoItems.length}</span>
+                            <span className="text-[var(--text-primary)] font-medium">{completedCount}/{todoItems.length}</span>
                         </div>
                         <div className="h-1 bg-[var(--border-color)] rounded-full overflow-hidden">
                             <div className="h-full bg-gradient-to-r from-green-500 to-emerald-400" style={{ width: `${progress}%` }} />
@@ -148,35 +103,35 @@ const ExperimentCard = ({ experiment, onClick, onStatusChange, onDelete }) => {
                     {metrics.roas && (
                         <div className="text-center p-2 rounded border border-[var(--border-color)] bg-[var(--bg-primary)]">
                             <div className="text-md font-serif text-[var(--text-primary)]">{metrics.roas.toFixed(1)}x</div>
-                            <div className="text-[9px] text-[var(--text-secondary)] uppercase">ROAS</div>
+                            <div className="text-[9px] text-[var(--text-secondary)] uppercase tracking-wider">ROAS</div>
                         </div>
                     )}
                     {metrics.cpc && (
                         <div className="text-center p-2 rounded border border-[var(--border-color)] bg-[var(--bg-primary)]">
                             <div className="text-md font-serif text-[var(--text-primary)]">{(metrics.cpc / 1000).toFixed(1)}k</div>
-                            <div className="text-[9px] text-[var(--text-secondary)] uppercase">CPC</div>
+                            <div className="text-[9px] text-[var(--text-secondary)] uppercase tracking-wider">CPC</div>
                         </div>
                     )}
                     {metrics.conversions && (
                         <div className="text-center p-2 rounded border border-[var(--border-color)] bg-[var(--bg-primary)]">
                             <div className="text-md font-serif text-[var(--text-primary)]">{metrics.conversions}</div>
-                            <div className="text-[9px] text-[var(--text-secondary)] uppercase">Conv.</div>
+                            <div className="text-[9px] text-[var(--text-secondary)] uppercase tracking-wider">Conv.</div>
                         </div>
                     )}
                 </div>
             )}
 
-            {/* Quick Actions Footer */}
-            <div className="flex items-center gap-2 pt-3 border-t border-[var(--border-color)] mt-auto">
+            {/* Quick Actions Footer - Hidden by default, shown on hover */}
+            <div className="flex items-center gap-2 pt-3 border-t border-[var(--border-color)] mt-auto opacity-60 group-hover:opacity-100 transition-opacity">
                 <button
                     onClick={(e) => { e.stopPropagation(); }}
-                    className="px-2 py-1 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] rounded transition-colors"
+                    className="px-2 py-1 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-primary)] rounded transition-colors"
                 >
                     Extend
                 </button>
                 <button
                     onClick={(e) => { e.stopPropagation(); }}
-                    className="px-2 py-1 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] rounded transition-colors"
+                    className="px-2 py-1 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-primary)] rounded transition-colors"
                 >
                     Scale
                 </button>

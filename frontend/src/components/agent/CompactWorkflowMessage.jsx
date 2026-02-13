@@ -112,7 +112,7 @@ const CompactWorkflowMessage = ({ content, context, onSaveExperiment }) => {
     }
 
     return (
-        <div className="w-full border border-[var(--border-color)] rounded-xl bg-[var(--bg-card)] overflow-hidden">
+        <div className="w-full border border-[var(--border-color)] rounded-xl bg-[var(--bg-surface)] overflow-hidden">
             {/* Header - Single Line */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border-color)] bg-[var(--bg-surface)]">
                 <div className="flex items-center gap-3">

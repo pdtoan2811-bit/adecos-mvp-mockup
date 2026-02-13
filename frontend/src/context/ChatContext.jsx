@@ -19,10 +19,12 @@ export const ChatProvider = ({ children }) => {
     // Don't load messages on mount - UI starts clean
     // But we keep history in sessionStorage for context
 
-    // Save messages to sessionStorage whenever they change (but exclude loading messages)
+    // Save messages to sessionStorage whenever they change
+    // Exclude transient UI-only message types that are re-injected dynamically
     useEffect(() => {
         if (messages.length > 0) {
-            const messagesToSave = messages.filter(msg => msg.type !== 'loading');
+            const uiOnlyTypes = ['loading', 'immersive_input', 'bento_grid', 'skeleton', 'thinking'];
+            const messagesToSave = messages.filter(msg => !uiOnlyTypes.includes(msg.type));
             if (messagesToSave.length > 0) {
                 sessionStorage.setItem('chatHistory', JSON.stringify(messagesToSave));
             }

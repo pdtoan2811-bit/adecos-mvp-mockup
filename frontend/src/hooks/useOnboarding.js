@@ -1,42 +1,109 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { onboardingSequence } from '../data/onboardingData';
 
+const ONBOARDING_COMPLETE_KEY = 'adecos_onboarding_complete';
+
 /**
- * Custom hook to handle the onboarding sequence in the chat.
+ * Enhanced onboarding hook with:
+ *  - Word-by-word streaming with punctuation pauses
+ *  - Skeleton → real content reveal flow
+ *  - Persistent onboardingComplete state (survives navigation)
+ *
  * @param {Array} messages - Current messages array
  * @param {Function} setMessages - State setter for messages
+ * @param {number} onboardingKey - Key to trigger re-run
+ * @returns {{ isOnboarding: boolean, onboardingComplete: boolean, setOnboardingComplete: Function }}
  */
 export const useOnboarding = (messages, setMessages, onboardingKey) => {
+    const [isOnboarding, setIsOnboarding] = useState(false);
+    const [onboardingComplete, _setOnboardingComplete] = useState(() => {
+        return sessionStorage.getItem(ONBOARDING_COMPLETE_KEY) === 'true';
+    });
+
+    // Wrapper that also persists to sessionStorage
+    const setOnboardingComplete = (value) => {
+        _setOnboardingComplete(value);
+        if (value) {
+            sessionStorage.setItem(ONBOARDING_COMPLETE_KEY, 'true');
+        } else {
+            sessionStorage.removeItem(ONBOARDING_COMPLETE_KEY);
+        }
+    };
+
     useEffect(() => {
-        // Only trigger on specific conditions based on key:
+        // If onboarding already completed (persisted), skip entirely
+        if (sessionStorage.getItem(ONBOARDING_COMPLETE_KEY) === 'true' && onboardingKey === 0) {
+            return;
+        }
+
+        // Only trigger on specific conditions:
         // 1. Initial load (key=0): Only if no messages exist
-        // 2. Restart (key>0): Always run (messages checked/cleared in parent)
+        // 2. Restart (key>0): Always run
         if (onboardingKey === 0 && messages.length > 0) return;
 
         let isCancelled = false;
+        setOnboardingComplete(false);
+
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        const isSentenceEnd = (char) => /[.!?:]/.test(char);
 
         const runOnboarding = async () => {
-            console.log(`[useOnboarding] Starting sequence (Key: ${onboardingKey})...`);
-            let previousDelay = 0;
+            setIsOnboarding(true);
+            console.log(`[useOnboarding] Starting enhanced sequence (Key: ${onboardingKey})...`);
 
-            for (const step of onboardingSequence) {
+            for (let stepIdx = 0; stepIdx < onboardingSequence.length; stepIdx++) {
                 if (isCancelled) break;
 
-                // Calculate relative delay needed to reach the absolute timestamp in step.delay
-                const delayFromPrevious = (step.delay || 0) - previousDelay;
-                const safeDelay = Math.max(0, delayFromPrevious);
+                const step = onboardingSequence[stepIdx];
 
-                // Wait for the calculated relative delay
-                await new Promise(resolve => setTimeout(resolve, safeDelay));
+                if (step.delay > 0) {
+                    await sleep(step.delay);
+                }
 
                 if (isCancelled) break;
 
-                // Update previousDelay for next iteration
-                previousDelay = step.delay || 0;
+                if (step.type === 'user_mimic') {
+                    setMessages(prev => [...prev, {
+                        role: 'user',
+                        type: 'text',
+                        content: step.content
+                    }]);
+                    continue;
+                }
 
-                // Handle Streaming for Text Messages
+                if (step.type === 'thinking') {
+                    setMessages(prev => [...prev, {
+                        role: 'assistant',
+                        type: 'thinking',
+                        content: ''
+                    }]);
+
+                    await sleep(1200 + Math.random() * 600);
+                    if (isCancelled) break;
+
+                    setMessages(prev => {
+                        const newArr = [...prev];
+                        if (newArr.length > 0 && newArr[newArr.length - 1].type === 'thinking') {
+                            return newArr.slice(0, -1);
+                        }
+                        return newArr;
+                    });
+                    continue;
+                }
+
+                if (step.type === 'skeleton') {
+                    setMessages(prev => [...prev, {
+                        role: 'assistant',
+                        type: 'skeleton',
+                        content: {
+                            variant: step.content.variant,
+                            loadDuration: step.content.loadDuration
+                        }
+                    }]);
+                    continue;
+                }
+
                 if (step.type === 'text') {
-                    // Initialize empty message
                     setMessages(prev => [...prev, {
                         role: step.role,
                         type: step.type,
@@ -45,7 +112,6 @@ export const useOnboarding = (messages, setMessages, onboardingKey) => {
                         actions: step.actions
                     }]);
 
-                    // Stream words
                     const words = step.content.split(' ');
                     let currentContent = '';
 
@@ -54,7 +120,6 @@ export const useOnboarding = (messages, setMessages, onboardingKey) => {
 
                         currentContent += (i > 0 ? ' ' : '') + words[i];
 
-                        // Update the last message with new content
                         setMessages(prev => {
                             const newArr = [...prev];
                             const lastIndex = newArr.length - 1;
@@ -67,18 +132,60 @@ export const useOnboarding = (messages, setMessages, onboardingKey) => {
                             return newArr;
                         });
 
-                        // Small random delay for typing effect (20-50ms)
-                        await new Promise(resolve => setTimeout(resolve, 20 + Math.random() * 30));
+                        let wordDelay = 15 + Math.random() * 20;
+                        const lastChar = words[i].slice(-1);
+                        if (isSentenceEnd(lastChar)) {
+                            wordDelay += 60 + Math.random() * 50;
+                        }
+
+                        await sleep(wordDelay);
                     }
-                } else {
-                    // Non-text messages appear instantly
-                    setMessages(prev => [...prev, {
-                        role: step.role,
-                        type: step.type,
-                        content: step.content,
-                        context: step.context,
-                        actions: step.actions
-                    }]);
+                    continue;
+                }
+
+                if (step.type === 'table' || step.type === 'chart') {
+                    setMessages(prev => {
+                        const newArr = [...prev];
+                        const lastIndex = newArr.length - 1;
+                        if (lastIndex >= 0 && newArr[lastIndex].type === 'skeleton') {
+                            newArr[lastIndex] = {
+                                role: step.role,
+                                type: step.type,
+                                content: step.content,
+                                context: step.context,
+                                actions: step.actions,
+                                _revealed: true
+                            };
+                        } else {
+                            newArr.push({
+                                role: step.role,
+                                type: step.type,
+                                content: step.content,
+                                context: step.context,
+                                actions: step.actions,
+                                _revealed: true
+                            });
+                        }
+                        return newArr;
+                    });
+                    continue;
+                }
+
+                // All other types (feature_preview, community_card, etc.)
+                setMessages(prev => [...prev, {
+                    role: step.role,
+                    type: step.type,
+                    content: step.content,
+                    context: step.context,
+                    actions: step.actions
+                }]);
+            }
+
+            if (!isCancelled) {
+                setIsOnboarding(false);
+                await sleep(1500);
+                if (!isCancelled) {
+                    setOnboardingComplete(true);
                 }
             }
         };
@@ -87,9 +194,10 @@ export const useOnboarding = (messages, setMessages, onboardingKey) => {
 
         return () => {
             isCancelled = true;
+            setIsOnboarding(false);
         };
-        // Explicitly depend ONLY on onboardingKey.
-        // We do not want to re-run or cancel when 'messages' changes during the sequence.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onboardingKey]);
+
+    return { isOnboarding, onboardingComplete, setOnboardingComplete };
 };

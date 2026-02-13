@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import ResultsTable from './ResultsTable';
@@ -10,11 +11,15 @@ import CampaignSelectionTable from './agent/CampaignSelectionTable';
 import CommunityCard from './agent/CommunityCard';
 import EmailCaptureMessage from './agent/EmailCaptureMessage';
 import FeaturePreviewCard from './agent/FeaturePreviewCard';
-
 import InteractiveFeatureReveal from './agent/InteractiveFeatureReveal';
 import ResearchProgressMessage from './ResearchProgressMessage';
+import SkeletonLoader from './agent/SkeletonLoader';
+import ProgressWheel from './agent/ProgressWheel';
+import ThinkingIndicator from './agent/ThinkingIndicator';
+import BentoFeatureGrid from './chat/BentoFeatureGrid';
+import ImmersiveInputMessage from './chat/ImmersiveInputMessage';
 
-const ChatMessage = ({ message, onSearch }) => {
+const ChatMessage = ({ message, onSearch, onReplayDemo, onStartResearch }) => {
     const { role, type, content, context, actions } = message;
     const isUser = role === 'user';
 
@@ -29,8 +34,8 @@ const ChatMessage = ({ message, onSearch }) => {
     if (type === 'deep_research_progress') {
         const taskId = typeof content === 'object' ? content.taskId : content;
         return (
-            <div className="w-full my-4 px-4 md:px-0 fade-in-up">
-                <div className="max-w-4xl mx-auto">
+            <div className="w-full my-8 px-4 md:px-0 fade-in-up">
+                <div className="max-w-5xl mx-auto">
                     <ResearchProgressMessage taskId={taskId} />
                 </div>
             </div>
@@ -40,8 +45,8 @@ const ChatMessage = ({ message, onSearch }) => {
     // Handle campaign selection for general queries
     if (type === 'campaign_selection') {
         return (
-            <div className="w-full my-8 px-4 md:px-0 fade-in-up">
-                <div className="max-w-4xl mx-auto">
+            <div className="w-full my-12 px-4 md:px-0 fade-in-up">
+                <div className="max-w-5xl mx-auto">
                     <CampaignSelectionTable
                         campaigns={content.campaigns}
                         onSelect={(campaign) => {
@@ -59,31 +64,54 @@ const ChatMessage = ({ message, onSearch }) => {
     // Handle workflow messages with compact SMART layout
     if (type === 'workflow') {
         return (
-            <div className="w-full my-8 px-4 md:px-0 fade-in-up">
-                <div className="max-w-4xl mx-auto">
+            <div className="w-full my-12 px-4 md:px-0 fade-in-up">
+                <div className="max-w-5xl mx-auto">
                     <CompactWorkflowMessage content={content} context={context} />
                 </div>
             </div>
         );
     }
 
-    if (type === 'loading') {
+    // Handle skeleton placeholders (onboarding)
+    if (type === 'skeleton') {
+        const variant = content?.variant || 'table';
+        const loadDuration = content?.loadDuration || 1500;
         return (
-            <div className="flex w-full justify-start my-4 px-4 md:px-0 fade-in-up">
-                <div className="max-w-4xl mx-auto w-full">
-                    <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-secondary)] px-6 py-4 rounded-3xl rounded-tl-sm backdrop-blur-md text-sm font-light italic tracking-wider animate-pulse flex items-center gap-2 w-fit">
-                        <div className="w-2 h-2 bg-[var(--text-secondary)] rounded-full animate-bounce"></div>
-                        Adecos đang phân tích...
+            <motion.div
+                className="w-full my-12 px-4 md:px-0"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+                <div className="max-w-5xl mx-auto">
+                    <div className="flex items-center gap-3 mb-3">
+                        <ProgressWheel duration={loadDuration} />
+                        <span className="text-xs text-[var(--text-secondary)] italic opacity-60">
+                            {variant === 'table' ? 'Đang tải dữ liệu…' : 'Đang tạo biểu đồ…'}
+                        </span>
                     </div>
+                    <SkeletonLoader variant={variant} />
                 </div>
+            </motion.div>
+        );
+    }
+
+    // Handle thinking indicator (onboarding)
+    if (type === 'thinking' || type === 'loading') {
+        return (
+            <div className="w-full my-10 px-4 md:px-0">
+                <ThinkingIndicator />
             </div>
         );
     }
 
+
+
     // NEW: Handle composite messages (narrative + chart/table)
     if (type === 'composite') {
         return (
-            <div className="w-full my-8 px-4 md:px-0 fade-in-up">
+            <div className="w-full my-12 px-4 md:px-0 fade-in-up">
                 <CompositeMessage content={content} context={context} />
             </div>
         );
@@ -106,8 +134,8 @@ const ChatMessage = ({ message, onSearch }) => {
     // NEW: Handle Feature Preview
     if (type === 'feature_preview') {
         return (
-            <div className="w-full my-8 px-4 md:px-0 fade-in-up">
-                <div className="max-w-4xl mx-auto">
+            <div className="w-full my-12 px-4 md:px-0 fade-in-up">
+                <div className="max-w-5xl mx-auto">
                     <FeaturePreviewCard content={content} />
                 </div>
             </div>
@@ -117,19 +145,8 @@ const ChatMessage = ({ message, onSearch }) => {
     // NEW: Handle Interactive Feature Reveal
     if (type === 'interactive_feature') {
         return (
-            <div className="w-full my-8 px-4 md:px-0 fade-in-up">
-                <div className="max-w-4xl mx-auto">
-                    <InteractiveFeatureReveal content={content} />
-                </div>
-            </div>
-        );
-    }
-
-    // NEW: Handle Interactive Feature Reveal
-    if (type === 'interactive_feature') {
-        return (
-            <div className="w-full my-8 px-4 md:px-0 fade-in-up">
-                <div className="max-w-4xl mx-auto">
+            <div className="w-full my-12 px-4 md:px-0 fade-in-up">
+                <div className="max-w-5xl mx-auto">
                     <InteractiveFeatureReveal content={content} />
                 </div>
             </div>
@@ -138,9 +155,10 @@ const ChatMessage = ({ message, onSearch }) => {
 
     // NEW: Handle chart messages
     if (type === 'chart') {
+        const revealClass = message._revealed ? 'skeleton-reveal' : 'fade-in-up';
         return (
-            <div className="w-full my-8 px-4 md:px-0 fade-in-up">
-                <div className="max-w-4xl mx-auto">
+            <div className={`w-full my-12 px-4 md:px-0 ${revealClass}`}>
+                <div className="max-w-5xl mx-auto">
                     <ChartMessage content={content} />
                 </div>
             </div>
@@ -157,7 +175,6 @@ const ChatMessage = ({ message, onSearch }) => {
                 tableData = JSON.parse(content);
             } catch (e) {
                 console.error('Failed to parse table content:', e);
-                // If it's still the full JSON response string, try to extract the array
                 if (content.includes('"type": "table"')) {
                     try {
                         const fullParsed = JSON.parse(content);
@@ -172,15 +189,41 @@ const ChatMessage = ({ message, onSearch }) => {
             }
         }
 
-        // Ensure it's an array
         if (!Array.isArray(tableData)) {
             tableData = [];
         }
 
+        const revealClass = message._revealed ? 'skeleton-reveal' : 'fade-in-up';
         return (
-            <div className="w-full my-8 px-4 md:px-0 fade-in-up">
-                {/* Table Widget is always full width for better data viewing per user request */}
+            <div className={`w-full my-12 px-4 md:px-0 ${revealClass}`}>
                 <ResultsTable data={tableData} />
+            </div>
+        );
+    }
+
+    // NEW: Handle integrated Bento Grid in conversation
+    if (type === 'bento_grid') {
+        return (
+            <div className="w-full my-12 px-4 md:px-0 scroll-mt-20">
+                <BentoFeatureGrid
+                    isEmbedded={true}
+                    onReplayDemo={onReplayDemo}
+                    onStartResearch={onStartResearch || (() => {
+                        if (onSearch) onSearch({ triggerImmersive: true });
+                    })}
+                />
+            </div>
+        );
+    }
+
+    // NEW: Handle integrated Immersive Input in conversation
+    if (type === 'immersive_input') {
+        return (
+            <div className="w-full my-12 px-4 md:px-0">
+                <ImmersiveInputMessage
+                    onSearch={onSearch}
+                    isSearching={false}
+                />
             </div>
         );
     }
@@ -188,9 +231,11 @@ const ChatMessage = ({ message, onSearch }) => {
     // User messages in chat bubble
     if (isUser) {
         return (
-            <div className="flex w-full justify-end my-4 px-4 md:px-0">
-                <div className="max-w-[85%] md:max-w-2xl px-6 py-4 rounded-3xl text-lg font-light leading-relaxed tracking-wide shadow-lg bg-[var(--text-primary)] text-[var(--bg-primary)] rounded-tr-sm">
-                    {content}
+            <div className="w-full my-10 px-4 md:px-0">
+                <div className="max-w-5xl mx-auto flex justify-end">
+                    <div className="max-w-[85%] md:max-w-2xl px-6 py-4 rounded-3xl text-lg font-light leading-relaxed shadow-lg bg-[var(--text-primary)] text-[var(--bg-primary)] rounded-tr-sm">
+                        {content}
+                    </div>
                 </div>
             </div>
         );
@@ -198,15 +243,15 @@ const ChatMessage = ({ message, onSearch }) => {
 
     // AI text explanations - full width, elegant layout
     return (
-        <div className="w-full my-8 px-4 md:px-0 fade-in-up">
-            <div className="max-w-4xl mx-auto">
+        <div className="w-full my-10 px-4 md:px-0 fade-in-up">
+            <div className="max-w-5xl mx-auto">
                 {/* Article-style layout for explanations - Text Only, No Bubble */}
                 <div className="py-4 md:py-6">
                     <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={{
                             p: ({ node, ...props }) => (
-                                <p className="mb-6 text-[var(--text-primary)] text-lg leading-relaxed font-light tracking-wide opacity-90" {...props} />
+                                <p className="mb-6 text-[var(--text-primary)] text-lg leading-relaxed font-light opacity-90" {...props} />
                             ),
                             h1: ({ node, ...props }) => (
                                 <h1 className="text-3xl font-serif mb-6 text-[var(--text-primary)] tracking-tight" {...props} />
@@ -215,7 +260,7 @@ const ChatMessage = ({ message, onSearch }) => {
                                 <h2 className="text-2xl font-serif mb-4 mt-8 text-[var(--text-primary)] tracking-tight" {...props} />
                             ),
                             h3: ({ node, ...props }) => (
-                                <h3 className="text-xl font-serif mb-3 mt-6 text-[var(--text-primary)] tracking-wide opacity-95" {...props} />
+                                <h3 className="text-xl font-serif mb-3 mt-6 text-[var(--text-primary)] opacity-95" {...props} />
                             ),
                             ul: ({ node, ...props }) => (
                                 <ul className="list-none space-y-3 mb-6 ml-0" {...props} />
@@ -251,7 +296,7 @@ const ChatMessage = ({ message, onSearch }) => {
             {/* Action Buttons */}
             {actions && actions.length > 0 && (
                 <div className="w-full px-4 md:px-0 mb-8 fade-in-up">
-                    <div className="max-w-4xl mx-auto pl-4">
+                    <div className="max-w-5xl mx-auto pl-4">
                         <div className="flex flex-wrap gap-4">
                             {actions.map((action, idx) => (
                                 <ActionLink key={idx} action={action} />
