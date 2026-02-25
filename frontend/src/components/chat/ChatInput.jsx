@@ -87,7 +87,7 @@ const ChatInput = ({
             <input
                 ref={inputRef}
                 type="text"
-                className={`w-full bg-transparent border-none focus:ring-0 focus:outline-none text-[var(--text-primary)] placeholder-[var(--text-secondary)] font-serif placeholder:italic text-center relative z-10
+                className={`w-full bg-transparent border-none focus:ring-0 focus:outline-none text-[var(--text-primary)] placeholder-[var(--text-secondary)] font-serif font-light placeholder:italic text-center relative z-10
                     ${hasSearched || isOnboarding ? 'text-base md:text-lg py-2 placeholder:text-sm md:placeholder:text-base' : 'text-2xl md:text-3xl px-2 py-2 placeholder:font-serif'}
                     ${isOnboarding ? 'placeholder-pulse cursor-not-allowed opacity-90' : ''}
                 `}

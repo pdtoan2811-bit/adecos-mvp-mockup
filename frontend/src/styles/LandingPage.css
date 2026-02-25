@@ -27,7 +27,7 @@
   --success-muted: #d1fae5;
   --success-text: #065f46;
 
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--text-primary);
   background: var(--bg-primary);
   overflow-x: hidden;
@@ -273,7 +273,7 @@
 }
 
 .brand-item {
-  font-family: "Inter", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 600;
   color: var(--text-tertiary);
   transition: color 0.3s ease;

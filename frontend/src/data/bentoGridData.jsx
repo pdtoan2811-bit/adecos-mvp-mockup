@@ -19,14 +19,14 @@ export const bentoTiles = [
         id: 'connect-ads',
         title: 'Kết nối Tài khoản QC',
         subtitle: 'Connect Ad Accounts',
-        description: 'Tích hợp Google, FB & TikTok Ads để tối ưu.',
+        description: 'Tích hợp Google, FB & TikTok Ads',
         icon: <LayoutTemplate className="w-full h-full" />,
         color: 'rose',
         status: 'available',
         priority: 'primary',
         className: 'md:col-span-1 md:row-span-1',
         ctaText: 'Kết nối ngay',
-        ctaUrl: '#',
+        ctaNavigate: '/ads',
         highlights: ['Google Ads', 'Facebook', 'TikTok']
     },
     {
@@ -47,7 +47,7 @@ export const bentoTiles = [
         id: 'chat-data',
         title: 'Chat với Data',
         subtitle: 'Data Analyst Agent',
-        description: 'Hỏi đáp với dữ liệu doanh thu bằng AI.',
+        description: 'Hỏi đáp với dữ liệu, doanh thu với AI.',
         icon: <BarChart2 className="w-full h-full" />,
         color: 'emerald',
         status: 'coming_soon',
@@ -61,14 +61,16 @@ export const bentoTiles = [
         id: 'community',
         title: 'Cộng đồng Adecos',
         subtitle: 'Affiliate Community',
-        description: 'Kết nối với các top publisher & chuyên gia.',
+        description: 'Kết nối với ADECOS team và các chuyên gia trong affiliate MMO.',
         icon: <Users className="w-full h-full" />,
         color: 'orange',
         status: 'available',
         priority: 'secondary',
         className: 'md:col-span-1 md:row-span-1',
-        ctaText: 'Tham gia',
-        ctaUrl: '#',
+        actions: [
+            { text: 'Facebook', url: '#' },
+            { text: 'Zalo', url: '#' }
+        ],
         highlights: ['Networking']
     }
 ];

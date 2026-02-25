@@ -143,10 +143,10 @@ const ImmersiveInputMessage = ({ onSearch, isSearching }) => {
                 animate={{ opacity: 1 }}
                 className="text-center mb-10"
             >
-                <h3 className="text-2xl font-serif text-[var(--text-primary)] mb-2 tracking-tight">
+                <h3 className="text-2xl font-sans font-semibold text-[var(--text-primary)] mb-2 tracking-tight">
                     Bắt đầu phiên nghiên cứu mới
                 </h3>
-                <p className="text-sm text-[var(--text-secondary)] opacity-60">
+                <p className="text-sm font-sans text-[var(--text-secondary)] opacity-60">
                     Hãy cho tôi biết ngách sản phẩm hoặc chủ đề bạn muốn phân tích
                 </p>
             </motion.div>
@@ -173,7 +173,7 @@ const ImmersiveInputMessage = ({ onSearch, isSearching }) => {
                         <input
                             id="message-search-input"
                             type="text"
-                            className="w-full bg-transparent border-none focus:ring-0 focus:outline-none text-[var(--text-primary)] placeholder-[var(--text-secondary)] font-serif placeholder:italic text-center text-xl md:text-2xl py-2"
+                            className="w-full bg-transparent border-none focus:ring-0 focus:outline-none text-[var(--text-primary)] placeholder-[var(--text-secondary)] font-sans font-light text-center text-xl md:text-2xl py-2"
                             placeholder="Nhập yêu cầu tìm kiếm của bạn..."
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}

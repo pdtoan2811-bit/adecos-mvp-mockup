@@ -30,7 +30,7 @@ const ChatInterface = ({ onSearch, isSearching, hasSearched, onRestartOnboarding
                 >
                     <input
                         type="text"
-                        className="w-full bg-transparent border-none focus:ring-0 focus:outline-none text-[var(--text-primary)] placeholder-[var(--text-secondary)] font-serif placeholder:italic text-center text-base md:text-lg py-2 placeholder:text-sm md:placeholder:text-base cursor-pointer"
+                        className="w-full bg-transparent border-none focus:ring-0 focus:outline-none text-[var(--text-primary)] placeholder-[var(--text-secondary)] font-serif font-light placeholder:italic text-center text-base md:text-lg py-2 placeholder:text-sm md:placeholder:text-base cursor-pointer"
                         placeholder="Nhập yêu cầu tìm kiếm của bạn..."
                         readOnly
                         onFocus={onInputFocus}

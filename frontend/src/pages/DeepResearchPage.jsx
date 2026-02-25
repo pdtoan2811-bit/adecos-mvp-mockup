@@ -66,18 +66,13 @@ const DeepResearchPage = () => {
                         </div>
                     </div>
 
-                    <div className="p-6 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-sm">
-                        <h3 className="text-sm font-serif text-[var(--text-primary)] mb-2 uppercase tracking-[0.25em]">Executive Summary</h3>
-                        <p className="text-[var(--text-secondary)] leading-relaxed text-sm">
-                            {liveSelectedTask.result?.summary || 'Analysis in progress...'}
-                        </p>
-                    </div>
+
 
                     {liveSelectedTask.status === 'completed' && (
                         <div className="border border-[var(--border-color)] rounded-sm bg-[var(--bg-surface)]">
                             <div className="flex justify-between items-center px-4 py-3 border-b border-[var(--border-color)]">
                                 <h3 className="text-sm font-serif text-[var(--text-primary)] uppercase tracking-[0.25em]">
-                                    Affiliate Program Opportunities ({detailData.length})
+                                    Kết quả tìm kiếm ({detailData.length})
                                 </h3>
                                 <button type="button" className="text-xs text-blue-400 hover:underline">Export CSV</button>
                             </div>

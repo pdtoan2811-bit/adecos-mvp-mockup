@@ -98,6 +98,25 @@ const BentoTile = ({ tile, onStartResearch }) => {
             );
         }
 
+        // Handle multiple actions (e.g., for community card)
+        if (tile.actions && tile.actions.length > 0) {
+            return (
+                <div className="flex gap-2 w-full mt-2">
+                    {tile.actions.map((action, i) => (
+                        <a
+                            key={i}
+                            href={action.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex flex-1 items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-lg border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--tile-accent)] hover:border-[var(--tile-accent)] bg-transparent"
+                        >
+                            {action.text} {arrow}
+                        </a>
+                    ))}
+                </div>
+            );
+        }
+
         // Secondary / External Link
         // Default: Neutral border/text. Hover: Colored border/text.
         return (
