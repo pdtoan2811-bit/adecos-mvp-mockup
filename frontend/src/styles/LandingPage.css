@@ -64,18 +64,41 @@
   font-size: 0.9375rem;
   letter-spacing: 0.02em;
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  border: 1px solid transparent;
+  border: none;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
 }
 
 .btn-primary:hover {
-  background: var(--accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.2);
+  border-color: transparent !important;
 }
 
 .btn-outline {
@@ -93,12 +116,15 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .btn-outline:hover {
-  border-color: var(--accent-primary);
-  background: var(--bg-secondary);
-  color: var(--accent-primary);
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.04);
+  color: #1d4ed8;
 }
 
 /* ---- Component: Clean Cards ---- */
@@ -109,12 +135,81 @@
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   position: relative;
   overflow: hidden;
+  z-index: 1;
+}
+
+.clean-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(37, 99, 235, 0.02) 100%);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.4s ease;
+}
+
+.clean-card:hover::before {
+  opacity: 1;
 }
 
 .clean-card:hover {
-  border-color: var(--border-medium);
+  border-color: #bfdbfe;
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.12);
+}
+
+/* ---- Component: Reusable Hover Card (for arbitrary elements like charts) ---- */
+.hover-card {
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.hover-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(37, 99, 235, 0.02) 100%);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.hover-card:hover::before {
+  opacity: 1;
+}
+
+.hover-card:hover {
+  border-color: #bfdbfe;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.12);
+}
+
+/* ---- Chart Specific Hover Logic ---- */
+.chart-card .recharts-line .recharts-line-curve,
+.chart-card .recharts-area-line {
+  transition: stroke 0.4s ease;
+}
+
+.chart-card:hover .recharts-line .recharts-line-curve,
+.chart-card:hover .recharts-area-line {
+  stroke: #2563eb !important;
+}
+
+.chart-card .recharts-area-area {
+  transition: fill 0.4s ease;
+}
+
+.chart-card:hover .recharts-area-area {
+  fill: url(#colorRoiHover) !important;
 }
 
 /* ---- Component: Minimal Icons ---- */
@@ -128,11 +223,31 @@
   background: var(--bg-secondary);
   color: var(--text-primary);
   transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.icon-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.clean-card:hover .icon-box::before {
+  opacity: 1;
 }
 
 .clean-card:hover .icon-box {
-  background: var(--accent-primary);
   color: var(--text-inverse);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 /* ---- Section Styling ---- */

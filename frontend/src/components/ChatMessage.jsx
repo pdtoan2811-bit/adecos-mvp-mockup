@@ -310,7 +310,7 @@ const ChatMessage = ({ message, onSearch, onReplayDemo, onStartResearch }) => {
 };
 
 const ActionLink = ({ action }) => {
-    const baseClasses = "inline-flex items-center justify-center px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:-translate-y-1";
+    const baseClasses = "inline-flex items-center justify-center px-6 py-3 rounded-full font-medium transition-all duration-300";
     const primaryClasses = "bg-[var(--text-primary)] text-[var(--bg-primary)] hover:opacity-90 shadow-lg hover:shadow-[var(--shadow-color)]";
     const secondaryClasses = "bg-[var(--bg-surface)] text-[var(--text-primary)] border border-[var(--border-color)] hover:bg-[var(--bg-hover)] hover:border-[var(--text-primary)]";
 

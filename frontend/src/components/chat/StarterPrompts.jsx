@@ -103,7 +103,7 @@ const StarterPrompts = ({ onSearch, hasSearched, isSearching, setDeepResearchEna
                         border backdrop-blur-sm
                         ${prompt.disabled
                             ? 'opacity-60 cursor-not-allowed border-[var(--border-color)] bg-[var(--bg-surface)]'
-                            : `cursor-pointer border-[var(--border-color)] bg-[var(--bg-surface)] hover:border-[var(--text-primary)] hover:bg-[var(--bg-primary)] hover:scale-[1.02] hover:shadow-lg`
+                            : `cursor-pointer border-[var(--border-color)] bg-[var(--bg-surface)] hover:border-[var(--text-primary)] hover:bg-[var(--bg-primary)] hover:shadow-lg`
                         }
                     `}
                 >

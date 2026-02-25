@@ -4,8 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import {
     Sparkles, Search, BarChart3, FlaskConical,
     ArrowRight, Play, ChevronRight, Zap,
-    Globe, MessageSquare, Rocket, Menu, X,
-    TrendingUp, Activity
+    Menu, X
 } from 'lucide-react';
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid,
@@ -13,30 +12,29 @@ import {
 } from 'recharts';
 import '../styles/LandingPage.css';
 
-/* ───────── Mock ROI data for the "Live Data" chart ───────── */
+/* ───────── Mock ROAS data for the "Live Data" chart ───────── */
 const roiData = [
-    { month: 'Jan', roi: 120, spend: 45 },
-    { month: 'Feb', roi: 180, spend: 52 },
-    { month: 'Mar', roi: 240, spend: 48 },
-    { month: 'Apr', roi: 310, spend: 61 },
-    { month: 'May', roi: 380, spend: 55 },
-    { month: 'Jun', roi: 450, spend: 67 },
-    { month: 'Jul', roi: 520, spend: 72 },
-    { month: 'Aug', roi: 610, spend: 68 },
+    { month: 'Jan', roas: 120, spend: 45 },
+    { month: 'Feb', roas: 180, spend: 52 },
+    { month: 'Mar', roas: 240, spend: 48 },
+    { month: 'Apr', roas: 310, spend: 61 },
+    { month: 'May', roas: 380, spend: 55 },
+    { month: 'Jun', roas: 450, spend: 67 },
+    { month: 'Jul', roas: 520, spend: 72 },
+    { month: 'Aug', roas: 610, spend: 68 },
 ];
 
 /* ───────── Brand names for marquee ───────── */
 const brands = [
-    'Shopee', 'Lazada', 'TikTok Shop', 'Google Ads',
-    'Meta Ads', 'Haravan', 'Sapo', 'KiotViet',
+    'Meta Ads', 'Google Ads', 'Mic Group', 'Accesstrade'
 ];
 
 /* ───────── Feature card data ───────── */
 const features = [
     {
         icon: Sparkles,
-        title: 'Điều phối Đa tác vụ',
-        desc: 'Định tuyến thông minh giữa các AI agent để phân tích và kể chuyện.',
+        title: 'Giao việc cho AI Agent',
+        desc: 'Tìm kiếm các dự án affiliate tiềm năng bằng AI Agent và tiêu chí đánh giá cơ hội và lợi nhuận.',
     },
     {
         icon: Search,
@@ -45,35 +43,13 @@ const features = [
     },
     {
         icon: BarChart3,
-        title: 'Trí tuệ Chiến dịch',
-        desc: 'Tối ưu hóa ROAS và đề xuất ngân sách thông minh để đạt hiệu quả tối đa.',
+        title: 'Kết nối tài khoản quảng cáo',
+        desc: 'Không còn phải khổ sở quản lý nhiều tài khoản quảng cáo, ở các tài khoản và email khác nhau. All-in-one.',
     },
     {
         icon: FlaskConical,
-        title: 'Mô phỏng A/B',
-        desc: 'Thử nghiệm dựa trên dữ liệu với kết quả có ý nghĩa thống kê.',
-    },
-];
-
-/* ───────── How It Works steps ───────── */
-const steps = [
-    {
-        num: '01',
-        title: 'Kết nối',
-        desc: 'Liên kết nguồn dữ liệu và xác định thị trường ngách của bạn.',
-        icon: Globe,
-    },
-    {
-        num: '02',
-        title: 'Cộng tác',
-        desc: 'Làm việc với các AI agent để tinh chỉnh chiến lược.',
-        icon: MessageSquare,
-    },
-    {
-        num: '03',
-        title: 'Mở rộng',
-        desc: 'Triển khai và tự động tối ưu hóa chiến dịch.',
-        icon: Rocket,
+        title: 'A/B Testing (sắp ra mắt)',
+        desc: 'AI đề xuất các thử nghiệm có mục tiêu rõ ràng, theo dõi hàng ngày và đề xuất mở rộng.',
     },
 ];
 
@@ -148,13 +124,6 @@ export default function LandingPage() {
                         >
                             Tính năng
                         </button>
-                        <button
-                            onClick={() => scrollTo('how-it-works')}
-                            className="text-sm font-medium hover:text-black transition-colors"
-                            style={{ color: 'var(--text-secondary)' }}
-                        >
-                            Cách hoạt động
-                        </button>
 
                         <Link to="/chat" className="btn-primary text-sm">
                             Mở App
@@ -185,15 +154,8 @@ export default function LandingPage() {
                         >
                             Tính năng
                         </button>
-                        <button
-                            onClick={() => scrollTo('how-it-works')}
-                            className="text-sm font-medium text-left"
-                            style={{ color: 'var(--text-secondary)' }}
-                        >
-                            Cách hoạt động
-                        </button>
                         <Link to="/chat" className="btn-primary text-sm justify-center w-full">
-                            Mở App
+                            Bắt đầu ngay
                         </Link>
                     </motion.div>
                 )}
@@ -208,7 +170,7 @@ export default function LandingPage() {
                             variants={fadeUp}
                             className="font-serif heading-xl font-bold tracking-tight mb-8 text-balance"
                         >
-                            Marketing thông minh Tự động hóa.
+                            Tự động hóa MMO affiliate
                         </motion.h1>
 
                         <motion.p
@@ -228,14 +190,7 @@ export default function LandingPage() {
                             </button>
                         </motion.div>
 
-                        <motion.div
-                            variants={fadeUp}
-                            className="mt-12 flex items-center gap-8 text-sm"
-                            style={{ color: 'var(--text-tertiary)' }}
-                        >
-                            <span>Thiết lập trong 2 phút</span>
-                            <span>Không cần thẻ tín dụng</span>
-                        </motion.div>
+
                     </motion.div>
 
                     {/* Right — Minimal Mockup */}
@@ -259,26 +214,24 @@ export default function LandingPage() {
                                     </div>
                                     <div className="space-y-2 max-w-sm">
                                         <div className="bg-gray-50 p-4 rounded-2xl rounded-tl-none text-sm text-gray-800">
-                                            Tôi đã phân tích 15 đối thủ cạnh tranh. Xu hướng Q1 cho thấy nhu cầu đang chuyển dịch sang các sản phẩm bền vững.
+                                            Dưới đây là báo cáo CPC của các chiến dịch cho dự án affiliate của bạn
                                         </div>
-                                        <div className="bg-gray-50 p-4 rounded-2xl rounded-tl-none text-sm text-gray-800">
-                                            Tôi đề xuất tăng ngân sách cho chiến dịch "Eco-Friendly" thêm 20%.
-                                        </div>
+
                                     </div>
                                 </div>
 
                                 {/* Fake Chart Area inside Mockup */}
                                 <div className="pl-12">
-                                    <div className="border border-gray-100 rounded-xl p-4">
+                                    <div className="border border-gray-100 rounded-xl p-4 hover-card group">
                                         <div className="flex justify-between items-center mb-4">
-                                            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Hiệu suất Chiến dịch</span>
-                                            <span className="text-xs font-bold text-green-600">+24.5%</span>
+                                            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">CPC 14 ngày gần nhất</span>
+                                            <span className="text-xs font-bold text-green-600">-24.5%</span>
                                         </div>
                                         <div className="flex items-end gap-1 h-16">
-                                            {[20, 35, 30, 45, 40, 60, 55, 75, 70, 80].map((h, i) => (
+                                            {[85, 75, 80, 65, 70, 55, 50, 40, 35, 20].map((h, i) => (
                                                 <div
                                                     key={i}
-                                                    className="flex-1 bg-gray-900 rounded-sm opacity-80"
+                                                    className="flex-1 bg-gray-900 rounded-sm opacity-80 transition-colors duration-300 group-hover:bg-blue-600"
                                                     style={{ height: `${h}%`, opacity: 0.1 + (i * 0.08) }}
                                                 />
                                             ))}
@@ -295,7 +248,7 @@ export default function LandingPage() {
             <section className="py-12 border-y border-gray-100">
                 <div className="max-w-7xl mx-auto px-6 mb-8 text-center">
                     <p className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--text-tertiary)' }}>
-                        Được tin dùng bởi
+                        Hân hạnh là đối tác của
                     </p>
                 </div>
                 <div className="overflow-hidden">
@@ -332,7 +285,7 @@ export default function LandingPage() {
                             className="text-xl max-w-2xl"
                             style={{ color: 'var(--text-secondary)' }}
                         >
-                            Một nền tảng duy nhất để quản lý mọi khía cạnh của tiếp thị kỹ thuật số.
+                            Một nền tảng duy nhất để quản lý các thao tác nghiên cứu dự án affiliate, kết nối tài khoản quảng cáo và A/B testing.
                         </motion.p>
                     </div>
 
@@ -376,7 +329,7 @@ export default function LandingPage() {
                             viewport={{ once: true }}
                             className="font-serif text-4xl md:text-5xl font-bold tracking-tight mb-6"
                         >
-                            Tối đa hóa ROI
+                            Tối đa hóa ROAS
                         </motion.h2>
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
@@ -388,26 +341,15 @@ export default function LandingPage() {
                             Theo dõi hiệu suất chiến dịch trong thời gian thực. Hệ thống tự động điều chỉnh giá thầu để đảm bảo từng đồng ngân sách đều mang lại giá trị.
                         </motion.p>
 
-                        <div className="space-y-6">
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center text-black">
-                                    <TrendingUp size={20} />
-                                </div>
-                                <div>
-                                    <div className="text-2xl font-bold font-serif">+340%</div>
-                                    <div className="text-sm text-gray-500">Tăng trưởng ROI trung bình</div>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center text-black">
-                                    <Activity size={20} />
-                                </div>
-                                <div>
-                                    <div className="text-2xl font-bold font-serif">-50%</div>
-                                    <div className="text-sm text-gray-500">Chi phí vận hành</div>
-                                </div>
-                            </div>
-                        </div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                        >
+                            <Link to="/chat" className="btn-primary custom-hover inline-flex items-center gap-2">
+                                Bắt đầu ngay <ArrowRight size={18} />
+                            </Link>
+                        </motion.div>
                     </div>
 
                     <motion.div
@@ -415,7 +357,7 @@ export default function LandingPage() {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm"
+                        className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover-card chart-card"
                     >
                         <h3 className="text-lg font-bold mb-6">Hiệu suất tháng này</h3>
                         <ResponsiveContainer width="100%" height={300}>
@@ -425,6 +367,10 @@ export default function LandingPage() {
                                         <stop offset="5%" stopColor="#000000" stopOpacity={0.1} />
                                         <stop offset="95%" stopColor="#000000" stopOpacity={0} />
                                     </linearGradient>
+                                    <linearGradient id="colorRoiHover" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#2563eb" stopOpacity={0.2} />
+                                        <stop offset="95%" stopColor="#1d4ed8" stopOpacity={0} />
+                                    </linearGradient>
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                                 <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#999', fontSize: 12 }} dy={10} />
@@ -432,38 +378,10 @@ export default function LandingPage() {
                                 <Tooltip
                                     contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                                 />
-                                <Area type="monotone" dataKey="roi" stroke="#000000" strokeWidth={2} fillOpacity={1} fill="url(#colorRoi)" />
+                                <Area type="monotone" dataKey="roas" stroke="#000000" strokeWidth={2} fillOpacity={1} fill="url(#colorRoi)" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </motion.div>
-                </div>
-            </section>
-
-            {/* ─── HOW IT WORKS ─── */}
-            <section id="how-it-works" className="py-32 px-6">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-20">
-                        <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight mb-4">Quy trình làm việc</h2>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-12">
-                        {steps.map((s, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.15 }}
-                                className="text-center relative"
-                            >
-                                <div className="text-6xl font-serif font-bold text-gray-100 mb-6 select-none leading-none">
-                                    {s.num}
-                                </div>
-                                <h3 className="text-xl font-bold mb-3">{s.title}</h3>
-                                <p className="text-gray-500">{s.desc}</p>
-                            </motion.div>
-                        ))}
-                    </div>
                 </div>
             </section>
 
@@ -471,10 +389,10 @@ export default function LandingPage() {
             <section className="py-32 px-6 bg-black text-white text-center">
                 <div className="max-w-3xl mx-auto">
                     <h2 className="font-serif text-4xl md:text-6xl font-bold mb-8">
-                        Sẵn sàng nâng tầm doanh nghiệp?
+                        Trợ lý AI hiểu và thực thi các nhiệm vụ MMO cho bạn
                     </h2>
                     <p className="text-xl text-gray-400 mb-10">
-                        Tham gia danh sách chờ và trải nghiệm sức mạnh của Marketing AI.
+                        Tham gia danh sách chờ và trải nghiệm ADECOS.
                     </p>
                     <Link to="/chat" className="inline-block bg-white text-black font-semibold py-4 px-10 rounded-full hover:bg-gray-200 transition-colors">
                         Bắt đầu miễn phí
@@ -488,7 +406,6 @@ export default function LandingPage() {
                     <div className="font-serif text-xl font-bold">Adecos</div>
                     <div className="flex gap-8 text-sm text-gray-500">
                         <button onClick={() => scrollTo('features')} className="hover:text-black">Tính năng</button>
-                        <button onClick={() => scrollTo('how-it-works')} className="hover:text-black">Quy trình</button>
                         <Link to="/chat" className="hover:text-black">Đăng nhập</Link>
                     </div>
                     <div className="text-xs text-gray-400">© 2026 Adecos.</div>

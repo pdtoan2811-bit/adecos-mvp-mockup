@@ -63,7 +63,7 @@ const InteractiveFeatureReveal = ({ content }) => {
             <div className="absolute top-1/2 left-4 right-4 -translate-y-1/2 flex justify-between pointer-events-none z-20">
                 <button
                     onClick={handlePrev}
-                    className={`pointer-events-auto w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all shadow-xl group-hover:opacity-100 ${currentIndex === 0 ? 'opacity-0 cursor-default' : 'opacity-100'}`}
+                    className={`pointer-events-auto w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-all shadow-xl group-hover:opacity-100 ${currentIndex === 0 ? 'opacity-0 cursor-default' : 'opacity-100'}`}
                     disabled={currentIndex === 0}
                     aria-label="Previous Slide"
                 >
@@ -71,7 +71,7 @@ const InteractiveFeatureReveal = ({ content }) => {
                 </button>
                 <button
                     onClick={handleNext}
-                    className={`pointer-events-auto w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all shadow-xl group-hover:opacity-100 ${currentIndex === 1 ? 'opacity-0 cursor-default' : 'opacity-100'}`}
+                    className={`pointer-events-auto w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-all shadow-xl group-hover:opacity-100 ${currentIndex === 1 ? 'opacity-0 cursor-default' : 'opacity-100'}`}
                     disabled={currentIndex === 1}
                     aria-label="Next Slide"
                 >

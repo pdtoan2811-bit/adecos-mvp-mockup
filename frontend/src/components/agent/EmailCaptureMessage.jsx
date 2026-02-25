@@ -23,7 +23,7 @@ const EmailCaptureMessage = () => {
                     <div className="space-y-4">
                         <Link
                             to="/ads"
-                            className="block w-full bg-[var(--text-primary)] text-[var(--bg-primary)] font-medium py-3.5 rounded-lg hover:opacity-90 shadow-lg transition-all transform hover:-translate-y-0.5 text-sm uppercase tracking-wider"
+                            className="block w-full bg-[var(--text-primary)] text-[var(--bg-primary)] font-medium py-3.5 rounded-lg hover:opacity-90 shadow-lg transition-all text-sm uppercase tracking-wider"
                         >
                             Kết nối Ads Account →
                         </Link>

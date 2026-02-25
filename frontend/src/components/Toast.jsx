@@ -38,7 +38,7 @@ const Toast = ({ message, type = 'success', onClose, isVisible, duration = 3000 
 
     return (
         <div className="fixed bottom-4 right-4 z-50 animate-fade-in-up">
-            <div className={`flex items-center gap-3 px-4 py-3 rounded-lg border backdrop-blur-md shadow-lg ${bgColors[type] || bgColors.info} transition-all duration-300 transform hover:scale-105`}>
+            <div className={`flex items-center gap-3 px-4 py-3 rounded-lg border backdrop-blur-md shadow-lg ${bgColors[type] || bgColors.info} transition-all duration-300`}>
                 {icons[type]}
                 <span className="text-sm font-medium">{message}</span>
                 <button

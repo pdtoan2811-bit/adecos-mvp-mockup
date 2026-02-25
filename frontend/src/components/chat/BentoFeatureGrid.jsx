@@ -71,7 +71,7 @@ const BentoTile = ({ tile, onStartResearch }) => {
         // Secondary buttons now use CSS vars for hover effects mostly, but we can keep inline styles for the "active" colored state if needed.
         // To stick to the "minimal default" rule, we'll use standard classes for the default state.
 
-        const baseClass = "inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg";
+        const baseClass = "inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-lg";
 
         const arrow = (
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -118,9 +118,8 @@ const BentoTile = ({ tile, onStartResearch }) => {
             className={`bento-tile group relative overflow-hidden rounded-2xl border backdrop-blur-sm h-full flex flex-col transition-colors duration-300 ${tile.className || ''}`}
             style={tileStyle}
             whileHover={{
-                scale: 1.02,
                 borderColor: colors.border,
-                boxShadow: `0 8px 32px ${colors.glow}, 0 2px 8px rgba(0,0,0,0.2)`,
+                boxShadow: `0 8px 24px ${colors.glow}, 0 2px 8px rgba(0,0,0,0.1)`,
                 transition: { duration: 0.3, ease: 'easeOut' }
             }}
         >
@@ -143,7 +142,7 @@ const BentoTile = ({ tile, onStartResearch }) => {
                 {/* Top row: icon + badge */}
                 <div className="flex items-start justify-between mb-4">
                     <div
-                        className="flex items-center justify-center w-12 h-12 rounded-xl text-2xl transition-all duration-300 group-hover:scale-110 bg-[var(--bg-surface)] text-[var(--text-secondary)] group-hover:bg-[var(--tile-bg)] group-hover:text-[var(--tile-accent)]"
+                        className="flex items-center justify-center w-12 h-12 rounded-xl text-2xl transition-all duration-300 bg-[var(--bg-surface)] text-[var(--text-secondary)] group-hover:bg-[var(--tile-bg)] group-hover:text-[var(--tile-accent)]"
                     >
                         {tile.icon}
                     </div>
@@ -154,7 +153,7 @@ const BentoTile = ({ tile, onStartResearch }) => {
                             : 'text-[var(--text-tertiary)] bg-[var(--bg-surface)] border-[var(--border-color)] group-hover:text-emerald-400 group-hover:bg-emerald-500/10 group-hover:border-emerald-500/20'
                             }`}
                     >
-                        {isComingSoon ? '✨ Coming Soon' : '● Available'}
+                        {isComingSoon ? '✨ Coming Soon' : 'Đã sẵn sàng'}
                     </span>
                 </div>
 
@@ -221,7 +220,7 @@ const BentoFeatureGrid = ({ onReplayDemo, onStartResearch, isEmbedded = false })
                     {onReplayDemo && (
                         <button
                             onClick={onReplayDemo}
-                            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)] border border-[var(--border-color)] bg-[var(--bg-surface)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)] transition-all duration-300 hover:-translate-y-0.5"
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)] border border-[var(--border-color)] bg-[var(--bg-surface)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)] transition-all duration-300"
                         >
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M1 4v6h6" />

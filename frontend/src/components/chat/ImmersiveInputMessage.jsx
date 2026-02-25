@@ -226,7 +226,7 @@ const ImmersiveInputMessage = ({ onSearch, isSearching }) => {
                             group/card flex items-center gap-3 p-3 rounded-xl text-left transition-all duration-300 border
                             ${prompt.disabled
                                 ? 'opacity-40 cursor-not-allowed border-[var(--border-color)] bg-[var(--bg-surface)]'
-                                : 'cursor-pointer border-[var(--border-color)] bg-[var(--bg-surface)] hover:border-[var(--text-primary)] hover:bg-[var(--bg-primary)] hover:scale-[1.01]'
+                                : 'cursor-pointer border-[var(--border-color)] bg-[var(--bg-surface)] hover:border-[var(--text-primary)] hover:bg-[var(--bg-primary)]'
                             }
                         `}
                     >

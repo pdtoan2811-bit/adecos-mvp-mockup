@@ -7,7 +7,7 @@ const EmptyProjectsState = () => {
     return (
         <div className="flex-1 flex flex-col items-center justify-center p-8 text-center min-h-[400px]">
             <div className="bg-[var(--bg-surface)] p-4 rounded-2xl mb-6 shadow-sm">
-                <div className="text-6xl transform hover:scale-110 transition-transform duration-300 cursor-default">
+                <div className="text-6xl cursor-default">
                     📁
                 </div>
             </div>
@@ -22,7 +22,7 @@ const EmptyProjectsState = () => {
 
             <button
                 onClick={() => navigate('/chat')}
-                className="group relative inline-flex items-center justify-center px-8 py-3 font-medium text-[var(--bg-primary)] transition-all duration-200 bg-[var(--text-primary)] rounded-xl hover:opacity-90 hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--text-primary)]"
+                className="group relative inline-flex items-center justify-center px-8 py-3 font-medium text-[var(--bg-primary)] transition-all duration-200 bg-[var(--text-primary)] rounded-xl hover:opacity-90 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--text-primary)]"
             >
                 <span className="mr-2">✨</span>
                 Bắt đầu nghiên cứu

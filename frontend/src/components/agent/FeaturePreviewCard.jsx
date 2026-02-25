@@ -72,7 +72,7 @@ const FeaturePreviewCard = ({ content, onLearnMore }) => {
                                     <button
                                         onClick={handleRegister}
                                         disabled={registrationStatus === 'loading'}
-                                        className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 transform hover:-translate-y-0.5 relative overflow-hidden group/btn ${registrationStatus === 'loading'
+                                        className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 relative overflow-hidden group/btn ${registrationStatus === 'loading'
                                             ? 'bg-[var(--bg-surface)] text-[var(--text-secondary)] cursor-wait border border-[var(--border-color)]'
                                             : 'bg-[var(--text-primary)] text-[var(--bg-primary)] hover:opacity-90 shadow-lg'
                                             }`}
@@ -88,7 +88,7 @@ const FeaturePreviewCard = ({ content, onLearnMore }) => {
                                             </>
                                         ) : (
                                             <>
-                                                <span className="group-hover/btn:scale-110 transition-transform">🚀</span>
+                                                <span className="transition-transform">🚀</span>
                                                 {ctaText}
                                             </>
                                         )}

@@ -54,7 +54,7 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, title, message, confirm
                         }}
                         className={`
                             px-4 py-2 text-xs uppercase tracking-widest text-white rounded-sm
-                            transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5
+                            transition-all duration-300 shadow-lg hover:shadow-xl
                             ${isDangerous ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-600 hover:bg-blue-500'}
                         `}
                     >
